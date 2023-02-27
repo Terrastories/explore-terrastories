@@ -45,7 +45,7 @@ interface CommunityCtx {
   fetchStories: (urlParams: object, useFilterState?: boolean) => Promise<FeatureCollection>
   fetchStory: (storyId: string) => Promise<FeatureCollection>
   fetchPlace: (placeId: string | number) => Promise<FeatureCollection>
-  handleShowStories: () => void
+  dismissIntro: () => void
   handleSort: (sort: string) => void
   handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
@@ -72,7 +72,7 @@ const CommunityContext = createContext<CommunityCtx>({
   fetchPlace: (p) => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
 
   // Panel Helpers
-  handleShowStories: () => { return },
+  dismissIntro: () => { return },
   showIntro: true,
   listView: true,
   toggleListView: () => { return },
@@ -159,7 +159,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     return await fetchStories({}, true)
   }
 
-  function handleShowStories() {
+  function dismissIntro() {
     if (loading) return
     setShowIntro(false)
     return fetchStories()
@@ -203,7 +203,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
         fetchPlace,
 
         // Panel Helpers
-        handleShowStories,
+        dismissIntro,
         showIntro,
         listView,
         toggleListView,

@@ -73,7 +73,7 @@ export default function ExporeIntro({details}: Props) {
     displayImage,
   } = details
 
-  const { loading, handleShowStories } = useCommunity()
+  const { loading, dismissIntro } = useCommunity()
 
   const defaultHeading = 'Welcome!'
   const defaultDescription = 'Terrastories are audiovisual recordings of place-based storytelling. This offline-compatible application enables local communities to locate and map their own oral storytelling traditions about places of significant meaning or value to them.'
@@ -85,7 +85,7 @@ export default function ExporeIntro({details}: Props) {
       <h1>{name || defaultHeading}</h1>
       <p>{description || defaultDescription}</p>
       <p>
-        <Button disabled={loading} onClick={handleShowStories}>
+        <Button disabled={loading} onClick={dismissIntro}>
           {loading && <Loading />}
           Start Exploring
         </Button>
