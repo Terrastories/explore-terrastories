@@ -74,6 +74,7 @@ export default function Community() {
             communitySlug={community.slug}
             categories={community.categories}
             filters={community.filters}
+            points={points}
             storiesCount={community.storiesCount} />
         </React.Fragment>
         }

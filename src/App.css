@@ -1,38 +1,63 @@
-.App {
-  text-align: center;
+/* Defined custom fonts */
+@font-face {
+  font-family: 'OpenSansCondensed-Bold';
+  src: url('./fonts/OpenSansCondensed-Bold.ttf');
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Define App defaults */
+h1, h2, h3, h4, h5 {
+  font-family: 'OpenSansCondensed-Bold';
+  margin: 0 0 1.25rem;
+  line-height: 1.25;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1 {
+  font-size: 2.281rem;
+}
+h2 {
+  font-size: 2.027rem;
+}
+h3 {
+  font-size: 1.802rem;
+}
+h4 {
+  font-size: 1.424rem;
+}
+h5 {
+  font-size: 1.266rem;
+}
+h6 {
+  font-size: 1.125rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+p {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+  "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
-.App-link {
-  color: #61dafb;
+/* Shared CSS utilities */
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ARIA Helpers */
+span[role='link'] {
+  color: LinkText; /* System Color */
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+span[role='link']:hover,
+span[role='link']:target,
+span[role='link']:active {
+  color: VisitedText; /* System Color */
+  text-decoration: underline;
+}
+
+span[role="link"]:focus-visible {
+  outline: auto 1px Highlight; /* System Color */
 }

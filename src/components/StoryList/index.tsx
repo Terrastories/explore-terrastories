@@ -19,7 +19,8 @@ type StoryListItems = {
   filteredStoriesCount: number,
   sorts: {[value: string]: any},
   defaultSort: string,
-  handleSortOnlyChange: (sort: string) => void
+  handleSortOnlyChange: (sort: string) => void,
+  handleStorySelection: (storyId: string) => void,
 }
 
 export default function StoryList(props: StoryListItems) {
@@ -32,6 +33,7 @@ export default function StoryList(props: StoryListItems) {
     totalStories,
     filteredStoriesCount,
     handleSortOnlyChange,
+    handleStorySelection,
   } = props
 
   const [listView, setListView] = React.useState<boolean>(true)
@@ -42,6 +44,12 @@ export default function StoryList(props: StoryListItems) {
 
   const handleSortChange = (sort: string) => {
     handleSortOnlyChange(sort)
+  }
+
+  const handleStoryClick = (e: React.MouseEvent) => {
+    const clickedStory = e.currentTarget.getAttribute('data-story-id')
+    if (!clickedStory) return
+    handleStorySelection(clickedStory)
   }
 
   return (
@@ -68,7 +76,10 @@ export default function StoryList(props: StoryListItems) {
         <div className={`storyListContainer ${listView ? 'list' : 'grid'}`}>
           {loading && <Loading />}
           {!loading && stories.map((story) => (
-            <Story key={story.id} story={story} />
+            <Story
+              key={story.id}
+              story={story}
+              handleStoryClick={handleStoryClick} />
           ))}
         </div>
         </>}
