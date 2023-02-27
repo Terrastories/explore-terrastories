@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import './styles.css'
@@ -11,7 +12,9 @@ const StyledLogo = styled.img`
 export default function Header({isMobile}:{isMobile?: boolean}) {
   return(
     <div className={`header ${isMobile ? "mobile" : ""}`}>
-      <StyledLogo src={logo} alt="Terrastories" />
+      <Link to={'/'}>
+        <StyledLogo src={logo} alt="Terrastories" />
+      </Link>
     </div>
   )
 }
