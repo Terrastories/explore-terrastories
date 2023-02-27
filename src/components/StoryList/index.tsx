@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import Story from 'components/Story'
 import Loading from 'components/Loading'
@@ -22,6 +23,14 @@ type StoryListItems = {
   handleSortOnlyChange: (sort: string) => void,
   handleStorySelection: (storyId: string) => void,
 }
+
+const IconButton = styled.button`
+margin: 0;
+padding: 0;
+border: none;
+height: 24px;
+width: 24px;
+`
 
 export default function StoryList(props: StoryListItems) {
   let {
@@ -55,15 +64,13 @@ export default function StoryList(props: StoryListItems) {
   return (
     <>
       <div className={'storyListControls'}>
-        <div className={`controlsGroup ${showStories ? '' : 'hidden'}`}>
-          <Sort
-            onSort={handleSortChange}
-            sortOptions={sorts}
-            defaultSort={defaultSort}
-            />
-          { listView ?
-            <GridIcon onClick={toggleListView} className={'icon'} /> :
-            <ListIcon onClick={toggleListView} className={'icon'} /> }
+        <div className={`controlsGroup`}>
+          <Sort />
+          <IconButton type='button' onClick={toggleListView}>
+            { listView ?
+              <GridIcon className={'icon'} /> :
+              <ListIcon className={'icon'} /> }
+          </IconButton>
         </div>
       </div>
       <div>There are {filteredStoriesCount} of {totalStories} to explore.</div>
