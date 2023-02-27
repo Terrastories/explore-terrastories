@@ -59,7 +59,7 @@ export type MapData = {
 export type TypeCommunityDetails = {
   name: string,
   description?: string,
-  display_image?: string,
+  displayImage?: string,
   sponsorLogos: ActiveStorageImage[],
 }
 
@@ -68,7 +68,7 @@ export type TypeCommunity = {
   slug: string,
   description?: string,
   details: TypeCommunityDetails,
-  display_image?: string,
+  displayImage?: string,
   storiesCount: number,
   categories: CategoryOption[],
   filters: FilterOption[],

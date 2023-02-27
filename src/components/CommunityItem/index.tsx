@@ -5,13 +5,13 @@ import { TypeCommunity } from 'types'
 export default function CommunityItem(props: TypeCommunity) {
   const {
     name,
-    display_image,
+    displayImage,
     description,
   } = props
 
   return (
     <Link to={`/community/${props.slug}`} className="communityItem">
-      {display_image && <img src={display_image} alt={name} />}
+      {displayImage && <img src={displayImage} alt={name} />}
       <h3>{name}</h3>
       <div className="noColorChange">{description}</div>
     </Link>
