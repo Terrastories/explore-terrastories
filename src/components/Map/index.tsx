@@ -99,6 +99,7 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
   React.useEffect(() => {
     if (!mapRef.current) return
     if (!mapRef.current.loaded()) return
+    if (points.features.length === 0) return
 
     const map = mapRef.current
     const source = map.getSource('terrastories-points') as GeoJSONSource
