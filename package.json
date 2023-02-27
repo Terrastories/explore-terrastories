@@ -14,7 +14,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/styled-components": "^5.1.26",
     "axios": "^1.2.1",
-    "mapbox-gl": "^2.12.0-beta.1",
+    "mapbox-gl": "^2.12.0",
     "plyr-react": "^5.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
