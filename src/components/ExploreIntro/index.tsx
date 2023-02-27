@@ -1,6 +1,8 @@
 // @ts-nocheck
 import styled from 'styled-components'
 
+import { useCommunity } from 'contexts/CommunityContext'
+
 import Loading from 'components/Loading'
 
 import { TypeCommunityDetails } from 'types'
@@ -46,22 +48,18 @@ const SponsorLogos = styled.div`
 `
 
 type Props = {
-  loading: boolean,
-  details: TypeCommunityDetails,
-  handleShowAll: () => void,
+  details: TypeCommunityDetails
 }
 
-export default function ExporeIntro(props: Props) {
+export default function ExporeIntro({details}: Props) {
   const {
     name,
     description,
     sponsorLogos,
     displayImage,
-  } = props.details
+  } = details
 
-  const {
-    loading, handleShowAll
-  } = props
+  const { loading, handleShowStories } = useCommunity()
 
   const defaultHeading = 'Welcome!'
   const defaultDescription = 'Terrastories are audiovisual recordings of place-based storytelling. This offline-compatible application enables local communities to locate and map their own oral storytelling traditions about places of significant meaning or value to them.'
@@ -72,14 +70,10 @@ export default function ExporeIntro(props: Props) {
         <Logo src={displayImage} alt={name} />}
       <h1>{name || defaultHeading}</h1>
       <p>{description || defaultDescription}</p>
-
-      <h2>Start exploring {name}</h2>
-      <p>Start exploring by selecting from the filters above, or click below to explore all stories.</p>
-
       <p>
-        <Button disabled={loading} onClick={handleShowAll}>
+        <Button disabled={loading} onClick={handleShowStories}>
           {loading && <Loading />}
-          Explore
+          Start Exploring
         </Button>
       </p>
       {sponsorLogos &&

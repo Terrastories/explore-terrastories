@@ -4,6 +4,9 @@ import type { TypeStory } from 'types'
 import Media from 'components/Media'
 import Speaker from 'components/Speaker'
 
+import { useMapConfig } from 'contexts/MapContext'
+import { useCommunity } from 'contexts/CommunityContext'
+
 import LanguageWorldIcon from './assets/language.svg'
 import PinIcon from './assets/pin.svg'
 import './styles.css'
@@ -18,13 +21,11 @@ const LocationPin = styled.img`
 
 type Props = {
   story: TypeStory,
-  handleCloseStoryDetail: () => void,
 }
 
-export default function StoryDetail(props: Props) {
-  const {
-    handleCloseStoryDetail,
-  } = props
+export default function StoryDetail({story}: Props) {
+  const { setSelectedStory } = useCommunity()
+  const { stashedPoints, setStashedPoints, updateStoryPoints } = useMapConfig()
 
   const {
     title,
@@ -34,7 +35,15 @@ export default function StoryDetail(props: Props) {
     speakers,
     media,
     places,
-  } = props.story
+  } = story
+
+  function handleCloseStoryDetail() {
+    setSelectedStory(undefined)
+    if (stashedPoints) {
+      updateStoryPoints(stashedPoints)
+      setStashedPoints(undefined)
+    }
+  }
 
   return (
     <>

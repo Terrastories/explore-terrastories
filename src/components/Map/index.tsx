@@ -1,14 +1,11 @@
 import React from 'react'
 
-import mapboxgl, { GeoJSONSource, Projection, LngLatBoundsLike } from 'mapbox-gl'
+import type { GeoJSONSource, Projection, MapLayerMouseEvent } from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import bbox from '@turf/bbox'
-
-import { FeatureCollection } from 'geojson'
-import type { MapData } from 'types'
-
-import { addMapGeoPoints, addMapImage, loadInitialMapData } from './utils/mapbox'
+import { useMapConfig } from 'contexts/MapContext'
+import useMobile from 'hooks/useMobile'
 
 import HomeButton from './components/HomeButton'
 import Minimap from './components/Minimap'
@@ -16,11 +13,16 @@ import Minimap from './components/Minimap'
 import usePopup from './hooks/usePopup'
 import usePointerCursor from './hooks/usePointerCursor'
 
+import { addMapGeoPoints, addMapImage, loadInitialMapData } from './utils/mapbox'
+
 import './styles.css'
 
-export default function Map({isMobile, points, config}:{isMobile: boolean, points: FeatureCollection, config: MapData}) {
+export default function Map() {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
+
+  const { points, bounds, ...config } = useMapConfig()
+  const isMobile = useMobile()
 
   const resetMap = React.useCallback((trigger = "") => {
     if (mapRef.current) {
@@ -33,6 +35,7 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
     }
   }, [config])
 
+  // Map Initialization
   React.useEffect(() => {
     if (mapContainerRef.current != null) { // Don't try load the map if there is no container
       if (mapRef.current) return; // Only initialize the map once!
@@ -48,7 +51,7 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
         bearing: config.bearing,
         pitch: config.pitch,
         center: config.center,
-        maxBounds: config.bounds,
+        maxBounds: config.maxBounds,
         projection: {name: config.mapProjection} as Projection
       })
 
@@ -108,7 +111,7 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
     }
   }, [])
 
-  // frame updated
+  // points updated
   React.useEffect(() => {
     if (popup.isOpen()) popup.remove()
     if (points.features.length === 0) return

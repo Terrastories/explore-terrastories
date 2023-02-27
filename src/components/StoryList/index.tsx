@@ -3,25 +3,17 @@ import styled from 'styled-components'
 
 import Story from 'components/Story'
 import Loading from 'components/Loading'
-
 import Sort from 'components/Sort'
+
+import { useCommunity } from 'contexts/CommunityContext'
 
 import { ReactComponent as GridIcon } from './assets/grid_view.svg'
 import { ReactComponent as ListIcon } from './assets/list_view.svg'
 
-import { TypeStory } from 'types'
 import './styles.css'
 
 type StoryListItems = {
-  stories: TypeStory[],
-  loading: boolean,
-  showStories: boolean,
   totalStories: number,
-  filteredStoriesCount: number,
-  sorts: {[value: string]: any},
-  defaultSort: string,
-  handleSortOnlyChange: (sort: string) => void,
-  handleStorySelection: (storyId: string) => void,
 }
 
 const IconButton = styled.button`
@@ -32,34 +24,8 @@ height: 24px;
 width: 24px;
 `
 
-export default function StoryList(props: StoryListItems) {
-  let {
-    stories,
-    defaultSort,
-    sorts,
-    loading,
-    showStories,
-    totalStories,
-    filteredStoriesCount,
-    handleSortOnlyChange,
-    handleStorySelection,
-  } = props
-
-  const [listView, setListView] = React.useState<boolean>(true)
-
-  const toggleListView = () => {
-    setListView(!listView)
-  }
-
-  const handleSortChange = (sort: string) => {
-    handleSortOnlyChange(sort)
-  }
-
-  const handleStoryClick = (e: React.MouseEvent) => {
-    const clickedStory = e.currentTarget.getAttribute('data-story-id')
-    if (!clickedStory) return
-    handleStorySelection(clickedStory)
-  }
+export default function StoryList({totalStories}: StoryListItems) {
+  const { loading, stories, listView, toggleListView } = useCommunity()
 
   return (
     <>
@@ -73,14 +39,13 @@ export default function StoryList(props: StoryListItems) {
           </IconButton>
         </div>
       </div>
-      <div>There are {filteredStoriesCount} of {totalStories} to explore.</div>
+      <div>There are {stories.length} of {totalStories} to explore.</div>
       <div className={`storyListContainer ${listView ? 'list' : 'grid'}`}>
         {loading && <Loading />}
         {!loading && stories.map((story) => (
           <Story
             key={story.id}
-            story={story}
-            handleStoryClick={handleStoryClick} />
+            story={story} />
         ))}
       </div>
     </>

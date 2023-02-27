@@ -1,5 +1,9 @@
 import React from 'react'
 import Select from 'react-select'
+
+import { useCommunity } from 'contexts/CommunityContext'
+import { useMapConfig } from 'contexts/MapContext'
+
 import type { ActionMeta, SelectInstance, SingleValue, PropsValue } from 'react-select'
 import { FilterOption, CategoryOption } from 'types'
 
@@ -8,10 +12,6 @@ import './styles.css'
 type Props = {
   categories: CategoryOption[],
   filters: FilterOption[],
-  handleFilterChange: (category: string | undefined, options: FilterOption[], sort: string) => void,
-  sort: string,
-  selectedFilter?: string,
-  selectedOptions?: FilterOption[],
 }
 
 interface IFilterState {
@@ -29,11 +29,10 @@ export default function StoryFilters(props: Props) {
   const {
     categories,
     filters,
-    handleFilterChange,
-    sort,
-    selectedFilter,
-    selectedOptions,
   } = props
+
+  const { sort, selectedFilter, selectedOptions, handleFilter, fetchStories } = useCommunity()
+  const { updateStoryPoints } = useMapConfig()
 
   const optionRef = React.useRef<SelectInstance<FilterOption>>(null)
 
@@ -54,25 +53,25 @@ export default function StoryFilters(props: Props) {
 
   const [state, dispatch] = React.useReducer(filterReducer, initialFilterState, () => (initialFilterState))
   const {filterCategory, filterOptions} = state
-  const categoryValue = categories.find(c => selectedOptions ? c.value === selectedFilter : false)
 
   const handleCategoryChange = (option: SingleValue<CategoryOption>, actionMeta: ActionMeta<CategoryOption>) => {
     switch (actionMeta.action) {
       case 'select-option':
         if (!option) break
         if (option.value === filterCategory) return
-        dispatch({
-          type: 'updateFilters',
-          value: {
-            filterCategory: option.value,
-            filterOptions: filters.filter((filter) => option.value === filter.category),
-          }
-        })
+        handleFilter(option.value, [], sort)
         if (optionRef.current && optionRef.current.hasValue()) optionRef.current.clearValue()
         break
       case 'clear':
         dispatch({type: 'clear'})
-        handleFilterChange(undefined, [], sort)
+        // selected options already empty (filters already reset to all stories)
+        let skipFetch = selectedOptions && selectedOptions.length === 0
+        let opts = handleFilter(undefined, [], sort)
+        if (!skipFetch) {
+          fetchStories(opts).then(
+            (newPoints) => updateStoryPoints(newPoints)
+          )
+        }
         break
       }
   }
@@ -82,32 +81,36 @@ export default function StoryFilters(props: Props) {
       case 'select-option':
       case 'remove-value':
         if (!options) break
-        handleFilterChange(filterCategory, options as FilterOption[], sort)
+        fetchStories(handleFilter(filterCategory, options as FilterOption[], sort)).then(
+          (newPoints) => updateStoryPoints(newPoints)
+        )
         break
       case 'clear':
-        handleFilterChange(filterCategory, [], sort)
+        fetchStories(handleFilter(filterCategory, [], sort)).then(
+          (newPoints) => updateStoryPoints(newPoints)
+        )
         break
     }
   }
 
   React.useEffect(() => {
-    if (categoryValue) {
+    if (selectedFilter) {
       dispatch({
         type: 'updateFilters',
         value: {
-          filterCategory: categoryValue.value,
-          filterOptions: filters.filter((filter) => categoryValue.value === filter.category),
+          filterCategory: selectedFilter,
+          filterOptions: filters.filter((filter) => selectedFilter === filter.category),
         }
       })
     }
-  }, [categoryValue, filters])
+  }, [selectedFilter, filters])
 
   return (
     <div>
       <div>Filter Stories</div>
       <Select
         options={categories}
-        defaultValue={categoryValue}
+        value={categories.find(c => c.value === selectedFilter)}
         className={"filterSelect"}
         isClearable={true}
         onChange={handleCategoryChange} />

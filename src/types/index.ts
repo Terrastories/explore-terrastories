@@ -50,7 +50,7 @@ export type MapData = {
   mapbox3dEnabled: boolean,
   mapProjection: string,
   center: [number, number],
-  bounds: LngLatBoundsLike,
+  maxBounds: LngLatBoundsLike | undefined,
   zoom: number,
   pitch: number,
   bearing: number,

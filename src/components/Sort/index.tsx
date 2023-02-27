@@ -2,24 +2,16 @@ import React from 'react'
 import Select, {components, DropdownIndicatorProps, SingleValue, ActionMeta} from 'react-select'
 import { ReactComponent as SortIcon } from './assets/sort.svg'
 
+import { useCommunity } from 'contexts/CommunityContext'
+
 interface SortOption {
   label: string
   value: string
 }
 
-type calloptions = {
-  [value: string]: any
-}
-
-interface SortProps {
-  items?: any[],
-  sortOptions: calloptions,
-  defaultSort: string,
-  onSort: (items: string) => void
-}
-
-export default function Sort({onSort, items, defaultSort, sortOptions}:SortProps) {
+export default function Sort() {
   const [options, setOptions] = React.useState<SortOption[]>()
+  const { handleSort, sort, sortOptions } = useCommunity()
 
   const DropdownIndicator = (
     props: DropdownIndicatorProps<SortOption, false>
@@ -45,18 +37,16 @@ export default function Sort({onSort, items, defaultSort, sortOptions}:SortProps
   }, [options, sortOptions])
 
 
-  const handleSort = (option: SingleValue<SortOption>, actionMeta: ActionMeta<SortOption>) => {
-    if (option) onSort(option.value)
+  const handleSortChange = (option: SingleValue<SortOption>, actionMeta: ActionMeta<SortOption>) => {
+    if (option) handleSort(option.value)
   }
 
   return(
     <Select
-      // unstyled
-      defaultValue={sortOptions[defaultSort]}
+      defaultValue={sortOptions[sort]}
       placeholder={''}
       isSearchable={false}
       components={{DropdownIndicator}}
-      // menuIsOpen={true}
       styles={{
         control: (base, state) => ({
           ...base,
@@ -82,11 +72,9 @@ export default function Sort({onSort, items, defaultSort, sortOptions}:SortProps
           position: 'absolute',
           right: 0,
           width: 'max-content',
-          // maxWidth: 'max-content',
-          // padding: '1rem',
         })
       }}
       options={options}
-      onChange={handleSort} />
+      onChange={handleSortChange} />
   )
 }
