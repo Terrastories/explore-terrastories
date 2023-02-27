@@ -7,8 +7,8 @@ import { MapContextProvider }  from 'contexts/MapContext'
 import { CommunityProvider }  from 'contexts/CommunityContext'
 
 import Loading from 'components/Loading'
-import Map from 'components/Map'
-import SidePanel from 'components/SidePanel'
+import Map from './components/Map'
+import SidePanel from './components/SidePanel'
 
 import type { TypeCommunity } from 'types'
 
