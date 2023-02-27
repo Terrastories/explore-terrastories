@@ -7,7 +7,7 @@
 /* Define App defaults */
 h1, h2, h3, h4, h5 {
   font-family: 'OpenSansCondensed-Bold';
-  margin: 0 0 1.25rem;
+  margin: 0.5rem 0 1.25rem;
   line-height: 1.25;
 }
 
