@@ -9,7 +9,7 @@ import { useCommunity } from 'contexts/CommunityContext'
 
 const StoryListContainer = styled.div`
 overflow-x: hidden;
-overflow-y: scroll;
+overflow-y: auto;
 
 &.grid {
   display: grid;
