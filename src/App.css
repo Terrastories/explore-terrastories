@@ -37,12 +37,46 @@ p {
 }
 
 /* Shared CSS utilities */
+
+/****
+ * Clamp Lines
+ *
+ * This will clamp long text to 3 lines
+ * and display a ellipsis to denote additional
+ * text.
+ */
 .clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/****
+ * Badges
+ *
+ * This creates chip badges for meta information.
+ * If image is contained within badge, assumes icon.
+ */
+.badge {
+  display: inline-block;
+  font-size: smaller;
+  background-color: rgba(102,102,102, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  margin: 5px auto;
+}
+.badge > img {
+  height: 18px;
+  width: 18px;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+  margin-top: -2px; /* offset for more visually appealing valign */
+}
+.badge + .badge {
+  margin-left: 5px;
+}
+
 
 /* ARIA Helpers */
 span[role='link'] {

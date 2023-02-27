@@ -1,6 +1,21 @@
+.storyHeading {
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
 .storyDetail {
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+
+.storyDetail > section {
+  margin: 0.5rem auto;
   padding: 1rem;
 
   background-color: #fff;
   box-shadow: 0 1px 4px rgba(102,102,102, 0.1);
+}
+
+.storyDetail section.heading {
+  font-family: 'OpenSansCondensed-Bold';
 }
