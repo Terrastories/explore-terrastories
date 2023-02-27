@@ -1,0 +1,10 @@
+.storyListItem {
+  padding: 1rem;
+
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(102,102,102, 0.1);
+}
+
+.storyListItem:hover {
+  cursor: pointer;
+}

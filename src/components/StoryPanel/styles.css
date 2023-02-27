@@ -20,8 +20,11 @@
 
   border-top: 1px solid #bbbbbb;
 
-  padding: 0.5rem;
+  padding: 1rem;
   transition: transform 1s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .panelContainer.panelClosed .panel {
@@ -83,7 +86,6 @@
     border-top: none;
     border-right: 1px solid #bbbbbb;
 
-    padding: 0.5rem;
     box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
 
     transition: transform 1s ease-in-out;

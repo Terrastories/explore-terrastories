@@ -1,34 +1,15 @@
-import type { Map, LngLatLike } from 'mapbox-gl'
+import type { Map } from 'mapbox-gl'
 import homeIcon from './home-icon.svg'
-
-type Coordinates = {
-  centerLat: number,
-  centerLong: number,
-  center: [number, number],
-  zoom: number,
-  pitch: number,
-  bearing: number,
-}
 
 export default class HomeButton {
   _map: Map | undefined
   _container: HTMLElement
-  centerLat: number
-  centerLong: number
-  zoom: number
-  pitch: number
-  bearing: number
-  center: LngLatLike
+  _resetToCenter:  () => void
 
-  constructor({...config}:Coordinates) {
+  constructor({reset}: {reset: () => void}) {
     this._map = undefined;
     this._container = document.createElement('div');
-    this.centerLat = config.centerLat
-    this.centerLong = config.centerLong
-    this.zoom = config.zoom
-    this.pitch = config.pitch
-    this.bearing = config.bearing
-    this.center = config.center
+    this._resetToCenter = reset.bind(this)
   }
 
   onAdd(map: Map) {
@@ -44,6 +25,7 @@ export default class HomeButton {
     button.append(icon)
     this._container.append(button)
 
+    button.removeEventListener('click', () => this._resetToCenter())
     button.addEventListener('click', () => this._resetToCenter())
 
     return this._container
@@ -54,15 +36,5 @@ export default class HomeButton {
       this._container.parentNode.removeChild(this._container)
       this._map = undefined
     }
-  }
-
-  _resetToCenter() {
-    if (this._map === undefined) return
-    this._map.flyTo({
-      center: [this.centerLong, this.centerLat],
-      zoom: this.zoom,
-      pitch: this.pitch,
-      bearing: this.bearing
-    })
   }
 }

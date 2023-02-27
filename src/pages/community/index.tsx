@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import http from 'utils/http';
 
@@ -8,19 +8,22 @@ import Map from 'components/Map';
 import Header from 'components/Header';
 import StoryPanel from 'components/StoryPanel'
 
-import type { TypeCommunity } from 'types';
+import type { TypeCommunity } from 'types'
+import { FeatureCollection } from 'geojson'
 
 type Props = {
   slug: string
 }
 
 export default function Community() {
-  const [width, setWidth] = React.useState<number>(window.innerWidth);
-  const [community, setCommunity] = React.useState<TypeCommunity>();
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [width, setWidth] = React.useState<number>(window.innerWidth)
 
-  const navigate = useNavigate();
+  const [community, setCommunity] = React.useState<TypeCommunity>()
+  const [points, setPoints] = React.useState<FeatureCollection>({type: "FeatureCollection", features:[]})
+
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(null)
+
   const isMobile = width <= 768
 
   const {
@@ -31,19 +34,19 @@ export default function Community() {
     setWidth(window.innerWidth);
   }
 
-  const getCommunity = React.useCallback(() => {
-    http.get(`/api/communities/${slug}`)
-    .then((resp) => setCommunity(resp.data))
-    .catch(err => setError(err))
-    .finally(() => setLoading(false));
-  }, [slug])
+  const handleStoriesChange = React.useCallback((newPoints: FeatureCollection) => {
+    setPoints(newPoints)
+  },[])
 
   React.useEffect(() => {
-    getCommunity();
-    if (error) {
-      return navigate("/not-found")
-    }
-  }, [getCommunity, error, navigate]);
+    http.get(`/api/communities/${slug}`)
+    .then((resp) => {
+      setCommunity(resp.data)
+      setPoints(resp.data.points)
+    })
+    .catch(err => setError(err))
+    .finally(() => setLoading(false));
+  }, [slug]);
 
   React.useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
@@ -55,6 +58,7 @@ export default function Community() {
   return (
     <React.Fragment>
       {loading && <Loading />}
+      {error && <div>{error}</div>}
       {community &&
         <React.Fragment>
           {isMobile &&
@@ -62,10 +66,11 @@ export default function Community() {
           }
           <Map
             isMobile={isMobile}
-            points={community.points}
+            points={points}
             config={community.mapConfig} />
           <StoryPanel
             isMobile={isMobile}
+            handleStoriesChange={handleStoriesChange}
             communitySlug={community.slug}
             categories={community.categories}
             filters={community.filters}

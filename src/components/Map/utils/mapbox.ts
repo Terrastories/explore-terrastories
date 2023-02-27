@@ -11,7 +11,6 @@ type MapImageOptions = {
 export function addMapImage({mapRef, url, name}: MapImageOptions) {
   mapRef.current.loadImage(url, (error: string, image: any) => {
     if (error) return
-    console.log("loading image ", name)
     if (!mapRef.current.hasImage(name)) mapRef.current.addImage(name, image)
   })
 }
@@ -19,14 +18,27 @@ export function addMapImage({mapRef, url, name}: MapImageOptions) {
 type LoadMapOptions = {
   mapRef: React.MutableRefObject<any>,
   localMapServer?: boolean,
+  points: FeatureCollection
 }
 
 export function loadInitialMapData({
   mapRef,
+  points,
   localMapServer = false,
   ...config
 }: MapData & LoadMapOptions) {
   if (!mapRef.current) return
+
+  mapRef.current.addSource(
+    'terrastories-points',
+    {
+      type: 'geojson',
+      data: points,
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50
+    }
+  )
 
   if (!localMapServer && config.mapbox3dEnabled) {
     mapRef.current.addSource('mapbox-dem', {
@@ -62,24 +74,12 @@ export function loadInitialMapData({
 
 type GeoPointsOptions = {
   mapRef: React.MutableRefObject<any>,
-  points: FeatureCollection,
+  points?: FeatureCollection,
 }
 
 export function addMapGeoPoints({
-  mapRef,
-  points
+  mapRef
 }: GeoPointsOptions) {
-  mapRef.current.addSource(
-    'terrastories-points',
-    {
-      type: 'geojson',
-      data: points,
-      cluster: true,
-      clusterMaxZoom: 14,
-      clusterRadius: 50
-    }
-  )
-
   mapRef.current.addLayer({
     id: 'terrastories-points-layer',
     source: 'terrastories-points',

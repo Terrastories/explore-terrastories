@@ -1,10 +1,17 @@
 import type { TypeStory } from 'types'
 
-export default function Story(props: TypeStory) {
+import './styles.css'
+
+type Props = {
+  story: TypeStory,
+}
+
+export default function Story(props: Props) {
   return (
-    <div>
-      {props.title}
-      {props.desc}
+    <div className={'storyListItem'}>
+      <h2>{props.story.title}</h2>
+      <p>{props.story.desc}</p>
+      <div>{props.story.language}</div>
     </div>
   );
 }

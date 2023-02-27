@@ -1,7 +1,9 @@
 import React from 'react'
 
-import mapboxgl from 'mapbox-gl'
+import mapboxgl, { GeoJSONSource, Projection, LngLatBoundsLike } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+
+import bbox from '@turf/bbox'
 
 import { FeatureCollection } from 'geojson'
 import type { MapData } from 'types'
@@ -17,6 +19,17 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
+  const resetMap = React.useCallback((trigger = "") => {
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: config.center,
+        zoom: config.zoom,
+        pitch: config.pitch,
+        bearing: config.bearing
+      }, {trigger: trigger})
+    }
+  }, [config])
+
   React.useEffect(() => {
     if (mapContainerRef.current != null) { // Don't try load the map if there is no container
       if (mapRef.current) return; // Only initialize the map once!
@@ -27,12 +40,13 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
       // Initialize Map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        style: 'mapbox://styles/mapbox/streets-v12',
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
         center: config.center,
-        maxBounds: config.bounds
+        maxBounds: config.bounds,
+        projection: {name: config.mapProjection} as Projection
       })
 
       // Load and add images (can happen before map is loaded)
@@ -40,9 +54,9 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
       addMapImage({mapRef, url: '/place-marker-cluster.png', name: 'ts-marker-cluster'})
 
       // Add Layers
-      mapRef.current.on('load', () => {
-        loadInitialMapData({mapRef, ...config})
-        addMapGeoPoints({mapRef, points})
+      mapRef.current.once('load', () => {
+        loadInitialMapData({mapRef, points, ...config})
+        addMapGeoPoints({mapRef})
       })
 
       // Add MiniMap
@@ -51,14 +65,14 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
       }
 
       // Add Home Control
-      const homeButtonControl = new HomeButton({...config})
+      const homeButtonControl = new HomeButton({reset: resetMap})
       mapRef.current.addControl(homeButtonControl, 'top-right')
 
       // Add Navigation Control
       const nav = new mapboxgl.NavigationControl({});
       mapRef.current.addControl(nav, 'top-right')
     }
-  }, [mapContainerRef, points, mapRef, config, isMobile])
+  }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
 
 
   React.useEffect(() => {
@@ -80,6 +94,22 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
       map.getCanvas().style.cursor = ''
     })
   })
+
+  // frame updated
+  React.useEffect(() => {
+    if (!mapRef.current) return
+    if (!mapRef.current.loaded()) return
+
+    const map = mapRef.current
+    const source = map.getSource('terrastories-points') as GeoJSONSource
+    if (!source) return
+    source.setData(points)
+
+    var bounds = bbox(points) as LngLatBoundsLike
+    if (bounds) {
+      map.fitBounds(bounds, {padding: 50, duration: 2000.0, maxZoom: 12})
+    }
+  }, [points])
 
   return (
     <div ref={mapContainerRef} className={isMobile ? 'enableMapHeader' : ''} style={{

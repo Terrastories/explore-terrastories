@@ -1,0 +1,34 @@
+.storyListContainer {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.storyListControls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  margin: 1rem 0;
+}
+
+.storyListControls .controlsGroup {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+  opacity: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.icon {
+  fill: #3a3a3a;
+}
