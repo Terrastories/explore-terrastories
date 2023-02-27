@@ -80,6 +80,33 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
   const { popup } = usePopup(mapRef, 'terrastories-points-layer')
   usePointerCursor(mapRef, ['terrastories-points-layer', 'clusters'])
 
+  // Cluster or Place Marker Events
+  React.useEffect(() => {
+    if (!mapRef.current) return
+
+    const map = mapRef.current
+
+    function handleClusterExpansion(e: MapLayerMouseEvent) {
+      if (!e.features) return
+      const feature = e.features[0]
+
+      if (feature.properties && feature.properties.cluster_id) {
+        const clusterId = feature.properties.cluster_id
+        const source = map.getSource(feature.source) as GeoJSONSource
+
+        source.getClusterExpansionZoom(clusterId, (error, zoom) => {
+          if (!error && feature.geometry.type === 'Point')
+            map.easeTo({center: feature.geometry.coordinates as [number, number], zoom: zoom, duration: 2000})
+        })
+      }
+    }
+
+    map.on('click', 'clusters', handleClusterExpansion)
+
+    return () => {
+      map.off('click', 'clusters', handleClusterExpansion)
+    }
+  }, [])
 
   // frame updated
   React.useEffect(() => {
