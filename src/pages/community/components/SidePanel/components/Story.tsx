@@ -13,10 +13,11 @@ const StoryListItem = styled.div`
 padding: 1rem;
 
 background-color: #fff;
-box-shadow: 0 1px 4px rgba(102,102,102, 0.1);
+box-shadow: 0 1px 4px rgb(102 102 102 / 10%);
 
 &:hover {
   cursor: pointer;
+  box-shadow: 0 0 4px 2px rgb(102 102 102 / 20%);
 }
 
 h2 {

@@ -15,12 +15,14 @@ overflow-y: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+  padding: 0.25rem;
 }
 
 &.list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.5rem;
+  padding: 0.25rem;
 }
 `
 
