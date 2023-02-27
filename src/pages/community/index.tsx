@@ -61,7 +61,10 @@ export default function Community() {
           {isMobile &&
             <Header isMobile={isMobile} />
           }
-          <Map isMobile={isMobile} community={community}/>
+          <Map
+            isMobile={isMobile}
+            points={community.points}
+            config={community.mapConfig} />
           <StoryPanel isMobile={isMobile} storiesCount={community.storiesCount} />
         </React.Fragment>
         }
