@@ -66,8 +66,8 @@ export default function StoryDetail(props: Props) {
         <section>{desc}</section>
 
         { media && media.map((m) => (
-          <section>
-            <Media key={m.blob} {...m} />
+          <section key={m.blob}>
+            <Media {...m} />
           </section>
         ))}
       </div>

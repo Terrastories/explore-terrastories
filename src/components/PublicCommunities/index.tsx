@@ -1,32 +1,16 @@
-import React from 'react';
-import http from 'utils/http';
+import React from 'react'
 
-import Loading from 'components/Loading';
-import CommunityItem from 'components/CommunityItem';
+import CommunityItem from 'components/CommunityItem'
 
-export default function PublicCommunities() {
-  const [communities, setCommunities] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+import { TypeCommunity } from 'types'
 
-  const getPublicCommunities = React.useCallback(() => {
-    http.get(`/api/communities`)
-      .then((resp) => setCommunities(resp.data.communities))
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
-  }, []);
+import './styles.css'
 
-  React.useEffect(() => {
-    getPublicCommunities();
-  }, [getPublicCommunities]);
-
+export default function PublicCommunities({communities}: {communities: TypeCommunity[]}) {
   return (
-    <div>
-      In PublicCommunities
-      {loading && <Loading />}
-      {error && <div>there was an error</div>}
-      {communities && communities.map(({ name, slug }) => (
-        <CommunityItem key={slug} name={name} slug={slug} />
+    <div className={'communityGrid'}>
+      {communities && communities.map((c) => (
+        <CommunityItem key={c.slug} {...c} />
       ))}
     </div>
   )

@@ -66,6 +66,7 @@ export type TypeCommunityDetails = {
 export type TypeCommunity = {
   name: string,
   slug: string,
+  description?: string,
   details: TypeCommunityDetails,
   display_image?: string,
   storiesCount: number,

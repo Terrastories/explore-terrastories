@@ -1,0 +1,49 @@
+.communityGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: masonry; /* only maybe works on Firefox */
+  gap: 3rem;
+}
+
+.communityItem {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+.communityItem:hover, .communityItem:active {
+  text-decoration: none;
+  color: #d97629;
+}
+
+.communityItem h1,
+.communityItem h2,
+.communityItem h3 {
+  margin: 0;
+}
+
+.communityItem:hover .noColorChange {
+  color: black;
+}
+
+.communityItem img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@media screen and (min-width: 768px) {
+  .communityGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media screen and (min-width: 968px) {
+  .communityGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}

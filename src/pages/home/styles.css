@@ -1,11 +1,55 @@
-nav {
+header {
+  height: 100px;
+  text-align: center;
+}
+
+header img {
+  height: 100%;
+}
+
+main {
   display: flex;
-  flex-direction: row;
-  list-style: none;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+}
+
+.sidebar {
+  flex: 0 0 0;
+  margin: 1rem;
+  min-width: 200px;
+}
+
+.sidebar p {
+  margin-bottom: 0.5rem;
+}
+
+.contentMain {
+  flex: 4;
+  margin: 1rem;
 }
 
 .logo {
   width: 200px;
+  vertical-align: middle;
+  margin-left: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  main {
+    height: calc(100% - 100px);
+    flex-direction: row;
+  }
+
+  .sidebar {
+    flex: 0 0 0;
+    margin: 1rem 2rem 2rem;
+    width: fit-content;
+    max-width: 250px;
+  }
+
+  .contentMain {
+    flex: 4;
+    margin: 1rem;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+  }
 }
