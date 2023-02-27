@@ -36,7 +36,7 @@ export default function StoryFilters(props: Props) {
     filters,
   } = props
 
-  const { sort, selectedFilter, selectedOptions, handleFilter, fetchStories } = useCommunity()
+  const { selectedFilter, selectedOptions, handleFilter, fetchStories } = useCommunity()
   const { updateStoryPoints } = useMapConfig()
 
   const optionRef = React.useRef<SelectInstance<FilterOption>>(null)
@@ -64,14 +64,14 @@ export default function StoryFilters(props: Props) {
       case 'select-option':
         if (!option) break
         if (option.value === filterCategory) return
-        handleFilter(option.value, [], sort)
+        handleFilter(option.value, [])
         if (optionRef.current && optionRef.current.hasValue()) optionRef.current.clearValue()
         break
       case 'clear':
         dispatch({type: 'clear'})
         // selected options already empty (filters already reset to all stories)
         let skipFetch = selectedOptions && selectedOptions.length === 0
-        let opts = handleFilter(undefined, [], sort)
+        let opts = handleFilter(undefined, [])
         if (!skipFetch) {
           fetchStories(opts).then(
             (newPoints) => updateStoryPoints(newPoints)
@@ -86,12 +86,12 @@ export default function StoryFilters(props: Props) {
       case 'select-option':
       case 'remove-value':
         if (!options) break
-        fetchStories(handleFilter(filterCategory, options as FilterOption[], sort)).then(
+        fetchStories(handleFilter(filterCategory, options as FilterOption[])).then(
           (newPoints) => updateStoryPoints(newPoints)
         )
         break
       case 'clear':
-        fetchStories(handleFilter(filterCategory, [], sort)).then(
+        fetchStories(handleFilter(filterCategory, [])).then(
           (newPoints) => updateStoryPoints(newPoints)
         )
         break

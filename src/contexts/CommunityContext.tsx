@@ -47,7 +47,7 @@ interface CommunityCtx {
   fetchPlace: (placeId: string | number) => Promise<FeatureCollection>
   handleShowStories: () => void
   handleSort: (sort: string) => void
-  handleFilter: (category: string | undefined, options: FilterOption[], sort: string) => SelectedFilters
+  handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
   loading: boolean
   selectedFilter: string | undefined
@@ -86,12 +86,12 @@ const CommunityContext = createContext<CommunityCtx>({
   closePlaceChip: () => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
 
   // Sort Helpers
-  handleSort: (s) => { return s},
-  sort: 'recent',
+  sortStories: (s) => { return s},
+  sortBy: 'recent',
   sortOptions: sortOptions,
 
   // Filter Helpers
-  handleFilter: (c, o, s) => { return {} },
+  handleFilter: (c, o) => { return {} },
   selectedFilter: undefined,
   selectedOptions: undefined,
 })
@@ -175,7 +175,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     setLoading(false)
   }
 
-  function handleFilter(category: string | undefined, options: FilterOption[], sort: string) {
+  function handleFilter(category: string | undefined, options: FilterOption[]) {
     let selectedOptions:SelectedFilters = {}
     if (category) {
       selectedOptions[category] = options.map((opt) => opt.value)
@@ -184,7 +184,6 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
       selectedFilter: category,
       selectedOptions: options
     })
-    setSort(sort)
     return selectedOptions
   }
 
