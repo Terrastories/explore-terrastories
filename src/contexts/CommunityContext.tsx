@@ -46,7 +46,7 @@ interface CommunityCtx {
   fetchStory: (storyId: string) => Promise<FeatureCollection>
   fetchPlace: (placeId: string | number) => Promise<FeatureCollection>
   dismissIntro: () => void
-  handleSort: (sort: string) => void
+  sortStories: (sort: string) => void
   handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
   loading: boolean
@@ -56,7 +56,7 @@ interface CommunityCtx {
   selectedStory: TypeStory | undefined
   setSelectedStory: (story: TypeStory | undefined) => void
   showIntro: boolean
-  sort: string
+  sortBy: string
   sortOptions: {[value: string]: any}
   stories: TypeStory[]
   toggleListView: () => void
@@ -106,7 +106,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
   const [selectedPlace, setSelectedPlace] = useState<TypePlace>()
 
   const [listView, setListView] = useState<boolean>(true)
-  const [sort, setSort] = useState<string>('recent')
+  const [sortBy, setSort] = useState<string>('recent')
   const [{selectedFilter, selectedOptions}, setFilterState] = useState<FilterState>({
     selectedFilter: undefined,
     selectedOptions: undefined,
@@ -122,7 +122,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     }
 
     const resp = await getStories(slug, {...queryParams, ...urlParams})
-    setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sort].fn(a, b))))
+    setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sortBy].fn(a, b))))
 
     setLoading(false)
     return resp.data.points
@@ -145,7 +145,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     setShowIntro(false)
 
     const resp = await getPlace(slug, placeId)
-    setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sort].fn(a, b))))
+    setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sortBy].fn(a, b))))
     setSelectedPlace(resp.data)
 
     setLoading(false)
@@ -165,7 +165,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     return fetchStories()
   }
 
-  function handleSort(sort: string) {
+  function sortStories(sort: string) {
     setLoading(true)
     if (sortOptions[sort]) {
       setSort(sort)
@@ -217,8 +217,8 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
         closePlaceChip,
 
         // Sort Helpers
-        handleSort,
-        sort,
+        sortStories,
+        sortBy,
         sortOptions,
 
         // Filter Helpers
