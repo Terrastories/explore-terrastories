@@ -1,0 +1,24 @@
+.button {
+  background-color: #33aa8b;
+  text-transform: uppercase;
+  letter-spacing: 0.09rem;
+  display: block;
+  border-radius: 5px;
+  border-color: transparent;
+  font-weight: 400;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 1rem;
+  width: 15rem;
+  margin-top: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  color: #FFFFFF;
+}
+.button:hover {
+  background-color: #09697e;
+}
+.button:focus {
+  outline-color: #FFFFFF;
+}
+.logo {max-width: 400px;}
