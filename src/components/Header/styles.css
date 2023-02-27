@@ -1,0 +1,11 @@
+.header {
+  width: 100%;
+  text-align: center;
+}
+
+.header.mobile {
+  position: fixed;
+  top: 0;
+  height: 50px;
+  padding: 0.5rem;
+}

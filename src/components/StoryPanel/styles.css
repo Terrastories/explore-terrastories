@@ -1,0 +1,149 @@
+.panelContainer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+  transition: height 1s ease-in-out;
+}
+
+.panelContainer.panelFullScreen {
+  height: calc(100% - 50px); /* 50px is the height of the mobile fullscreen header */
+}
+
+.panelContainer .panel {
+  position: absolute;
+  bottom: 0;
+
+  height: 100%;
+  width: 100%;
+  background: #efefef;
+
+  border-top: 1px solid #bbbbbb;
+
+  padding: 0.5rem;
+  transition: transform 1s ease-in-out;
+}
+
+.panelContainer.panelClosed .panel {
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+}
+
+.panelContainer .panelTab {
+  cursor: pointer;
+  color: rgba(255,255,255, 0.4);
+
+  position: absolute;
+  top: -2rem;
+  right: 0.5rem;
+  width: 2rem;
+  z-index: 2;
+
+  height: 4rem;
+  line-height: 1.9rem;
+  text-align: center;
+
+  border-radius: 6px;
+  background-color: #0f566b;
+  box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
+
+  transition: transform 1s ease-in-out;
+}
+
+.panelContainer.panelClosed .panelTab {
+  -webkit-transform: translateY(40vh);
+  -moz-transform: translateY(40vh);
+  -ms-transform: translateY(40vh);
+  transform: translateY(40vh);
+}
+
+.panelContainer .panelTab::before {
+  display: block;
+  content: "◀";
+  transform: rotate(90deg);
+}
+
+.panelContainer .panelTab::after {
+  display: block;
+  content: "◀";
+  transform: rotate(-90deg);
+}
+
+@media screen and (min-width: 768px) {
+  /* Panel Container for relative positioning */
+  .panelContainer {
+    max-width: 25rem;
+    height: 100%;
+  }
+
+  /* Visible Panel, with transitions to show/hide */
+  .panelContainer .panel {
+    border-top: none;
+    border-right: 1px solid #bbbbbb;
+
+    padding: 0.5rem;
+    box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
+
+    transition: transform 1s ease-in-out;
+  }
+
+  .panelContainer.panelClosed .panel {
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+
+  /* Panel Tab for controlling the Panel */
+  .panelContainer .panelTab {
+    cursor: pointer;
+    color: rgba(255,255,255, 0.4);
+
+    position: absolute;
+    top: 0.5rem;
+    right: -2rem;
+    width: 2rem;
+
+    height: 4rem;
+    line-height: 3.9rem;
+    text-align: center;
+
+    border-radius: 0 6px 6px 0;
+    background-color: #0f566b;
+    box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
+
+    transition: transform 1s ease-in-out;
+  }
+
+  .panelContainer.panelClosed .panelTab {
+    -webkit-transform: translateX(-25rem);
+    -moz-transform: translateX(-25rem);
+    -ms-transform: translateX(-25rem);
+    transform: translateX(-25rem);
+  }
+
+  /* Panel Tab Arrow Content */
+  .panelContainer .panelTab::before {
+    display: none;
+    content: "◀";
+    transform: rotate(90deg);
+  }
+
+  .panelContainer .panelTab::after {
+    display: inline-block;
+    content: "◀";
+    transform: none;
+    transition-property: transform;
+    transition-duration: 1s;
+    transition-delay: 0.9s;
+  }
+
+  .panelContainer.panelClosed .panelTab::after {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+}

@@ -1,16 +1,10 @@
-type Props = {
-  title: string,
-  desc?: string,
-  displayImage?: string,
-}
+import type { TypeStory } from 'types'
 
-export default function Story(props: Props) {
+export default function Story(props: TypeStory) {
   return (
     <div>
       {props.title}
       {props.desc}
-      {props.displayImage &&
-      <img src={props.displayImage} alt={props.title} />}
     </div>
   );
 }

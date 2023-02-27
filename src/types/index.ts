@@ -1,4 +1,4 @@
-type TypeStory = {
+export type TypeStory = {
   title: string,
   desc?: string,
   topic?: string,
@@ -9,5 +9,9 @@ type TypeStory = {
 export type TypeCommunity = {
   name: string,
   display_image?: string,
-  stories: TypeStory[]
+  center_long: number,
+  center_lat: number,
+  zoom: number,
+  storiesCount: number,
+  points: object
 }
