@@ -64,7 +64,6 @@ p {
   background-color: rgba(102,102,102, 0.1);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
-  margin: 5px auto;
 }
 .badge > img {
   height: 18px;

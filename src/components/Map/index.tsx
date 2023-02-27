@@ -13,6 +13,7 @@ import { addMapGeoPoints, addMapImage, loadInitialMapData } from './utils/mapbox
 import HomeButton from './components/HomeButton'
 import Minimap from './components/Minimap'
 
+import usePopup from './hooks/usePopup'
 import './styles.css'
 
 export default function Map({isMobile, points, config}:{isMobile: boolean, points: FeatureCollection, config: MapData}) {
@@ -74,6 +75,7 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
     }
   }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
 
+  const { popup } = usePopup(mapRef, 'terrastories-points-layer')
 
   React.useEffect(() => {
     if (!mapRef.current) return
@@ -97,20 +99,26 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
 
   // frame updated
   React.useEffect(() => {
+    if (popup.isOpen()) popup.remove()
+    if (points.features.length === 0) return
+
     if (!mapRef.current) return
     if (!mapRef.current.loaded()) return
-    if (points.features.length === 0) return
 
     const map = mapRef.current
     const source = map.getSource('terrastories-points') as GeoJSONSource
     if (!source) return
     source.setData(points)
+  }, [points, popup])
 
-    var bounds = bbox(points) as LngLatBoundsLike
+  // bounds updated
+  React.useEffect(() => {
+    if (!mapRef.current) return
+    const map = mapRef.current
     if (bounds) {
       map.fitBounds(bounds, {padding: 50, duration: 2000.0, maxZoom: 12})
     }
-  }, [points])
+  }, [bounds])
 
   return (
     <div ref={mapContainerRef} className={isMobile ? 'enableMapHeader' : ''} style={{

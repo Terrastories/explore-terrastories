@@ -5,3 +5,19 @@
 .tsMiniMap {
   border: 3px solid #136a7e;
 }
+
+.tsPopup {
+  max-height: 300px;
+}
+
+.tsPopup .mapboxgl-popup-content {
+  padding: 0;
+}
+
+.tsPopup img {
+  width: 100%;
+}
+
+.tsPopup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: #33aa8b;
+}

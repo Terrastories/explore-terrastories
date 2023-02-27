@@ -10,11 +10,18 @@ const StyledImg = styled.img`
   width: 100%; // fill container
 `
 
-export default function Media(props: TypeMedia) {
+type AnyMedia = TypeMedia & {
+  audioControls?: string[],
+  playIconUrl?: string | undefined,
+}
+
+export default function Media(props: AnyMedia) {
   const {
     blob,
     url,
-    contentType
+    contentType,
+    audioControls,
+    playIconUrl,
   } = props
 
   const plyrRef = React.useRef<APITypes>(null)
@@ -46,8 +53,6 @@ export default function Media(props: TypeMedia) {
   }
 
   if (contentType.indexOf('audio') > -1) {
-    // Note: Audio Plyr player doesn't need to be
-    // for extra padding.
     return (
       <Plyr
           ref={plyrRef}
@@ -61,6 +66,12 @@ export default function Media(props: TypeMedia) {
                   src: url
                 }
               ]
+            }
+          }
+          options={
+            {
+              ...(audioControls && {controls: audioControls}),
+              ...(playIconUrl && {iconUrl: playIconUrl})
             }
           }
         />
