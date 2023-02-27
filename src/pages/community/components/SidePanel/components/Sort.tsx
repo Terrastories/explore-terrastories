@@ -12,7 +12,7 @@ interface SortOption {
 
 export default function Sort() {
   const [options, setOptions] = React.useState<SortOption[]>()
-  const { sortStories, sortBy, sortOptions } = useCommunity()
+  const { sortStories, selectedSort, sortOptions } = useCommunity()
 
   const DropdownIndicator = (
     props: DropdownIndicatorProps<SortOption, false>
@@ -44,7 +44,7 @@ export default function Sort() {
 
   return(
     <Select
-      defaultValue={sortOptions[sortBy]}
+      defaultValue={sortOptions[selectedSort]}
       placeholder={''}
       isSearchable={false}
       components={{DropdownIndicator}}
