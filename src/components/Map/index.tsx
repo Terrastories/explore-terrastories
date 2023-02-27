@@ -14,6 +14,8 @@ import HomeButton from './components/HomeButton'
 import Minimap from './components/Minimap'
 
 import usePopup from './hooks/usePopup'
+import usePointerCursor from './hooks/usePointerCursor'
+
 import './styles.css'
 
 export default function Map({isMobile, points, config}:{isMobile: boolean, points: FeatureCollection, config: MapData}) {
@@ -76,26 +78,8 @@ export default function Map({isMobile, points, config}:{isMobile: boolean, point
   }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
 
   const { popup } = usePopup(mapRef, 'terrastories-points-layer')
+  usePointerCursor(mapRef, ['terrastories-points-layer', 'clusters'])
 
-  React.useEffect(() => {
-    if (!mapRef.current) return
-
-    const map = mapRef.current
-
-    // Mouse Cursors
-    map.on('mouseenter', 'terrastories-points-layer', () => {
-      map.getCanvas().style.cursor = 'pointer'
-    })
-    map.on('mouseleave', 'terrastories-points-layer', () => {
-      map.getCanvas().style.cursor = ''
-    })
-    map.on('mouseenter', 'clusters', () => {
-      map.getCanvas().style.cursor = 'pointer'
-    })
-    map.on('mouseleave', 'clusters', () => {
-      map.getCanvas().style.cursor = ''
-    })
-  })
 
   // frame updated
   React.useEffect(() => {
