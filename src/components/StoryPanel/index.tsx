@@ -1,12 +1,32 @@
 import React from 'react'
-import Header from 'components/Header';
+
+import StoryFilters from 'components/StoryFilters'
+import Header from 'components/Header'
 import './styles.css'
 
-export default function StoryPanel({isMobile, storiesCount}:{isMobile: boolean, storiesCount: number | null}) {
+import { FilterOption, CategoryOption } from 'types'
+
+type PanelProps = {
+  isMobile: boolean,
+  communitySlug: string,
+  categories: CategoryOption[],
+  filters: FilterOption[],
+  storiesCount: number
+}
+
+export default function StoryPanel({isMobile, communitySlug, categories, filters, storiesCount = 0}:PanelProps) {
   const [open, setToggle] = React.useState<boolean>(true)
   const [fullScreen, setfullScreen] = React.useState<boolean>(false)
-  const [touchStart, setTouchStart] = React.useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = React.useState<number | null>(null);
+  const [touchStart, setTouchStart] = React.useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = React.useState<number | null>(null)
+
+  const [filteredStoriesCount, setStoriesCount] = React.useState<number>(storiesCount)
+
+  const handleFilterChange = (category: string, options: string[]) => {
+    console.log("fetch updated stories: " + category)
+    console.log("options: ", options)
+    setStoriesCount(4)
+  }
 
   const handlePanelToggle: React.MouseEventHandler = () => {
     // Don't handle mouse toggle events if mobile (this should only be relevant on browser mobile)
@@ -44,7 +64,15 @@ export default function StoryPanel({isMobile, storiesCount}:{isMobile: boolean, 
       ></div>
       <div className="panel">
         {!isMobile && <Header />}
-        <div>hey</div>
+        <div>Filter Stories</div>
+        <StoryFilters
+          categories={categories}
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+          />
+        <div>
+          There are {filteredStoriesCount} stories to explore in
+        </div>
       </div>
     </div>
   )

@@ -7,7 +7,6 @@ import Loading from 'components/Loading';
 import Map from 'components/Map';
 import Header from 'components/Header';
 import StoryPanel from 'components/StoryPanel'
-// import Story from 'components/Story';
 
 import type { TypeCommunity } from 'types';
 
@@ -65,7 +64,12 @@ export default function Community() {
             isMobile={isMobile}
             points={community.points}
             config={community.mapConfig} />
-          <StoryPanel isMobile={isMobile} storiesCount={community.storiesCount} />
+          <StoryPanel
+            isMobile={isMobile}
+            communitySlug={community.slug}
+            categories={community.categories}
+            filters={community.filters}
+            storiesCount={community.storiesCount} />
         </React.Fragment>
         }
     </React.Fragment>

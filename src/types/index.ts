@@ -29,11 +29,22 @@ export type MapData = {
 
 export type TypeCommunity = {
   name: string,
+  slug: string,
   display_image?: string,
-  center_long: number,
-  center_lat: number,
-  zoom: number,
   storiesCount: number,
+  categories: CategoryOption[],
+  filters: FilterOption[],
   points: FeatureCollection,
   mapConfig: MapData
+}
+
+export interface CategoryOption {
+  label: string
+  value: string
+}
+
+export interface FilterOption {
+  label: string
+  value: string
+  category: string
 }
