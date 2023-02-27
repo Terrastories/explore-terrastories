@@ -25,7 +25,7 @@ export type TypePlace = {
   description: string,
   typeOfPlace: string,
   region: string,
-  nameAudioUrl: string,
+  placenameAudio: string,
   photoUrl: string,
 }
 

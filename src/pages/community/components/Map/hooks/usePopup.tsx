@@ -42,11 +42,11 @@ const usePopup = (mapRef: MutableRefObject<Map | null>, layerId: string) => {
       activePointRef.current = null
     }
 
-    map.on('click', layerId, openPopup)
+    map.on('mouseenter', layerId, openPopup)
     popup.on('close', resetActiveRef)
 
     return () => {
-      map.off('click', layerId, openPopup)
+      map.off('mouseenter', layerId, openPopup)
       popup.off('close', resetActiveRef)
     }
   }, [popup, mapRef, layerId])

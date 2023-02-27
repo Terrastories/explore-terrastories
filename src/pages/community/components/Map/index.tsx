@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 import { useMapConfig } from 'contexts/MapContext'
+import { useCommunity } from 'contexts/CommunityContext'
 import useMobile from 'hooks/useMobile'
 
 import HomeButton from './components/HomeButton'
@@ -21,7 +22,9 @@ export default function Map() {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
-  const { points, bounds, ...config } = useMapConfig()
+  const { points, updateStoryPoints, bounds, ...config } = useMapConfig()
+  const { selectedPlace, fetchPlace } = useCommunity()
+
   const isMobile = useMobile()
 
   const resetMap = React.useCallback((trigger = "") => {
@@ -80,7 +83,7 @@ export default function Map() {
     }
   }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
 
-  const { popup } = usePopup(mapRef, 'terrastories-points-layer')
+  usePopup(mapRef, 'terrastories-points-layer')
   usePointerCursor(mapRef, ['terrastories-points-layer', 'clusters'])
 
   // Cluster or Place Marker Events
@@ -104,16 +107,27 @@ export default function Map() {
       }
     }
 
+    function handlePointClick(e: MapLayerMouseEvent) {
+      if (!e.features) return
+
+      const feature = e.features[0]
+      if (!feature.id) return
+
+      if (selectedPlace && selectedPlace.id === feature.id ) return
+      fetchPlace(feature.id).then((points) => updateStoryPoints(points))
+    }
+
     map.on('click', 'clusters', handleClusterExpansion)
+    map.on('click', 'terrastories-points-layer', handlePointClick)
 
     return () => {
       map.off('click', 'clusters', handleClusterExpansion)
+      map.off('click', 'terrastories-points-layer', handlePointClick)
     }
-  }, [])
+  }, [selectedPlace, fetchPlace, updateStoryPoints])
 
   // points updated
   React.useEffect(() => {
-    if (popup.isOpen()) popup.remove()
     if (points.features.length === 0) return
 
     if (!mapRef.current) return
@@ -123,7 +137,7 @@ export default function Map() {
     const source = map.getSource('terrastories-points') as GeoJSONSource
     if (!source) return
     source.setData(points)
-  }, [points, popup])
+  }, [points])
 
   // bounds updated
   React.useEffect(() => {

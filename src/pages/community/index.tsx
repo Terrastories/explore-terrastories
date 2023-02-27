@@ -30,8 +30,8 @@ export default function Community() {
     getCommunity(slug)
     .then((resp) => { setCommunity(resp.data) })
     .catch(err => setError(err))
-    .finally(() => setLoading(false));
-  }, [slug]);
+    .finally(() => setLoading(false))
+  }, [slug])
 
   return (
     <React.Fragment>

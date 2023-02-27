@@ -7,6 +7,7 @@ import Icon from 'components/Icon'
 
 import Sort from './Sort'
 import StoryFilters from './StoryFilters'
+import PlaceDetailCard from './PlaceDetailCard'
 import StoryList from './StoryList'
 
 import { FilterOption, CategoryOption } from 'types'
@@ -44,13 +45,15 @@ export default function StoryPanel(props :PanelProps) {
     filters,
     storiesCount,
   } = props
-  const { stories, listView, toggleListView } = useCommunity()
+  const { stories, selectedPlace, listView, toggleListView } = useCommunity()
 
   return (
     <>
-      <StoryFilters
-        categories={categories}
-        filters={filters} />
+      {selectedPlace
+        ? <PlaceDetailCard />
+        : <StoryFilters
+          categories={categories}
+          filters={filters} />}
       <StoryListControl>
         <div className={`controlsGroup`}>
           <Sort />

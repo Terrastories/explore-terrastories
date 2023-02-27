@@ -115,7 +115,6 @@ export default function Popup(props: PopupProps) {
       <Content>
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
-        {description && <p>{description}</p>}
       </Content>
       <CloseButton onClick={props.handleClose}>
         <CloseIcon />
