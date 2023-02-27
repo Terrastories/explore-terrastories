@@ -42,11 +42,10 @@ const sortOptions:{
 
 interface CommunityCtx {
   closePlaceChip: () => Promise<FeatureCollection>
+  dismissIntro: () => void
   fetchStories: (urlParams: object, useFilterState?: boolean) => Promise<FeatureCollection>
   fetchStory: (storyId: string) => Promise<FeatureCollection>
   fetchPlace: (placeId: string | number) => Promise<FeatureCollection>
-  dismissIntro: () => void
-  sortStories: (sort: string) => void
   handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
   loading: boolean
@@ -58,6 +57,7 @@ interface CommunityCtx {
   showIntro: boolean
   sortBy: string
   sortOptions: {[value: string]: any}
+  sortStories: (sort: string) => void
   stories: TypeStory[]
   toggleListView: () => void
 }
