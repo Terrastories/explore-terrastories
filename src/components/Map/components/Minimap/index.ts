@@ -109,6 +109,7 @@ class Minimap {
       center: opts.center
     });
 
+    miniMap.getCanvas().removeAttribute('tabindex')
     if (opts.maxBounds) miniMap.setMaxBounds(opts.maxBounds)
 
     miniMap.on("load", this._load.bind(this));
