@@ -7,6 +7,11 @@ export type TypeMedia = {
   url: string,
 }
 
+export type ActiveStorageImage = {
+  blobId: string,
+  url: string,
+}
+
 export type TypeSpeaker = {
   id: number,
   name: string,
@@ -51,9 +56,17 @@ export type MapData = {
   bearing: number,
 }
 
+export type TypeCommunityDetails = {
+  name: string,
+  description?: string,
+  display_image?: string,
+  sponsorLogos: ActiveStorageImage[],
+}
+
 export type TypeCommunity = {
   name: string,
   slug: string,
+  details: TypeCommunityDetails,
   display_image?: string,
   storiesCount: number,
   categories: CategoryOption[],

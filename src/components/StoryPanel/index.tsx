@@ -1,5 +1,6 @@
 import React from 'react'
 
+import ExploreIntro from 'components/ExploreIntro'
 import StoryFilters from 'components/StoryFilters'
 import StoryList from 'components/StoryList'
 import StoryDetail from 'components/StoryDetail'
@@ -9,11 +10,12 @@ import './styles.css'
 
 import http from 'utils/http'
 
-import { FilterOption, CategoryOption, TypeStory } from 'types'
+import { FilterOption, CategoryOption, TypeStory, TypeCommunityDetails } from 'types'
 import { FeatureCollection } from 'geojson'
 
 type PanelProps = {
   isMobile: boolean,
+  communityDetails: TypeCommunityDetails,
   communitySlug: string,
   categories: CategoryOption[],
   filters: FilterOption[],
@@ -55,6 +57,7 @@ const sorts:{
 export default function StoryPanel(props :PanelProps) {
   const {
     isMobile,
+    communityDetails,
     communitySlug,
     categories,
     filters,
@@ -118,7 +121,6 @@ export default function StoryPanel(props :PanelProps) {
     .finally(() => setLoading(false))
   }, [communitySlug, handleStoriesChange])
 
-
   const handleFilterChange = (category: string | undefined, options: FilterOption[], sort: string) => {
     let selectedOptions:SelectedFilters = {}
     if (category) {
@@ -170,6 +172,11 @@ export default function StoryPanel(props :PanelProps) {
     }
   }
 
+  const handleShowAll = () => {
+    if (loading) return
+    fetchStories()
+  }
+
   const handleStorySelection = (storyId: string) => {
     setStoryPointStash(points)
     fetchStory(storyId)
@@ -208,17 +215,23 @@ export default function StoryPanel(props :PanelProps) {
               handleFilterChange={handleFilterChange}
               sort={sort}
               />
-            <StoryList
-              showStories={showStories}
-              stories={stories}
-              loading={loading}
-              filteredStoriesCount={filteredStoriesCount}
-              totalStories={storiesCount}
-              handleSortOnlyChange={handleSortOnlyChange}
-              sorts={sorts}
-              defaultSort={DEFAULT_SORT}
-              handleStorySelection={handleStorySelection}
-              />
+            {!showStories &&
+              <ExploreIntro
+                loading={loading}
+                details={communityDetails}
+                handleShowAll={handleShowAll} />}
+            {showStories &&
+              <StoryList
+                showStories={showStories}
+                stories={stories}
+                loading={loading}
+                filteredStoriesCount={filteredStoriesCount}
+                totalStories={storiesCount}
+                handleSortOnlyChange={handleSortOnlyChange}
+                sorts={sorts}
+                defaultSort={DEFAULT_SORT}
+                handleStorySelection={handleStorySelection}
+                />}
           </>}
       </div>
     </div>

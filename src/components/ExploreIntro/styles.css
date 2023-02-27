@@ -1,0 +1,14 @@
+.explorePanel {
+  margin-top: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+
+.explorePanel h1 {
+  font-size: 1.5rem;
+}
+
+.explorePanel h2 {
+  font-size: 1.25rem;
+}

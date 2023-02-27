@@ -54,35 +54,28 @@ export default function StoryList(props: StoryListItems) {
 
   return (
     <>
-      {!showStories &&
-        <div>
-          This will eventually be start-exploring panel.
-        </div>}
-      {showStories &&
-        <>
-        <div className={'storyListControls'}>
-          <div className={`controlsGroup ${showStories ? '' : 'hidden'}`}>
-            <Sort
-              onSort={handleSortChange}
-              sortOptions={sorts}
-              defaultSort={defaultSort}
-              />
-            { listView ?
-              <GridIcon onClick={toggleListView} className={'icon'} /> :
-              <ListIcon onClick={toggleListView} className={'icon'} /> }
-          </div>
+      <div className={'storyListControls'}>
+        <div className={`controlsGroup ${showStories ? '' : 'hidden'}`}>
+          <Sort
+            onSort={handleSortChange}
+            sortOptions={sorts}
+            defaultSort={defaultSort}
+            />
+          { listView ?
+            <GridIcon onClick={toggleListView} className={'icon'} /> :
+            <ListIcon onClick={toggleListView} className={'icon'} /> }
         </div>
-        <div>There are {filteredStoriesCount} of {totalStories} to explore.</div>
-        <div className={`storyListContainer ${listView ? 'list' : 'grid'}`}>
-          {loading && <Loading />}
-          {!loading && stories.map((story) => (
-            <Story
-              key={story.id}
-              story={story}
-              handleStoryClick={handleStoryClick} />
-          ))}
-        </div>
-        </>}
+      </div>
+      <div>There are {filteredStoriesCount} of {totalStories} to explore.</div>
+      <div className={`storyListContainer ${listView ? 'list' : 'grid'}`}>
+        {loading && <Loading />}
+        {!loading && stories.map((story) => (
+          <Story
+            key={story.id}
+            story={story}
+            handleStoryClick={handleStoryClick} />
+        ))}
+      </div>
     </>
   )
 }

@@ -1,17 +1,17 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react'
+import { useParams } from 'react-router-dom'
 
-import http from 'utils/http';
+import http from 'utils/http'
 
-import Loading from 'components/Loading';
-import Map from 'components/Map';
-import Header from 'components/Header';
+import Loading from 'components/Loading'
+import Map from 'components/Map'
+import Header from 'components/Header'
 import StoryPanel from 'components/StoryPanel'
 
 import type { TypeCommunity } from 'types'
 import { FeatureCollection } from 'geojson'
 
-type Props = {
+type UrlParamProps = {
   slug: string
 }
 
@@ -28,7 +28,7 @@ export default function Community() {
 
   const {
     slug
-  } = useParams<Props>();
+  } = useParams<UrlParamProps>();
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
@@ -49,9 +49,9 @@ export default function Community() {
   }, [slug]);
 
   React.useEffect(() => {
-    window.addEventListener('resize', handleWindowSizeChange);
+    window.addEventListener('resize', handleWindowSizeChange)
     return () => {
-        window.removeEventListener('resize', handleWindowSizeChange);
+      window.removeEventListener('resize', handleWindowSizeChange)
     }
   })
 
@@ -72,6 +72,7 @@ export default function Community() {
             isMobile={isMobile}
             handleStoriesChange={handleStoriesChange}
             communitySlug={community.slug}
+            communityDetails={community.details}
             categories={community.categories}
             filters={community.filters}
             points={points}
