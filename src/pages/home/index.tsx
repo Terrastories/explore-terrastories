@@ -1,5 +1,6 @@
 import React from 'react'
-import http from 'utils/http'
+
+import { getCommunities } from 'api/communityApi'
 
 import Loading from 'components/Loading'
 
@@ -20,12 +21,9 @@ function Home() {
 
   React.useEffect(()=> {
     async function fetchData(query?: string) {
-      let searchParams:{search?: string} = {}
-      if (query) { searchParams["search"] = query }
-
-      http.get(`/api/communities`, {params: searchParams})
+      getCommunities(query)
       .then((resp) => {
-        setCommunities(resp.data.communities)
+        setCommunities(resp.data)
         setError(null)
       })
       .catch(err => setError(err))

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import http from 'utils/http'
+import { getCommunity } from 'api/communityApi'
 
 import { MapContextProvider }  from 'contexts/MapContext'
 import { CommunityProvider }  from 'contexts/CommunityContext'
@@ -25,10 +25,10 @@ export default function Community() {
   const { slug } = useParams<UrlParamProps>();
 
   React.useEffect(() => {
-    http.get(`/api/communities/${slug}`)
-    .then((resp) => {
-      setCommunity(resp.data)
-    })
+    if (!slug) return
+
+    getCommunity(slug)
+    .then((resp) => { setCommunity(resp.data) })
     .catch(err => setError(err))
     .finally(() => setLoading(false));
   }, [slug]);

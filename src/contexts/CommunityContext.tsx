@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
 
-import http from 'utils/http'
+import { getStories, getStory } from 'api/storyApi'
 
 import type { FeatureCollection } from 'geojson'
 import type { TypeStory, FilterOption } from 'types'
@@ -103,28 +103,26 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     selectedOptions: undefined,
   })
 
-  function fetchStories(urlParams = {}) {
+  async function fetchStories(urlParams = {}) {
+    if (!slug) return
     setLoading(true)
-    return http.get(`/api/communities/${slug}/stories`, {
-      params: urlParams
-    })
-    .then((resp) => {
-      setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sort].fn(a, b))))
-      return resp.data.points
-    })
-    .catch(err => console.log(err))
-    .finally(() => setLoading(false))
+
+    const resp = await getStories(slug, urlParams)
+    setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[sort].fn(a, b))))
+
+    setLoading(false)
+    return resp.data.points
   }
 
-  function fetchStory(storyId: string) {
+  async function fetchStory(storyId: string) {
+    if (!slug) return
     setLoading(true)
-    return http.get(`/api/communities/${slug}/stories/${storyId}`)
-    .then((resp) => {
-      setSelectedStory(resp.data)
-      return resp.data.points
-    })
-    .catch(err => console.log(err))
-    .finally(() => setLoading(false))
+
+    const resp = await getStory(slug, storyId)
+    setSelectedStory(resp.data)
+
+    setLoading(false)
+    return resp.data.points
   }
 
   function handleShowStories() {
@@ -165,20 +163,27 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
       value={{
         loading,
         stories,
+
+        // API Wrappers
         fetchStory,
         fetchStories,
-        handleShowStories,
-        selectedStory,
-        setSelectedStory,
 
+        // Panel Helpers
+        handleShowStories,
         showIntro,
         listView,
         toggleListView,
 
+        // Story Detail
+        selectedStory,
+        setSelectedStory,
+
+        // Sort Helpers
         handleSort,
         sort,
         sortOptions,
 
+        // Filter Helpers
         handleFilter,
         selectedFilter,
         selectedOptions,
