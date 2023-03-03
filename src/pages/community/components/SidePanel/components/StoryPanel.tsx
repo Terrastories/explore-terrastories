@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import EmptyList from 'components/EmptyList'
+
 import { useCommunity } from 'contexts/CommunityContext'
 
 import Icon from 'components/Icon'
@@ -47,6 +49,8 @@ export default function StoryPanel(props :PanelProps) {
   } = props
   const { stories, selectedPlace, listView, toggleListView } = useCommunity()
 
+  const hasStories = storiesCount > 0;
+
   return (
     <>
       {selectedPlace
@@ -64,8 +68,13 @@ export default function StoryPanel(props :PanelProps) {
           </IconButton>
         </div>
       </StoryListControl>
-      <div>There are {stories.length} of {storiesCount} to explore.</div>
-      <StoryList />
+      {hasStories &&
+        <>
+          <div>There are {stories.length} of {storiesCount} to explore.</div>
+          <StoryList />
+        </>}
+      {!hasStories &&
+        <EmptyList message={'This community has no publicly available stories at this time.'} />}
     </>
   )
 }

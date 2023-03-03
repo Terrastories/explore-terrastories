@@ -10,6 +10,8 @@ main.homeMain .contentMain {
 
 @media screen and (min-width: 768px) {
   main.homeMain {
+    width: 80vw;
+    margin: 0 auto;
     height: calc(100% - 100px);
     flex-direction: row;
   }

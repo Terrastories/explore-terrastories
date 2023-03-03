@@ -23,7 +23,7 @@ export default function SidePanel({ community }: PanelProps) {
   const [touchStart, setTouchStart] = React.useState<number | null>(null)
   const [touchEnd, setTouchEnd] = React.useState<number | null>(null)
 
-  const { showIntro, selectedStory, stories } = useCommunity()
+  const { showIntro, selectedStory } = useCommunity()
 
   const isMobile = useMobile()
 
@@ -54,8 +54,6 @@ export default function SidePanel({ community }: PanelProps) {
     }
   }
 
-  const showStories = stories.length > 0
-
   return (
     <div className={`panelContainer ${fullScreen ? "panelFullScreen" : open ? "panelOpen" : "panelClosed"}`}>
       <div className="panelTab"
@@ -74,7 +72,7 @@ export default function SidePanel({ community }: PanelProps) {
           {selectedStory &&
             <StoryDetail
               story={selectedStory} />}
-          {!selectedStory && showStories &&
+          {!selectedStory &&
             <StoryPanel
               categories={community.categories}
               filters={community.filters}

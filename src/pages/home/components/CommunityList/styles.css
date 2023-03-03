@@ -5,6 +5,14 @@
   gap: 3rem;
 }
 
+.emptyGrid {
+  text-align: center;
+  font-size: larger;
+  grid-column-start: 0;
+  grid-column-end: 3;
+  grid-row-start: 0;
+}
+
 .communityItem {
   display: block;
   text-decoration: none;
