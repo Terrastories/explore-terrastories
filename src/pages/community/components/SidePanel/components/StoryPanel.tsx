@@ -47,7 +47,7 @@ export default function StoryPanel(props :PanelProps) {
     filters,
     storiesCount,
   } = props
-  const { stories, selectedPlace, listView, toggleListView } = useCommunity()
+  const { selectedPlace, listView, toggleListView } = useCommunity()
 
   const hasStories = storiesCount > 0;
 
