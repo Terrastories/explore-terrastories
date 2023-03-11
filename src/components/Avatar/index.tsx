@@ -8,13 +8,12 @@ object-fit: cover;
 height: 50px;
 width: 50px;
 vertical-align: top;
-margin-right: 0.5rem;
 background-color: #ccc;
 `
 
 const AvatarCard = styled.div`
 display: inline-block;
-width: 50%;
+max-width: 30%;
 text-align: center;
 `
 

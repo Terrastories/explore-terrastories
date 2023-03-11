@@ -14,17 +14,26 @@ type Props = {
 }
 
 const StoryDetailContainer = styled.div`
+overflow-x: hidden;
+overflow-y: auto;
+
+.speakersList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+
+  & > * {
+    width: 30%;
+  }
+}
+
 .storyHeading {
   margin-top: 1rem;
   margin-bottom: 0.25rem;
 }
 
-.storyDetail {
-  overflow-y: scroll;
-  overflow-wrap: break-word;
-}
-
-.storyDetail > section {
+& > section {
   margin: 0.5rem auto;
   padding: 1rem;
 
@@ -32,7 +41,7 @@ const StoryDetailContainer = styled.div`
   box-shadow: 0 1px 4px rgba(102,102,102, 0.1);
 }
 
-.storyDetail section.heading {
+& section.heading {
   font-family: 'OpenSansCondensed-Bold';
 }
 
@@ -65,27 +74,27 @@ export default function StoryDetail({story}: Props) {
   }
 
   return (
-    <StoryDetailContainer>
-      <span aria-labelledby={'Go back'} role={'link'} tabIndex={0} onClick={handleCloseStoryDetail}>Go back</span>
-      <h2 className={'storyHeading'}>{title}</h2>
-
+    <>
       <div>
-      {language &&
-        <span className={'badge'}>
-          <Icon icon={'language'} alt={'language'} />
-          {language}
-        </span>}
-      {topic && <span className={'badge'}>{topic}</span>}
-      </div>
-      { places && places.map((p) => (
-        <div key={p.id} className={'iconGroup'}>
-          <Icon icon={'pin'} alt={p.name} />
-          {p.name}
-        </div>
-      ))}
+        <h2 className={'storyHeading'}>{title}</h2>
 
-      <div className={'storyDetail'}>
-        <section>
+        <div>
+        {language &&
+          <span className={'badge'}>
+            <Icon icon={'language'} alt={'language'} />
+            {language}
+          </span>}
+        {topic && <span className={'badge'}>{topic}</span>}
+        </div>
+        { places && places.map((p) => (
+          <div key={p.id} className={'iconGroup'}>
+            <Icon icon={'pin'} alt={p.name} />
+            {p.name}
+          </div>
+        ))}
+      </div>
+      <StoryDetailContainer>
+        <section className='speakersList'>
           { speakers && speakers.map((s) => (
             <Avatar key={s.id} badge={'Speaker'} {...s} />
           ))}
@@ -98,7 +107,8 @@ export default function StoryDetail({story}: Props) {
             <Media {...m} />
           </section>
         ))}
-      </div>
-    </StoryDetailContainer>
+      </StoryDetailContainer>
+      <span aria-labelledby={'Go back'} role={'link'} tabIndex={0} onClick={handleCloseStoryDetail}>Go back</span>
+    </>
   )
 }
