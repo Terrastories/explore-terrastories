@@ -35,7 +35,7 @@ const usePopup = (mapRef: MutableRefObject<Map | null>, layerId: string) => {
           <Popup {...feature.properties} handleClose={closePopup} />
           )
         popup.setLngLat(lngLat).setDOMContent(el).addTo(map);
-        map.easeTo({center: lngLat, offset: [0, 200], duration: 2000})
+        map.easeTo({center: lngLat, duration: 2000})
       }
     }
     function resetActiveRef() {
