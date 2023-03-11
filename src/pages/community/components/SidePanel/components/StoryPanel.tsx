@@ -68,11 +68,7 @@ export default function StoryPanel(props :PanelProps) {
           </IconButton>
         </div>
       </StoryListControl>
-      {hasStories &&
-        <>
-          <div>There are {stories.length} of {storiesCount} to explore.</div>
-          <StoryList />
-        </>}
+      {hasStories && <StoryList />}
       {!hasStories &&
         <EmptyList message={'This community has no publicly available stories at this time.'} />}
     </>
