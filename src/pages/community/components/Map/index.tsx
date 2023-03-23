@@ -8,6 +8,7 @@ import { useMapConfig } from 'contexts/MapContext'
 import { useCommunity } from 'contexts/CommunityContext'
 import useMobile from 'hooks/useMobile'
 
+import Brand from './components/Brand'
 import HomeButton from './components/HomeButton'
 import Minimap from './components/Minimap'
 
@@ -72,6 +73,8 @@ export default function Map() {
       if (!config.useLocalServer && !isMobile) {
         mapRef.current.addControl(new Minimap({containerClass: "tsMiniMap"}), "top-right");
       }
+
+      mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right");
 
       // Add Home Control
       const homeButtonControl = new HomeButton({reset: resetMap})
