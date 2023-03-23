@@ -44,12 +44,12 @@ export default function Map() {
       if (mapRef.current) return; // Only initialize the map once!
 
       // Set token globally
-      mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'
+      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'
 
       // Initialize Map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/streets-v12',
+        style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/mapbox/streets-v11',
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
