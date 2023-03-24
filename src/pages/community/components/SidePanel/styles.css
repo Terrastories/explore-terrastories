@@ -85,7 +85,6 @@
 
   /* Visible Panel, with transitions to show/hide */
   .panelContainer .panel {
-    border-top: none;
     border-right: 1px solid #bbbbbb;
 
     box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);

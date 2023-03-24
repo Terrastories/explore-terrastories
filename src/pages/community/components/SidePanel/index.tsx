@@ -63,7 +63,9 @@ export default function SidePanel({ community }: PanelProps) {
         onTouchEnd={handlePanelSwipeEnd}
       ></div>
       <div className="panel">
-        <Header />
+        <Header
+          displayLogo={community.details.displayImage}
+          name={community.name} />
         {showIntro &&
           <ExploreIntro
             details={community.details} />}

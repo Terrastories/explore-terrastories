@@ -60,6 +60,7 @@ interface CommunityCtx {
   sortStories: (sort: string) => void
   stories: TypeStory[]
   toggleListView: () => void
+  toggleIntroPanel: () => void
 }
 
 const CommunityContext = createContext<CommunityCtx>({
@@ -73,6 +74,7 @@ const CommunityContext = createContext<CommunityCtx>({
 
   // Panel Helpers
   dismissIntro: () => { return },
+  toggleIntroPanel: () => { return },
   showIntro: true,
   listView: true,
   toggleListView: () => { return },
@@ -165,6 +167,10 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     return fetchStories()
   }
 
+  function toggleIntroPanel() {
+    setShowIntro(!showIntro)
+  }
+
   function sortStories(sort: string) {
     setLoading(true)
     if (sortOptions[sort]) {
@@ -205,6 +211,7 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
         // Panel Helpers
         dismissIntro,
         showIntro,
+        toggleIntroPanel,
         listView,
         toggleListView,
 

@@ -12,6 +12,7 @@ const Logo = styled.img`
 
 const ExplorePanel = styled.div`
   margin-top: 1rem;
+  margin-bottom: auto;
   overflow-x: hidden;
   overflow-y: scroll;
   overflow-wrap: break-word;
@@ -33,7 +34,7 @@ const Button = styled.button`
   border-radius: 3px;
   position: relative;
   width: 100%;
-  margin: 0.2rem;
+  margin: 0.5rem auto;
 
   &:hover {
     cursor: pointer;
@@ -70,7 +71,7 @@ export default function ExporeIntro({details}: Props) {
     name,
     description,
     sponsorLogos,
-    displayImage,
+    displayImage
   } = details
 
   const { loading, dismissIntro } = useCommunity()
@@ -80,22 +81,21 @@ export default function ExporeIntro({details}: Props) {
 
   return (
     <ExplorePanel>
-      {displayImage &&
-        <Logo src={displayImage} alt={name} />}
-      <h1>{name || defaultHeading}</h1>
+      {displayImage && <h1>{name || defaultHeading}</h1>}
       <p>{description || defaultDescription}</p>
-      <p>
-        <Button disabled={loading} onClick={dismissIntro}>
-          {loading && <Loading />}
-          Start Exploring
-        </Button>
-      </p>
+      <Button disabled={loading} onClick={dismissIntro}>
+        {loading && <Loading />}
+        Start Exploring
+      </Button>
       {sponsorLogos &&
+        <>
+        <h2>Sponsors</h2>
         <SponsorLogos>
           {sponsorLogos.map((logo) => (
             <img key={logo.blobId} src={logo.url} alt={'sponsor'} />
           ))}
-        </SponsorLogos>}
+        </SponsorLogos>
+        </>}
     </ExplorePanel>
   )
 }
