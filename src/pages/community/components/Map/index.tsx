@@ -45,12 +45,12 @@ export default function Map() {
       if (mapRef.current) return; // Only initialize the map once!
 
       // Set token globally
-      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'
+      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
 
       // Initialize Map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/mapbox/streets-v11',
+        style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
@@ -71,7 +71,10 @@ export default function Map() {
 
       // Add MiniMap
       if (!config.useLocalServer && !isMobile) {
-        mapRef.current.addControl(new Minimap({containerClass: "tsMiniMap"}), "top-right");
+        mapRef.current.addControl(new Minimap({
+          containerClass: "tsMiniMap",
+          style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e'
+        }), "top-right");
       }
 
       mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right");
