@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Home from 'pages/home';
 import Community from 'pages/community';
@@ -10,15 +10,26 @@ import NotFound from 'components/NotFound';
 import './App.css';
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="community/:slug" element={<Community />} />
-      </Route>
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/community/:slug",
+          element: <Community />,
+        },
+      ],
+    },
+  ]);
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+  return (
+    <RouterProvider router={router} fallbackElement={<NotFound />} />
   );
 }
 
