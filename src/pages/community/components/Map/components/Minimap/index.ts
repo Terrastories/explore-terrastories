@@ -106,7 +106,8 @@ class Minimap {
       container: container,
       style: opts.style,
       zoom: opts.zoom,
-      center: opts.center
+      center: opts.center,
+      projection: {name: 'mercator'}
     });
 
     miniMap.getCanvas().removeAttribute('tabindex')
