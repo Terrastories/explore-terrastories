@@ -1,10 +1,11 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Await, defer, useLoaderData, useAsyncValue } from 'react-router-dom'
+import type { LoaderFunctionArgs } from 'react-router-dom'
 
 import { getCommunity } from 'api/communityApi'
 
-import { MapContextProvider }  from 'contexts/MapContext'
-import { CommunityProvider }  from 'contexts/CommunityContext'
+import { MapContextProvider, useMapConfig }  from 'contexts/MapContext'
+import { CommunityProvider, useCommunity }  from 'contexts/CommunityContext'
 
 import Loading from 'components/Loading'
 import Map from './components/Map'
@@ -16,35 +17,59 @@ type UrlParamProps = {
   slug: string
 }
 
-export default function Community() {
-  const [community, setCommunity] = React.useState<TypeCommunity>()
+type CommunityThing = {
+  community: Promise<TypeCommunity>
+}
 
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState(null)
+export async function communityLoader({request, params}: LoaderFunctionArgs) {
+  let typedParamns = params as UrlParamProps
 
-  const { slug } = useParams<UrlParamProps>();
+  return defer({community: getCommunity(typedParamns.slug).then((resp) => resp.data)})
+}
+
+function Provider() {
+  const { updateStoryPoints, setStashedPoints } = useMapConfig()
+  const { resetSelections, slug } = useCommunity()
+
+  const communityRef = React.useRef(slug)
+
+  const community = useAsyncValue() as TypeCommunity
 
   React.useEffect(() => {
-    if (!slug) return
+    if (communityRef.current !== community.slug ) {
+      communityRef.current = community.slug
 
-    getCommunity(slug)
-    .then((resp) => { setCommunity(resp.data) })
-    .catch(err => setError(err))
-    .finally(() => setLoading(false))
-  }, [slug])
+      resetSelections()
+      setStashedPoints(undefined)
+      updateStoryPoints(community.points)
+    }
+  }, [communityRef, community, updateStoryPoints, setStashedPoints, resetSelections])
 
   return (
     <React.Fragment>
-      {loading && <Loading />}
-      {error && <div>{error}</div>}
-      {community &&
-        <MapContextProvider initialPoints={community.points} initialMapConfig={community.mapConfig} >
-          <CommunityProvider>
-            <Map />
-            <SidePanel community={community} />
-          </CommunityProvider>
-        </MapContextProvider>
-        }
+      <Map />
+      <SidePanel community={community} />
     </React.Fragment>
+  )
+}
+
+export default function Community() {
+  const data = useLoaderData() as CommunityThing
+
+  return (
+      <React.Suspense fallback={<Loading/>}>
+        <Await
+          resolve={data.community}
+          errorElement={<div>Oops</div>}>
+            {(community) => (
+
+              <CommunityProvider slug={community.slug}>
+                <MapContextProvider initialPoints={community.points} initialMapConfig={community.mapConfig}>
+                  <Provider />
+                </MapContextProvider>
+              </CommunityProvider>
+            )}
+        </Await>
+      </React.Suspense>
   )
 }

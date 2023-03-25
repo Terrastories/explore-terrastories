@@ -16,6 +16,7 @@ type Props = {
 const StoryDetailContainer = styled.div`
 overflow-x: hidden;
 overflow-y: auto;
+margin-bottom: auto;
 
 .speakersList {
   display: flex;

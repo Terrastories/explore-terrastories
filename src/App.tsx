@@ -2,7 +2,7 @@ import React from 'react';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Home from 'pages/home';
-import Community from 'pages/community';
+import Community, { communityLoader } from 'pages/community';
 
 import Layout from 'components/Layout';
 import NotFound from 'components/NotFound';
@@ -17,12 +17,13 @@ function App() {
       errorElement: <NotFound />,
       children: [
         {
-          path: "/",
+          index: true,
           element: <Home />,
         },
         {
           path: "/community/:slug",
           element: <Community />,
+          loader: communityLoader,
         },
       ],
     },

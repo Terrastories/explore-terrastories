@@ -8,6 +8,7 @@ import Story from './Story'
 import { useCommunity } from 'contexts/CommunityContext'
 
 const StoryListContainer = styled.div`
+margin-bottom: auto;
 overflow-x: hidden;
 overflow-y: auto;
 

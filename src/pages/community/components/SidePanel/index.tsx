@@ -1,7 +1,9 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 
 import { useCommunity } from 'contexts/CommunityContext'
 
+import CommunitySwitcherModal from './components/CommunitySwitcherModal'
 import Header from './components/Header'
 import ExploreIntro from './components/ExploreIntro'
 import StoryPanel from './components/StoryPanel'
@@ -54,6 +56,9 @@ export default function SidePanel({ community }: PanelProps) {
     }
   }
 
+  // Modal
+  const [showCommunitySwitcherModal, setShowCommunitySwitcherModal] = React.useState<boolean>(false)
+
   return (
     <div className={`panelContainer ${fullScreen ? "panelFullScreen" : open ? "panelOpen" : "panelClosed"}`}>
       <div className="panelTab"
@@ -80,7 +85,20 @@ export default function SidePanel({ community }: PanelProps) {
               filters={community.filters}
               storiesCount={community.storiesCount} />}
           </>}
+        <div>
+          <div className="panelLinks">
+            <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>Log In</a>
+            <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>Switch Communities</span>
+          </div>
+          {/* <div>
+            Language Switcher
+          </div> */}
+        </div>
       </div>
+      {showCommunitySwitcherModal && createPortal(
+        <CommunitySwitcherModal handleClose={() => setShowCommunitySwitcherModal(false)} />,
+        document.body
+      )}
     </div>
   )
 }

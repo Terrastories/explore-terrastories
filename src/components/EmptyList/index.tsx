@@ -5,6 +5,7 @@ const Box = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
+margin-bottom: auto;
 `
 
 type EmptyListProps = {

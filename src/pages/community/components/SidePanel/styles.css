@@ -76,6 +76,16 @@
   transition: transform 1s ease-in-out 0.9s;
 }
 
+/* Panel Bottom Link Bar */
+.panelContainer .panel .panelLinks {
+  font-size: smaller;
+  padding-top: 0.5rem;
+}
+
+.panelContainer .panel .panelLinks > * + * {
+  margin-left: 0.5rem;
+}
+
 @media screen and (min-width: 768px) {
   /* Panel Container for relative positioning */
   .panelContainer {

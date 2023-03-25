@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { useParams } from 'react-router-dom'
 
 import { getStories, getStory } from 'api/storyApi'
 import { getPlace } from 'api/placeApi'
@@ -49,6 +48,7 @@ interface CommunityCtx {
   handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
   loading: boolean
+  resetSelections: () => void
   selectedFilter: string | undefined
   selectedOptions: FilterOption[] | undefined
   selectedPlace: TypePlace | undefined
@@ -56,6 +56,7 @@ interface CommunityCtx {
   setSelectedStory: (story: TypeStory | undefined) => void
   showIntro: boolean
   selectedSort: string
+  slug: string
   sortOptions: {[value: string]: any}
   sortStories: (sort: string) => void
   stories: TypeStory[]
@@ -64,8 +65,10 @@ interface CommunityCtx {
 }
 
 const CommunityContext = createContext<CommunityCtx>({
+  slug: '',
   loading: false,
   stories: [],
+  resetSelections: () => { return },
 
   // API Wrappers
   fetchStories: (p) => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
@@ -98,9 +101,7 @@ const CommunityContext = createContext<CommunityCtx>({
   selectedOptions: undefined,
 })
 
-export const CommunityProvider = ({ children }: {children: ReactNode}) => {
-  const { slug } = useParams<{slug: string}>()
-
+export const CommunityProvider = ({ slug, children }: { slug: string, children: ReactNode}) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [showIntro, setShowIntro] = useState<boolean>(true)
   const [stories, setStories] = useState<TypeStory[]>([])
@@ -114,8 +115,19 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
     selectedOptions: undefined,
   })
 
+  function resetSelections() {
+    setStories([])
+    setShowIntro(true)
+    setSelectedPlace(undefined)
+    setSelectedStory(undefined)
+    setSelectedSort('recent')
+    setFilterState({
+      selectedFilter: undefined,
+      selectedOptions: undefined
+    })
+  }
+
   async function fetchStories(urlParams:SelectedFilters = {}, useFilterState = false) {
-    if (!slug) return
     setLoading(true)
 
     let queryParams:SelectedFilters = {}
@@ -131,7 +143,6 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
   }
 
   async function fetchStory(storyId: string) {
-    if (!slug) return
     setLoading(true)
 
     const resp = await getStory(slug, storyId)
@@ -142,7 +153,6 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
   }
 
   async function fetchPlace(placeId: string | number) {
-    if (!slug) return
     setLoading(true)
     setShowIntro(false)
 
@@ -155,8 +165,6 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
   }
 
   async function closePlaceChip() {
-    if (!slug) return
-
     setSelectedPlace(undefined)
     return await fetchStories({}, true)
   }
@@ -200,8 +208,10 @@ export const CommunityProvider = ({ children }: {children: ReactNode}) => {
   return (
     <CommunityContext.Provider
       value={{
+        slug,
         loading,
         stories,
+        resetSelections,
 
         // API Wrappers
         fetchStory,

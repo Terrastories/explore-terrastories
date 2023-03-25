@@ -6,10 +6,6 @@ import Loading from 'components/Loading'
 
 import { TypeCommunityDetails } from 'types'
 
-const Logo = styled.img`
-  width: 100%;
-`
-
 const ExplorePanel = styled.div`
   margin-top: 1rem;
   margin-bottom: auto;
@@ -87,7 +83,7 @@ export default function ExporeIntro({details}: Props) {
         {loading && <Loading />}
         Start Exploring
       </Button>
-      {sponsorLogos &&
+      {sponsorLogos.length > 0 &&
         <>
         <h2>Sponsors</h2>
         <SponsorLogos>
