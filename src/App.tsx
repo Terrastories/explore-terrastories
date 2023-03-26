@@ -1,5 +1,6 @@
 import React from 'react';
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import Home, { homeLoader } from 'pages/home'
 import Community, { communityLoader } from 'pages/community';
@@ -10,9 +11,14 @@ import NotFound from 'components/NotFound';
 import './App.css';
 
 function App() {
+  const { i18n } = useTranslation()
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <Navigate to={`/${i18n.language}`} replace />
+    },
+    {
+      path: "/:langauge",
       element: <Layout />,
       errorElement: <NotFound />,
       children: [
@@ -22,7 +28,7 @@ function App() {
           loader: homeLoader,
         },
         {
-          path: "/community/:slug",
+          path: "community/:slug",
           element: <Community />,
           loader: communityLoader,
         },

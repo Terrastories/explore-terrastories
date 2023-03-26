@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom/client';
 // so any styles that follow are correctly cascaded
 import './index.css';
 
+// Ensure translations are loaded for bundling
+import 'translations/i18n'
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
