@@ -1,7 +1,7 @@
 import React from 'react';
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
-import Home from 'pages/home';
+import Home, { homeLoader } from 'pages/home'
 import Community, { communityLoader } from 'pages/community';
 
 import Layout from 'components/Layout';
@@ -19,6 +19,7 @@ function App() {
         {
           index: true,
           element: <Home />,
+          loader: homeLoader,
         },
         {
           path: "/community/:slug",

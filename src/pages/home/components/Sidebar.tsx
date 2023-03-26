@@ -3,23 +3,31 @@ import styled from 'styled-components'
 import Input from 'components/Input'
 
 const StyledSidebar = styled.div`
-flex: 0 0 0;
-margin: 1rem;
 min-width: 200px;
+height: fit-content;
+position: sticky;
+top: 1rem;
 
 p {
   margin-bottom: 0.5rem;
 }
-
-@media screen and (min-width: 768px) {
-  flex: 0 0 0;
-  margin: 1rem 2rem 2rem;
-  width: fit-content;
-  max-width: 250px;
-}
 `
 
-export default function Sidebar({handleSearch}:{handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void}) {
+type SidebarProps = {
+  searchQuery: string | null,
+  handleSearch: (v: string) => void
+}
+
+export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
+  const [query, setQuery] = useState(searchQuery)
+
+  useEffect(() => {
+    if (query === null) return
+    const timer = setTimeout(() => handleSearch(query), 500)
+
+    return () => clearTimeout(timer)
+  }, [query, handleSearch])
+
   return (
     <StyledSidebar>
       <p>
@@ -34,7 +42,8 @@ export default function Sidebar({handleSearch}:{handleSearch: (event: React.Chan
       <Input
         placeholder="Search for a community"
         type="text"
-        onChange={handleSearch}
+        defaultValue={searchQuery}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
       />
     </StyledSidebar>
   )

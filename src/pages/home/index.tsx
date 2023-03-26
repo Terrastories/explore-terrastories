@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { startTransition } from 'react'
+import { Await, useLoaderData, useSearchParams } from 'react-router-dom'
+import type { LoaderFunctionArgs } from 'react-router-dom'
 
 import { getCommunities } from 'api/communityApi'
 
@@ -12,42 +14,56 @@ import { TypeCommunity } from 'types'
 
 import './styles.css'
 
+export async function homeLoader({request}: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const searchTerm = url.searchParams.get("query");
+
+  return {communities: getCommunities(searchTerm).then((resp) => resp.data)}
+}
+type CommunitiesThing = {
+  communities: Promise<TypeCommunity[]>
+}
+
 function Home() {
-  const [communities, setCommunities] = React.useState<TypeCommunity[]>([]);
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState(null)
+  const [searchQuery, setSearchQuery] = useSearchParams()
 
-  const [searchQuery, setSearchQuery] = React.useState("")
+  const data = useLoaderData() as CommunitiesThing
 
-  React.useEffect(()=> {
-    async function fetchData(query?: string) {
-      getCommunities(query)
-      .then((resp) => {
-        setCommunities(resp.data)
-        setError(null)
-      })
-      .catch(err => setError(err))
-      .finally(() => setLoading(false))
-    }
-
-    const timeOut = setTimeout(() => fetchData(searchQuery), 500);
-    return () => clearTimeout(timeOut)
-  }, [searchQuery])
+  // useCallback to avoid rerender loop
+  const handleSearch = React.useCallback((value: string) => {
+    startTransition(() => {
+      if (value === '') {
+        setSearchQuery({})
+      } else {
+       setSearchQuery({query: value})
+      }
+    })
+  }, [setSearchQuery])
 
   return (
-    <>
+    <main className='homeMain'>
       <Header />
-      <main className='homeMain'>
-        <Sidebar
-        handleSearch={(event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
-        />
-        <div className="contentMain">
-          {loading && <Loading />}
-          {error && <div>there was an error</div>}
-          <CommunityList communities={communities} />
-        </div>
-      </main>
-    </>
+      <div className="contentMain">
+        <React.Suspense fallback={<Loading />}>
+          <Sidebar
+            searchQuery={searchQuery.get('query')}
+            handleSearch={handleSearch}
+          />
+          <div>
+            <h2>Communities</h2>
+            <React.Suspense fallback={<Loading />}>
+              <Await
+                resolve={data.communities}
+                errorElement={<div>Oops</div>}>
+                  {(communities) => (
+                    <CommunityList communities={communities} />
+                  )}
+              </Await>
+            </React.Suspense>
+          </div>
+        </React.Suspense>
+      </div>
+    </main>
   );
 }
 

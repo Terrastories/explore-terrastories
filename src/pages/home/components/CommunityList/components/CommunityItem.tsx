@@ -10,10 +10,12 @@ export default function CommunityItem(props: TypeCommunity) {
   } = props
 
   return (
-    <Link to={`/community/${props.slug}`} className="communityItem">
+    <Link to={`community/${props.slug}`} className="communityItem">
       {displayImage && <img src={displayImage} alt={name} />}
-      <h3>{name}</h3>
-      <div className="noColorChange">{description}</div>
+      <div>
+        <h3>{name}</h3>
+        <div className="noColorChange">{description}</div>
+      </div>
     </Link>
   );
 }

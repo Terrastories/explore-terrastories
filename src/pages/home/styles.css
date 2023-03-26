@@ -1,25 +1,9 @@
 main.homeMain {
-  display: flex;
-  flex-direction: column;
+  margin: 0 3rem;
 }
 
-main.homeMain .contentMain {
-  flex: 4;
-  margin: 1rem;
-}
-
-@media screen and (min-width: 768px) {
-  main.homeMain {
-    width: 80vw;
-    margin: 0 auto;
-    height: calc(100% - 100px);
-    flex-direction: row;
-  }
-
-  main.homeMain .contentMain {
-    flex: 4;
-    margin: 1rem;
-    overflow-y: scroll;
-    overflow-wrap: break-word;
-  }
+div.contentMain {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 200px 4fr;
 }
