@@ -8,6 +8,7 @@ import type { MapData } from 'types'
 
 interface MapConfig {
   points: FeatureCollection
+  setMapConfig: (c: MapData) => void
   stashedPoints: FeatureCollection | undefined
   setStashedPoints: (points: FeatureCollection | undefined) => void
   updateStoryPoints: (newPoints: FeatureCollection) => void
@@ -17,6 +18,7 @@ interface MapConfig {
 const MapContext = createContext<MapConfig & MapData>({
   // Map Layers
   points: {type: "FeatureCollection", features:[]},
+  setMapConfig: (c: MapData) => {return},
   stashedPoints: undefined,
   setStashedPoints: (p) => { return p },
   updateStoryPoints: (p) => { return p },
@@ -29,7 +31,7 @@ const MapContext = createContext<MapConfig & MapData>({
   bearing: 0,
   maxBounds: undefined,
   mapbox3dEnabled: false,
-  mapProjection: '',
+  mapProjection: 'mercator'
 })
 
 export const MapContextProvider = ({ children, initialPoints, initialMapConfig }: {children: ReactNode, initialPoints: FeatureCollection, initialMapConfig: MapData}) => {
@@ -43,15 +45,18 @@ export const MapContextProvider = ({ children, initialPoints, initialMapConfig }
     setBounds(bbox(newPoints) as LngLatBoundsLike)
   }
 
+  const [mapConfig, setMapConfig] = useState<MapData>(initialMapConfig)
+
   return (
     <MapContext.Provider
       value={{
         points,
+        setMapConfig,
         updateStoryPoints,
         stashedPoints,
         setStashedPoints,
         bounds,
-        ...initialMapConfig
+        ...mapConfig
       }}
     >
       {children}

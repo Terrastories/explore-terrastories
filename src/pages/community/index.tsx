@@ -28,7 +28,7 @@ export async function communityLoader({request, params}: LoaderFunctionArgs) {
 }
 
 function Provider() {
-  const { updateStoryPoints, setStashedPoints } = useMapConfig()
+  const { updateStoryPoints, setMapConfig, setStashedPoints } = useMapConfig()
   const { resetSelections, slug } = useCommunity()
 
   const communityRef = React.useRef(slug)
@@ -40,10 +40,11 @@ function Provider() {
       communityRef.current = community.slug
 
       resetSelections()
+      setMapConfig(community.mapConfig)
       setStashedPoints(undefined)
       updateStoryPoints(community.points)
     }
-  }, [communityRef, community, updateStoryPoints, setStashedPoints, resetSelections])
+  }, [communityRef, community, updateStoryPoints, setMapConfig, setStashedPoints, resetSelections])
 
   return (
     <React.Fragment>
