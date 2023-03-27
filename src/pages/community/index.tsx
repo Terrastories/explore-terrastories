@@ -2,6 +2,8 @@ import React from 'react'
 import { Await, defer, useLoaderData, useAsyncValue } from 'react-router-dom'
 import type { LoaderFunctionArgs } from 'react-router-dom'
 
+import NotFound from 'components/NotFound'
+
 import { getCommunity } from 'api/communityApi'
 
 import { MapContextProvider, useMapConfig }  from 'contexts/MapContext'
@@ -61,9 +63,8 @@ export default function Community() {
       <React.Suspense fallback={<Loading/>}>
         <Await
           resolve={data.community}
-          errorElement={<div>Oops</div>}>
+          errorElement={<NotFound />}>
             {(community) => (
-
               <CommunityProvider slug={community.slug}>
                 <MapContextProvider initialPoints={community.points} initialMapConfig={community.mapConfig}>
                   <Provider />

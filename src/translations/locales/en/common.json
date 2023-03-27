@@ -1,3 +1,31 @@
 {
-
+  "languages": {
+    "en": "English"
+  },
+  "community": "Community",
+  "communities": "Communities",
+  "explore": "Explore",
+  "stories": "stories",
+  "errors": {
+    "empty": "There are no {{resources}}",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "Filter Stories",
+  "go_back": "Go back",
+  "login": "Log In",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Select a {{resource}}",
+  "sorts": {
+    "recent": "Most Recent",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Select…",
+  "switch_communities": "Switch Communities"
 }

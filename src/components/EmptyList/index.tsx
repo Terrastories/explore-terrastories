@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 const Box = styled.div`
 display: flex;
@@ -13,10 +14,12 @@ type EmptyListProps = {
 }
 
 export default function EmptyList({message}: EmptyListProps) {
+  const { t } = useTranslation()
+
   return (
     <Box>
       {
-        message || 'There are no results'
+        message || t('errors.empty', {resources: 'results'})
       }
     </Box>
   )

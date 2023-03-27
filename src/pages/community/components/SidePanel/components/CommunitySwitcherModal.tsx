@@ -1,6 +1,7 @@
 import Select from 'react-select/async'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import Modal from 'components/Modal'
 
@@ -18,6 +19,7 @@ const MiniNavBar = styled.div`
 `
 
 export default function CommunitySwitcherModal({handleClose}: SwitcherModalProps) {
+  const { t, i18n } = useTranslation(['common', 'community'])
   const navigate = useNavigate()
 
   const loadOptions = (
@@ -34,21 +36,21 @@ export default function CommunitySwitcherModal({handleClose}: SwitcherModalProps
 
   return (
     <Modal onClose={() => handleClose()}>
-      <h2>Switch Communities</h2>
+      <h2>{t('switch_communities')}</h2>
       <Select
         defaultOptions
         loadOptions={loadOptions}
         menuPortalTarget={document.body}
-        placeholder='Select a Community'
-        noOptionsMessage={(a)=> `No communities match '${a.inputValue}'`}
+        placeholder={t('select_a_resource', {resource: 'Community'})}
+        noOptionsMessage={(a)=> t('no_match', {resource: 'communities', input: a.inputValue})}
         onChange={opt => {
           if (!opt) return
-          navigate(`/community/${opt.value}`)
+          navigate(`/${i18n.language}/community/${opt.value}`)
           handleClose()
         }}
       />
       <MiniNavBar>
-        <Link to="/">or view all</Link>
+        <Link to="/">{t('community:view_all')}</Link>
       </MiniNavBar>
     </Modal>
   )

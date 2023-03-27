@@ -1,6 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 import { useCommunity } from 'contexts/CommunityContext'
 import { useMapConfig } from 'contexts/MapContext'
@@ -31,6 +32,7 @@ const FilterSelectGroup = styled.div`
 `
 
 export default function StoryFilters(props: Props) {
+  const { t } = useTranslation()
   const {
     categories,
     filters,
@@ -112,8 +114,9 @@ export default function StoryFilters(props: Props) {
 
   return (
     <FilterSelectGroup>
-      <div>Filter Stories</div>
+      <div>{t('filter_stories')}</div>
       <Select
+        placeholder={t('select_placeholder')}
         options={categories}
         value={categories.find(c => c.value === selectedFilter)}
         className={"filterSelect"}
@@ -123,6 +126,7 @@ export default function StoryFilters(props: Props) {
         ref={optionRef}
         value={selectedOptions}
         isMulti
+        placeholder={t('select_placeholder')}
         options={filterOptions}
         isDisabled={!filterOptions}
         className={"filterSelect"}

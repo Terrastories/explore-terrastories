@@ -39,6 +39,7 @@ i18n
     defaultNS: 'common',
     fallbackLng: 'en',
     debug: true,
+    returnNull: false,
     detection: {
       order: ['path', 'querystring']
     }

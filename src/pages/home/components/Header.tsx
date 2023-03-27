@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import logo from 'logo.svg'
+import { useTranslation } from 'react-i18next'
 
 const StyledHeader = styled.header`
 height: 100px;
@@ -27,11 +28,12 @@ span.bar {
 `
 
 export default function Header() {
+  const { t } = useTranslation()
   return(
     <StyledHeader>
       <img src={logo} className="logo" alt="Terrastories" title="Terrastories" />
       <span className="bar"></span>
-      <span>Explore</span>
+      <span>{t('explore')}</span>
     </StyledHeader>
   )
 }

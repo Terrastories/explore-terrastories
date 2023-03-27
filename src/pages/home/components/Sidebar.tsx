@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Input from 'components/Input'
@@ -19,6 +21,7 @@ type SidebarProps = {
 }
 
 export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
+  const { t } = useTranslation(['home'])
   const [query, setQuery] = useState(searchQuery)
 
   useEffect(() => {
@@ -30,17 +33,12 @@ export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
 
   return (
     <StyledSidebar>
-      <p>
-        Terrastories are audiovisual recordings of place-based storytelling.
-      </p>
-      <p>
-        This application enables local communities to locate and map their oral storytelling traditions about places of significant meaning or value to them.
-      </p>
-      <p>
-        Start exploring communities, or search for one below.
-      </p>
+      <p>{t('sidebar.intro')}</p>
+      <p>{t('sidebar.about')}</p>
+      <h4>{t('search.label')}</h4>
+      <p>{t('search.cta')}</p>
       <Input
-        placeholder="Search for a community"
+        placeholder={t('search.placeholder')}
         type="text"
         defaultValue={searchQuery}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}

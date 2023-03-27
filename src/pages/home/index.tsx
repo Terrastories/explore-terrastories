@@ -1,6 +1,7 @@
 import React, { startTransition } from 'react'
 import { Await, useLoaderData, useSearchParams } from 'react-router-dom'
 import type { LoaderFunctionArgs } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { getCommunities } from 'api/communityApi'
 
@@ -25,6 +26,7 @@ type CommunitiesThing = {
 }
 
 function Home() {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useSearchParams()
 
   const data = useLoaderData() as CommunitiesThing
@@ -50,11 +52,11 @@ function Home() {
             handleSearch={handleSearch}
           />
           <div>
-            <h2>Communities</h2>
+            <h2>{t('communities')}</h2>
             <React.Suspense fallback={<Loading />}>
               <Await
                 resolve={data.communities}
-                errorElement={<div>Oops</div>}>
+                errorElement={<div>{t('errors.generic')}</div>}>
                   {(communities) => (
                     <CommunityList communities={communities} />
                   )}

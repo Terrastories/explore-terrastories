@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Select, {components, DropdownIndicatorProps, SingleValue, ActionMeta} from 'react-select'
 
 import Icon from 'components/Icon'
@@ -11,6 +12,7 @@ interface SortOption {
 }
 
 export default function Sort() {
+  const { t } = useTranslation()
   const [options, setOptions] = React.useState<SortOption[]>()
   const { sortStories, selectedSort, sortOptions } = useCommunity()
 
@@ -29,13 +31,13 @@ export default function Sort() {
       let opts:SortOption[] = []
       for(let opt of Object.keys(sortOptions)) {
         opts.push({
-          label: sortOptions[opt].label, // we'll want to look up translation here in the future
+          label: t(`sorts.${opt}`),
           value: sortOptions[opt].value
         })
       }
       setOptions(opts)
     }
-  }, [options, sortOptions])
+  }, [options, sortOptions, t])
 
 
   const handleSortChange = (option: SingleValue<SortOption>, actionMeta: ActionMeta<SortOption>) => {
@@ -44,7 +46,10 @@ export default function Sort() {
 
   return(
     <Select
-      defaultValue={sortOptions[selectedSort]}
+      defaultValue={{
+        label: t(`sorts.${selectedSort}`),
+        value: selectedSort
+      }}
       placeholder={''}
       isSearchable={false}
       components={{DropdownIndicator}}

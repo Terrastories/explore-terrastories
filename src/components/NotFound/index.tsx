@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components';
 
@@ -32,14 +33,16 @@ const Prompt = styled.div`
 `;
 
 export default function NotFound() {
+  const { t } = useTranslation()
+
   return (
     <FullPage>
       <PromptContainer>
         <Prompt>
           <img src={logo} className="logo" alt="Terrastories Logo" />
-          <h1>Oops, wrong turn!</h1>
-          <p>The page you were looking for doesn't exist.</p>
-          <p>Let's return to Terrastories: <Link className="button" to="/">Go to the home page</Link></p>
+          <h1>{t('errors.not_found.heading')}</h1>
+          <p>{t('errors.not_found.text')}</p>
+          <p><Link className="button" to="/">{t('go_back')}</Link></p>
         </Prompt>
       </PromptContainer>
     </FullPage>

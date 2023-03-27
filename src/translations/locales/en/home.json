@@ -1,0 +1,11 @@
+{
+  "search": {
+    "label": "Search",
+    "cta": "Start exploring communities, or search for one below.",
+    "placeholder": "Search for a community"
+  },
+  "sidebar": {
+    "intro": "Terrastories are audiovisual recordings of place-based storytelling.",
+    "about": "This application enables local communities to locate and map their oral storytelling traditions about places of significant meaning or value to them."
+  }
+}

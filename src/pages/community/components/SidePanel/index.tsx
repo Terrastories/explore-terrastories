@@ -1,5 +1,6 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 
 import { useCommunity } from 'contexts/CommunityContext'
 
@@ -20,6 +21,7 @@ type PanelProps = {
 }
 
 export default function SidePanel({ community }: PanelProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState<boolean>(true)
   const [fullScreen, setfullScreen] = React.useState<boolean>(false)
   const [touchStart, setTouchStart] = React.useState<number | null>(null)
@@ -87,8 +89,8 @@ export default function SidePanel({ community }: PanelProps) {
           </>}
         <div>
           <div className="panelLinks">
-            <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>Log In</a>
-            <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>Switch Communities</span>
+            <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
+            <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t('switch_communities')}</span>
           </div>
           {/* <div>
             Language Switcher

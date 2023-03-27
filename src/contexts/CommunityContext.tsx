@@ -19,22 +19,18 @@ const sortOptions:{
 } = {
   'recent': {
     fn: (a: TypeStory, b: TypeStory) => ((a.createdAt < b.createdAt) ? 1 : -1),
-    label: 'Most Recent',
     value: 'recent'
   },
   'alpha': {
     fn: (a: TypeStory, b: TypeStory) => ((a.title > b.title) ? 1 : -1),
-    label: 'AZ',
     value: 'alpha'
   },
   'zeta': {
     fn: (a: TypeStory, b: TypeStory) => ((a.title < b.title) ? 1 : -1),
-    label: 'ZA',
     value: 'zeta'
   },
   'updated': {
     fn: (a: TypeStory, b: TypeStory) => ((a.updatedAt > b.updatedAt) ? 1 : -1),
-    label: 'Recently Updated',
     value: 'updated'
   },
 }

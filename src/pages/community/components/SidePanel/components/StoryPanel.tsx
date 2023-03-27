@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 import EmptyList from 'components/EmptyList'
 
@@ -42,6 +43,7 @@ max-width: 24px;
 
 
 export default function StoryPanel(props :PanelProps) {
+  const { t } = useTranslation(['community', 'common'])
   const {
     categories,
     filters,
@@ -63,14 +65,14 @@ export default function StoryPanel(props :PanelProps) {
           <Sort />
           <IconButton type='button' onClick={toggleListView}>
             { listView ?
-              <Icon icon='grid' alt={'switch to grid view'} /> :
-              <Icon icon='list' alt={'switch to list view'} /> }
+              <Icon icon='grid' alt={t('switch_to_grid')} /> :
+              <Icon icon='list' alt={t('switch_to_list')} /> }
           </IconButton>
         </div>
       </StoryListControl>
       {hasStories && <StoryList />}
       {!hasStories &&
-        <EmptyList message={'This community has no publicly available stories at this time.'} />}
+        <EmptyList message={t('common:errors.empty', {resources: t('common:stories')})} />}
     </>
   )
 }

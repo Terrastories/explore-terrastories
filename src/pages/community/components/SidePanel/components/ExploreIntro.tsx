@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 import { useCommunity } from 'contexts/CommunityContext'
 
@@ -63,6 +64,7 @@ type Props = {
 }
 
 export default function ExporeIntro({details}: Props) {
+  const { t } = useTranslation(['community'])
   const {
     name,
     description,
@@ -72,20 +74,17 @@ export default function ExporeIntro({details}: Props) {
 
   const { loading, dismissIntro } = useCommunity()
 
-  const defaultHeading = 'Welcome!'
-  const defaultDescription = 'Terrastories are audiovisual recordings of place-based storytelling. This offline-compatible application enables local communities to locate and map their own oral storytelling traditions about places of significant meaning or value to them.'
-
   return (
     <ExplorePanel>
-      {displayImage && <h1>{name || defaultHeading}</h1>}
-      <p>{description || defaultDescription}</p>
+      {displayImage && <h1>{name}</h1>}
+      <p>{description}</p>
       <Button disabled={loading} onClick={dismissIntro}>
         {loading && <Loading />}
-        Start Exploring
+        {t('start_exploring')}
       </Button>
       {sponsorLogos.length > 0 &&
         <>
-        <h2>Sponsors</h2>
+        <h2>{t('sponsors')}</h2>
         <SponsorLogos>
           {sponsorLogos.map((logo) => (
             <img key={logo.blobId} src={logo.url} alt={'sponsor'} />

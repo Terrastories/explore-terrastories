@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 import Media from 'components/Media'
 import Avatar from 'components/Avatar'
@@ -53,6 +54,7 @@ margin-bottom: auto;
 `
 
 export default function StoryDetail({story}: Props) {
+  const { t } = useTranslation()
   const { setSelectedStory } = useCommunity()
   const { stashedPoints, setStashedPoints, updateStoryPoints } = useMapConfig()
 
@@ -110,7 +112,7 @@ export default function StoryDetail({story}: Props) {
           </section>
         ))}
       </StoryDetailContainer>
-      <span aria-labelledby={'Go back'} role={'link'} tabIndex={0} onClick={handleCloseStoryDetail}>Go back</span>
+      <span aria-labelledby={t('go_back')} role={'link'} tabIndex={0} onClick={handleCloseStoryDetail}>{t('go_back')}</span>
     </>
   )
 }

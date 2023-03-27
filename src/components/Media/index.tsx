@@ -1,5 +1,6 @@
 import React from 'react'
 import {TypeMedia} from 'types'
+import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
@@ -16,6 +17,7 @@ type AnyMedia = TypeMedia & {
 }
 
 export default function Media(props: AnyMedia) {
+  const { t } = useTranslation()
   const {
     blob,
     url,
@@ -85,6 +87,6 @@ export default function Media(props: AnyMedia) {
   }
 
   return (
-    <>Unable to render this media.</>
+    <>{t('unsupported_media')}</>
   )
 }
