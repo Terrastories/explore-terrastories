@@ -1,0 +1,11 @@
+{
+  "search": {
+    "label": "ፈልግ",
+    "cta": "Start exploring communities, or search for one below.",
+    "placeholder": "ለማጥናት ማህበረሰብ ፈልግ"
+  },
+  "sidebar": {
+    "intro": "Terrastories በቦታ ላይ የተመሰረተ የድምጽና ምስል ታሪክ ቅጂዎች ናቸው።",
+    "about": "ይህ ከመስመር ውጭም የሚያገለግል መተግበሪያ የአካባቢ ማህበረሰቦች ለእነርሱ ጠቃሚ ትርጉም ወይም ዋጋ ያላቸውን ቦታዎች የራሳቸውን የቃል ታሪኮች ወጎች እንዲፈልጉ እና እንዲያዘጋጁ ያስችላቸዋል።"
+  }
+}

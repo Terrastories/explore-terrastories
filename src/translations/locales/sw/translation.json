@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "Kiamhari",
+    "en": "Kiingereza",
+    "es": "Kihispania",
+    "ja": "Kijapani",
+    "mat": "Kimatawai",
+    "nl": "Kiholanzi",
+    "pt": "Kireno",
+    "sw": "Kiswahili",
+    "zh": "Kichinae"
+  },
+  "community": "Jumuiya",
+  "communities": "Jumuiya",
+  "explore": "Explore",
+  "stories": "Hadithi",
+  "errors": {
+    "empty": "Hakuna {{resources}} zinazopatikana.",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "Chuja hadithi",
+  "go_back": "Go back",
+  "login": "Ingia",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Chagua {{resource}}",
+  "sorts": {
+    "recent": "Hivi karibuni",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Chagua…",
+  "select_category": "Chagua kategoria",
+  "select_option": "Chagua chaguo",
+  "switch_communities": "Switch Communities"
+}

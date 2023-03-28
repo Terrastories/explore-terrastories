@@ -1,0 +1,11 @@
+{
+  "search": {
+    "label": "検索",
+    "cta": "Start exploring communities, or search for one below.",
+    "placeholder": "探索するコミュニティを検索する"
+  },
+  "sidebar": {
+    "intro": "この機能はまもなく登場します。",
+    "about": "今のところ、特定のコミュニティへの招待をリクエストしてください。"
+  }
+}

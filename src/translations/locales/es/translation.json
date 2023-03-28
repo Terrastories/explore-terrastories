@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "Amárico",
+    "en": "Inglés",
+    "es": "Español",
+    "ja": "Japonés",
+    "mat": "Matawai",
+    "nl": "Holandés",
+    "pt": "Portugués",
+    "sw": "Swahili",
+    "zh": "Chino"
+  },
+  "community": "Comunidad",
+  "communities": "Comunidades",
+  "explore": "Explorar",
+  "stories": "Historias",
+  "errors": {
+    "empty": "No hay {{resources}}",
+    "generic": "Hubo un error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "Filtrar historias",
+  "go_back": "Regresa",
+  "login": "Iniciar sesión",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Seleccionar {{resource}}",
+  "sorts": {
+    "recent": "Más reciente",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recientemente Actualizado"
+  },
+  "select_placeholder": "Seleccionar…",
+  "select_category": "Seleccionar categoría",
+  "select_option": "Seleccionar opción",
+  "switch_communities": "Cambiar de Comunidad"
+}

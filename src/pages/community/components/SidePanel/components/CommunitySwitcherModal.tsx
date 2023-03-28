@@ -19,7 +19,7 @@ const MiniNavBar = styled.div`
 `
 
 export default function CommunitySwitcherModal({handleClose}: SwitcherModalProps) {
-  const { t, i18n } = useTranslation(['common', 'community'])
+  const { t, i18n } = useTranslation(['translation', 'community'])
   const navigate = useNavigate()
 
   const loadOptions = (

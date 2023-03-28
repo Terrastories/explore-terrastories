@@ -116,7 +116,7 @@ export default function StoryFilters(props: Props) {
     <FilterSelectGroup>
       <div>{t('filter_stories')}</div>
       <Select
-        placeholder={t('select_placeholder')}
+        placeholder={t('select_category')}
         options={categories}
         value={categories.find(c => c.value === selectedFilter)}
         className={"filterSelect"}
@@ -126,7 +126,7 @@ export default function StoryFilters(props: Props) {
         ref={optionRef}
         value={selectedOptions}
         isMulti
-        placeholder={t('select_placeholder')}
+        placeholder={t('select_option')}
         options={filterOptions}
         isDisabled={!filterOptions}
         className={"filterSelect"}

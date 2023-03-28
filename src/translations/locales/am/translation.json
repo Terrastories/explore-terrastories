@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "አማርኛ",
+    "en": "እንግሊዝኛ",
+    "es": "ስፓኒሽ",
+    "ja": "ጃፓንኛ",
+    "mat": "ማታዋይ",
+    "nl": "ደችኛ",
+    "pt": "ፖርቹጋልኛ",
+    "sw": "ስዋሕሊ",
+    "zh": "ቻይንኛ"
+  },
+  "community": "ማህበረሰብ",
+  "communities": "ማህበረሰቦች",
+  "explore": "Explore",
+  "stories": "ታሪኮች",
+  "errors": {
+    "empty": "ምንም {{resources}} የሉም።",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "ታሪኮችን አጣራ",
+  "go_back": "Go back",
+  "login": "ግባ",
+  "no_match": "ምንም {{resources}} ተዛማጅ '{{input}}'።",
+  "select_a_resource": "ይምረጡ {{resource}}",
+  "sorts": {
+    "recent": "የቅርብ ጊዜ",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "ይምረጡ…",
+  "select_category": "ምድብ ይምረጡ",
+  "select_option": "አማራጭ ይምረጡ",
+  "switch_communities": "Switch Communities"
+}

@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "Amhaars",
+    "en": "Ingris",
+    "es": "Spanjoro",
+    "ja": "Japans",
+    "mat": "Matawai",
+    "nl": "Bakaa",
+    "pt": "Potogisi",
+    "sw": "Swahili",
+    "zh": "Snesi"
+  },
+  "community": "Gemeenschap",
+  "communities": "Gemeenschappen",
+  "explore": "Explore",
+  "stories": "Verhalen",
+  "errors": {
+    "empty": "Er zijn geen {{resources}} beschikbaar",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "Luku fini",
+  "go_back": "Go back",
+  "login": "Skiif i ne",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Kies a {{resource}}",
+  "sorts": {
+    "recent": "Moo nyu",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Kies…",
+  "select_category": "Kies wan sooti sondi",
+  "select_option": "Kies a sondi",
+  "switch_communities": "Switch Communities"
+}

@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 // Used for backend typing
-import en from './locales/en/common.json'
+import en from './locales/en/translation.json'
 
 i18n
   // custom webpack bundling backend
@@ -36,11 +36,15 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    defaultNS: 'common',
-    fallbackLng: 'en',
+    fallbackLng: {
+      mat: ['nl', 'en'],
+      default: ['en']
+    },
     debug: true,
     returnNull: false,
-    detection: {
-      order: ['path', 'querystring']
-    }
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+    },
   })
+
+  export default i18n;

@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "阿姆哈拉語",
+    "en": "英語",
+    "es": "西班牙語",
+    "ja": "日本人",
+    "mat": "馬塔懷",
+    "nl": "荷蘭語",
+    "pt": "葡萄牙語",
+    "sw": "斯瓦希里語",
+    "zh": "中國人"
+  },
+  "community": "社区",
+  "communities": "社区",
+  "explore": "Explore",
+  "stories": "故事",
+  "errors": {
+    "empty": "此{{resources}}不可用",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "筛选故事",
+  "go_back": "Go back",
+  "login": "登录",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "选择{{resource}}",
+  "sorts": {
+    "recent": "最近",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "选择…",
+  "select_category": "选择类别",
+  "select_option": "选择选项",
+  "switch_communities": "Switch Communities"
+}

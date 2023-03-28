@@ -1,6 +1,14 @@
 {
   "languages": {
-    "en": "English"
+    "am": "Amharic",
+    "en": "English",
+    "es": "Spanish",
+    "ja": "Japanese",
+    "mat": "Matawai",
+    "nl": "Dutch",
+    "pt": "Portuguese",
+    "sw": "Swahili",
+    "zh": "Chinese"
   },
   "community": "Community",
   "communities": "Communities",
@@ -27,5 +35,7 @@
     "updated": "Recently Updated"
   },
   "select_placeholder": "Select…",
+  "select_category": "Select Category",
+  "select_option": "Select Option",
   "switch_communities": "Switch Communities"
 }

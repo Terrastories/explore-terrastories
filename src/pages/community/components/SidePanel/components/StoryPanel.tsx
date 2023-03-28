@@ -43,7 +43,7 @@ max-width: 24px;
 
 
 export default function StoryPanel(props :PanelProps) {
-  const { t } = useTranslation(['community', 'common'])
+  const { t } = useTranslation(['community', 'translation'])
   const {
     categories,
     filters,
@@ -72,7 +72,7 @@ export default function StoryPanel(props :PanelProps) {
       </StoryListControl>
       {hasStories && <StoryList />}
       {!hasStories &&
-        <EmptyList message={t('common:errors.empty', {resources: t('common:stories')})} />}
+        <EmptyList message={t('translation:errors.empty', {resources: t('translation:stories')})} />}
     </>
   )
 }

@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "Amhaars",
+    "en": "Engels",
+    "es": "Spaans",
+    "ja": "Japans",
+    "mat": "Matawai",
+    "nl": "Nederlands",
+    "pt": "Portugees",
+    "sw": "Swahili",
+    "zh": "Chinees"
+  },
+  "community": "Gemeenschap",
+  "communities": "Gemeenschap",
+  "explore": "Verkennen",
+  "stories": "Verhalen",
+  "errors": {
+    "empty": "Er zijn geen {{resources}} beschikbaar.",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "Verhalen filteren",
+  "go_back": "Go back",
+  "login": "Login",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Selecteer {{resource}}",
+  "sorts": {
+    "recent": "Meest recente",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Selecteer…",
+  "select_category": "Kies een categorie",
+  "select_option": "Selecteer optie",
+  "switch_communities": "Switch Communities"
+}

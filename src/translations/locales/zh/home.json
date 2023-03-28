@@ -1,0 +1,11 @@
+{
+  "search": {
+    "label": "搜索",
+    "cta": "Start exploring communities, or search for one below.",
+    "placeholder": "搜索要探索的社区"
+  },
+  "sidebar": {
+    "intro": "Terrastories是基于地点的的视听故事记录。",
+    "about": "这个可以离线使用的应用程序使当地社区能够定位和绘制对他们有重要意义或价值的地方的口头故事传统。"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "languages": {
+    "am": "アムハラ語",
+    "en": "英語",
+    "es": "スペイン語",
+    "ja": "日本",
+    "mat": "マタワイ",
+    "nl": "オランダの",
+    "pt": "ポルトガル語",
+    "sw": "スワヒリ語",
+    "zh": "中国語"
+  },
+  "community": "コミュニティ",
+  "communities": "コミュニティ",
+  "explore": "Explore",
+  "stories": "ストーリー",
+  "errors": {
+    "empty": "There are no {{resources}}",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "フィルタ",
+  "go_back": "Go back",
+  "login": "ログイン",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "{{resource}}を選択",
+  "sorts": {
+    "recent": "作成日時順",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "選択…",
+  "select_category": "カテゴリを選択",
+  "select_option": "オプションを選択",
+  "switch_communities": "Switch Communities"
+}

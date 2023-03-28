@@ -2,6 +2,8 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
+import LanguagePicker from 'components/LanguagePicker'
+
 import { useCommunity } from 'contexts/CommunityContext'
 
 import CommunitySwitcherModal from './components/CommunitySwitcherModal'
@@ -91,10 +93,8 @@ export default function SidePanel({ community }: PanelProps) {
           <div className="panelLinks">
             <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
             <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t('switch_communities')}</span>
+            <LanguagePicker />
           </div>
-          {/* <div>
-            Language Switcher
-          </div> */}
         </div>
       </div>
       {showCommunitySwitcherModal && createPortal(

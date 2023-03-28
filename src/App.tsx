@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import Home, { homeLoader } from 'pages/home'
@@ -15,10 +15,6 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navigate to={`/${i18n.language}`} replace />
-    },
-    {
-      path: "/:langauge",
       element: <Layout />,
       errorElement: <NotFound />,
       children: [
