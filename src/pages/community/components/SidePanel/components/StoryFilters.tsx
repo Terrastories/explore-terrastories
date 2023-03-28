@@ -1,8 +1,8 @@
 import React from 'react'
-import Select from 'react-select'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
+import Select from 'components/Select'
 import { useCommunity } from 'contexts/CommunityContext'
 import { useMapConfig } from 'contexts/MapContext'
 

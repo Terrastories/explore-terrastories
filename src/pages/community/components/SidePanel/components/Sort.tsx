@@ -1,7 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import Select, {components, DropdownIndicatorProps, SingleValue, ActionMeta} from 'react-select'
+import {components, DropdownIndicatorProps, SingleValue, ActionMeta} from 'react-select'
 
+import Select from 'components/Select'
 import Icon from 'components/Icon'
 
 import { useCommunity } from 'contexts/CommunityContext'
@@ -46,40 +47,13 @@ export default function Sort() {
 
   return(
     <Select
+      useTinySelect={true}
       defaultValue={{
         label: t(`sorts.${selectedSort}`),
         value: selectedSort
       }}
-      placeholder={''}
       isSearchable={false}
       components={{DropdownIndicator}}
-      styles={{
-        control: (base, state) => ({
-          ...base,
-          minHeight: '24px',
-          height: '24px',
-          background: 'inherit',
-          border: 'none',
-        }),
-        indicatorSeparator: (base, state) => ({
-          display: 'none',
-        }),
-        indicatorsContainer: (base, state) => ({
-          ...base,
-          maxHeight: '24px',
-        }),
-        valueContainer: (base, state) => ({
-          ...base,
-          padding: '0', // unset padding
-          paddingLeft: '8px', // set just left
-        }),
-        menu: (base, state) => ({
-          ...base,
-          position: 'absolute',
-          right: 0,
-          width: 'max-content',
-        })
-      }}
       options={options}
       onChange={handleSortChange} />
   )
