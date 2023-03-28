@@ -2,7 +2,18 @@ import styled from 'styled-components'
 import logo from 'logo.svg'
 import { useTranslation } from 'react-i18next'
 
+import LanguagePicker from 'components/LanguagePicker'
+
 const StyledHeader = styled.header`
+height: 100px;
+display: flex;
+flex-wrap: nowrap;
+gap: 1rem;
+align-items: center;
+justify-content: space-between;
+`
+
+const Heading = styled.div`
 height: 100px;
 display: flex;
 flex-wrap: nowrap;
@@ -31,9 +42,12 @@ export default function Header() {
   const { t } = useTranslation()
   return(
     <StyledHeader>
-      <img src={logo} className="logo" alt="Terrastories" title="Terrastories" />
-      <span className="bar"></span>
-      <span>{t('explore')}</span>
+      <Heading>
+        <img src={logo} className="logo" alt="Terrastories" title="Terrastories" />
+        <span className="bar"></span>
+        <span>{t('explore')}</span>
+      </Heading>
+      <LanguagePicker />
     </StyledHeader>
   )
 }
