@@ -1,0 +1,43 @@
+{
+  "languages": {
+    "am": "ਅਮਹਾਰਿਕ",
+    "en": "ਅੰਗਰੇਜ਼ੀ",
+    "es": "ਸਪੇਨੀ",
+    "hi": "ਹਿੰਦੀ",
+    "ja": "ਜਾਪਾਨੀ",
+    "mat": "ਮਤਵੈ",
+    "nl": "ਡੱਚ",
+    "pt": "ਪੁਰਤਗਾਲੀ",
+    "pu": "ਪੰਜਾਬੀ",
+    "sw": "ਸਵਾਹਿਲੀ",
+    "zh": "ਚੀਨੀ"
+  },
+  "community": "ਭਾਈਚਾਰਾ",
+  "communities": "ਭਾਈਚਾਰੇ",
+  "explore": "Explore",
+  "stories": "ਕਹਾਣੀਆਂ",
+  "errors": {
+    "empty": "There are no {{resources}}",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "ਕਹਾਣੀਆਂ ਨੂੰ ਫਿਲਟਰ ਕਰੋ",
+  "go_back": "Go back",
+  "login": "ਲਾਗਇਨ",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Select a {{resource}}",
+  "sorts": {
+    "recent": "ਸਭ ਤੋਂ ਤਾਜ਼ਾ",
+    "alpha": "A-Z",
+    "zeta": "Z-A",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Select…",
+  "select_category": "ਸ਼੍ਰੇਣੀ ਚੁਣੋ",
+  "select_option": "ਚੋਣ ਵਿਕਲਪ",
+  "switch_communities": "Switch Communities"
+}
