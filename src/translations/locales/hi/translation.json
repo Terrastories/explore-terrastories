@@ -1,0 +1,42 @@
+{
+  "languages": {
+    "am": "अम्हारिक्",
+    "en": "अंग्रेज़ी",
+    "es": "स्पैनिश",
+    "hi": "हिन्दी",
+    "ja": "जापानी",
+    "mat": "मटावाइ",
+    "nl": "डच",
+    "pt": "पुर्तगाली",
+    "sw": "स्‍वाहि‍ली",
+    "zh": "चीनी"
+  },
+  "community": "समुदाय",
+  "communities": "समुदायों",
+  "explore": "Explore",
+  "stories": "कहानियों",
+  "errors": {
+    "empty": "There are no {{resources}}",
+    "generic": "There was an error",
+    "not_found": {
+      "heading": "Oops, wrong turn!",
+      "text": "The page you were looking for doesn't exist."
+    },
+    "unsupported_media": "Unable to render this media."
+  },
+  "filter_stories": "कहानियों को फ़िल्टर करें",
+  "go_back": "Go back",
+  "login": "लॉग इन करें",
+  "no_match": "No {{resource}} match '{{input}}'",
+  "select_a_resource": "Select a {{resource}}",
+  "sorts": {
+    "recent": "अभी हाल में ही",
+    "alpha": "वर्णमाला क्रम (A-Z)",
+    "zeta": "रिवर्स वर्णमाला क्रम (Z-A)",
+    "updated": "Recently Updated"
+  },
+  "select_placeholder": "Select…",
+  "select_category": "श्रेणी चुनना",
+  "select_option": "विकल्प चुनें",
+  "switch_communities": "Switch Communities"
+}
