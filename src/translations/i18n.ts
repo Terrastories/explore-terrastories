@@ -40,7 +40,9 @@ i18n
       mat: ['nl', 'en'],
       default: ['en']
     },
-    debug: true,
+    load: 'languageOnly',
+    lowerCaseLng: true,
+    cleanCode: true,
     returnNull: false,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
