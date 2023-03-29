@@ -123,7 +123,7 @@ export default function StoryFilters(props: Props) {
         isClearable={true}
         onChange={handleCategoryChange} />
       <Select
-        ref={optionRef}
+        forwardRef={optionRef}
         value={selectedOptions}
         isMulti
         placeholder={t('select_option')}

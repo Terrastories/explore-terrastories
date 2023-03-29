@@ -10,7 +10,6 @@ import CommunitySwitcherModal from './components/CommunitySwitcherModal'
 import Header from './components/Header'
 import ExploreIntro from './components/ExploreIntro'
 import StoryPanel from './components/StoryPanel'
-import StoryDetail from './components/StoryDetail'
 
 import useMobile from 'hooks/useMobile'
 
@@ -29,7 +28,7 @@ export default function SidePanel({ community }: PanelProps) {
   const [touchStart, setTouchStart] = React.useState<number | null>(null)
   const [touchEnd, setTouchEnd] = React.useState<number | null>(null)
 
-  const { showIntro, selectedStory } = useCommunity()
+  const { showIntro } = useCommunity()
 
   const isMobile = useMobile()
 
@@ -79,22 +78,16 @@ export default function SidePanel({ community }: PanelProps) {
           <ExploreIntro
             details={community.details} />}
         {!showIntro &&
-          <>
-          {selectedStory &&
-            <StoryDetail
-              story={selectedStory} />}
-          {!selectedStory &&
-            <StoryPanel
-              categories={community.categories}
-              filters={community.filters}
-              storiesCount={community.storiesCount} />}
-          </>}
-        <div>
-          <div className="panelLinks">
+          <StoryPanel
+            categories={community.categories}
+            filters={community.filters}
+            storiesCount={community.storiesCount} />}
+        <div className="panelLinks">
+          <div>
             <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
             <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t('switch_communities')}</span>
-            <LanguagePicker />
           </div>
+          <LanguagePicker />
         </div>
       </div>
       {showCommunitySwitcherModal && createPortal(

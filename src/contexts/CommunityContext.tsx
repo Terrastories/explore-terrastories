@@ -155,6 +155,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     const resp = await getPlace(slug, placeId)
     setStories(resp.data.stories.sort((a: TypeStory, b: TypeStory) => (sortOptions[selectedSort].fn(a, b))))
     setSelectedPlace(resp.data)
+    setSelectedStory(undefined)
 
     setLoading(false)
     return resp.data.points

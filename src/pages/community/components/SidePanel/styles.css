@@ -78,11 +78,15 @@
 
 /* Panel Bottom Link Bar */
 .panelContainer .panel .panelLinks {
+  display: flex;
   font-size: smaller;
   padding-top: 0.5rem;
+  column-gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.panelContainer .panel .panelLinks > * + * {
+.panelContainer .panel .panelLinks > div > * + * {
   margin-left: 0.5rem;
 }
 
