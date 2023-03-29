@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Media from 'components/Media'
@@ -85,6 +86,7 @@ svg {
 `
 
 export default function Popup(props: PopupProps) {
+  const { t } = useTranslation()
   const {
     name,
     description,
@@ -116,7 +118,7 @@ export default function Popup(props: PopupProps) {
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
       </Content>
-      <CloseButton onClick={props.handleClose}>
+      <CloseButton onClick={props.handleClose} aria-labelledby={t('close')}>
         <CloseIcon />
       </CloseButton>
       {showModal && photo && name && createPortal(

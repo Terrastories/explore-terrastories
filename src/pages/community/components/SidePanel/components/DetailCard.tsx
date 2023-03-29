@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Icon from 'components/Icon'
@@ -80,6 +81,7 @@ width: 20px;
 }
 `
 export default function PlaceDetailCard() {
+  const { t } = useTranslation()
   const { closePlaceChip, selectedPlace, selectedStory, setSelectedStory,  } = useCommunity()
   const { updateStoryPoints, stashedPoints, setStashedPoints } = useMapConfig()
 
@@ -104,12 +106,12 @@ export default function PlaceDetailCard() {
     } = selectedStory as TypeStory
     return (
       <DetailCardContainer>
-        <CloseButton onClick={handleCloseStoryDetail}><Icon icon={'close'} alt='Dismiss' /></CloseButton>
+        <CloseButton aria-labelledby={t('close')} onClick={handleCloseStoryDetail}><Icon icon={'close'} alt={t('close')} /></CloseButton>
         <Heading>
           <h1 className={'storyHeading'}>
             {selectedPlace &&
               <>
-                <span role='link' aria-labelledby='close' onClick={handleCloseStoryDetail}>{selectedPlace.name}</span>
+                <span role='link' aria-labelledby={t('close')} onClick={handleCloseStoryDetail}>{selectedPlace.name}</span>
                 {" > "}
               </>}
             {title}
@@ -145,7 +147,7 @@ export default function PlaceDetailCard() {
     } = selectedPlace as TypePlace
     return (
       <DetailCardContainer>
-        <CloseButton onClick={handleClosePlaceDetail}><Icon icon={'close'} alt='Dismiss' /></CloseButton>
+        <CloseButton onClick={handleClosePlaceDetail} aria-labelledby={t('close')}><Icon icon={'close'} alt={t('close')} /></CloseButton>
         <Heading>
           <h1>{name}</h1>
           {placenameAudio &&

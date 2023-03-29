@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import useModal from 'hooks/useModal'
@@ -71,6 +72,7 @@ type LightboxProps = {
 }
 
 export default function Lightbox(props: LightboxProps) {
+  const { t } = useTranslation()
   const { onClose, imageSource, name, description } = props
   const { modalRef, contentRef } = useModal(onClose)
 
@@ -82,7 +84,7 @@ export default function Lightbox(props: LightboxProps) {
           <h2>{name}</h2>
           {description}
         </div>
-        <button onClick={onClose}><CloseIcon /></button>
+        <button onClick={onClose} aria-labelledby={t('close')}><CloseIcon /></button>
       </div>
     </LightboxModal>
   )

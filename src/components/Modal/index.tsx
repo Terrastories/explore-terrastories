@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import useModal from 'hooks/useModal'
@@ -51,6 +52,7 @@ type ModalProps = {
 }
 
 export default function Modal(props: ModalProps) {
+  const { t } = useTranslation()
   const { onClose, children } = props
   const { modalRef, contentRef } = useModal(onClose)
 
@@ -58,7 +60,7 @@ export default function Modal(props: ModalProps) {
     <ContentModal ref={modalRef} tabIndex={-1}>
       <div className="content" ref={contentRef}>
         {children}
-        <button onClick={onClose} id='closeButton'><CloseIcon /></button>
+        <button onClick={onClose} id='closeButton' aria-labelledby={t('close')}><CloseIcon /></button>
       </div>
     </ContentModal>
   )
