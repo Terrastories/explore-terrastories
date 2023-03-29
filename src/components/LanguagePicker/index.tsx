@@ -28,8 +28,8 @@ export default function LanguagePicker() {
       <Select
         useTinySelect={true}
         defaultValue={{
-          label: t(`languages.${i18n.language}`),
-          value: i18n.language
+          label: t(`languages.${i18n.resolvedLanguage}`),
+          value: i18n.resolvedLanguage
         }}
         placeholder={'language'}
         options={options()}

@@ -19,7 +19,7 @@ const MiniNavBar = styled.div`
 `
 
 export default function CommunitySwitcherModal({handleClose}: SwitcherModalProps) {
-  const { t, i18n } = useTranslation(['translation', 'community'])
+  const { t } = useTranslation(['translation', 'community'])
   const navigate = useNavigate()
 
   const loadOptions = (
@@ -45,7 +45,7 @@ export default function CommunitySwitcherModal({handleClose}: SwitcherModalProps
         noOptionsMessage={(a)=> t('no_match', {resource: 'communities', input: a.inputValue})}
         onChange={opt => {
           if (!opt) return
-          navigate(`/${i18n.language}/community/${opt.value}`)
+          navigate(`/community/${opt.value}`)
           handleClose()
         }}
       />
