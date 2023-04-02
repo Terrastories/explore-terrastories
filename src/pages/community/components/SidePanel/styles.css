@@ -95,22 +95,18 @@
   .panelContainer {
     max-width: 25rem;
     height: 100%;
-  }
-
-  /* Visible Panel, with transitions to show/hide */
-  .panelContainer .panel {
-    border-right: 1px solid #bbbbbb;
-
-    box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
 
     transition: transform 1s ease-in-out;
   }
 
-  .panelContainer.panelClosed {
-    height: 100%;
+  .panelContainer .panel {
+    border-right: 1px solid #bbbbbb;
+
+    box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
   }
 
-  .panelContainer.panelClosed .panel {
+  .panelContainer.panelClosed {
+    height: 100%;
     -webkit-transform: translateX(-100%);
     -moz-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
@@ -136,13 +132,6 @@
     box-shadow: 3px 2px 3px rgba(102,102,102, 0.1);
 
     transition: transform 1s ease-in-out;
-  }
-
-  .panelContainer.panelClosed .panelTab {
-    -webkit-transform: translateX(-25rem);
-    -moz-transform: translateX(-25rem);
-    -ms-transform: translateX(-25rem);
-    transform: translateX(-25rem);
   }
 
   /* Panel Tab Arrow Content */
