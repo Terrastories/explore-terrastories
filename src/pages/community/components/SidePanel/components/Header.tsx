@@ -26,6 +26,7 @@ const StyledHeader = styled.div`
   img {
     height: 100%;
     max-height: 80px;
+    max-width: 100%;
   }
 
   img.headerLink, h1.headerLink {
