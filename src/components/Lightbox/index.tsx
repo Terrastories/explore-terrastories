@@ -2,6 +2,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
+import Loading from 'components/Loading'
+
 import useModal from 'hooks/useModal'
 
 import { ReactComponent as CloseIcon } from './assets/closeIcon.svg'
@@ -25,6 +27,19 @@ img {
   max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
+
+  &.loading {
+    display: none;
+  }
+}
+
+.imgPlaceholder {
+  width: 600px;
+  height: 450px;
+  background-color: rgb(44 44 44);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .caption {
@@ -76,15 +91,20 @@ export default function Lightbox(props: LightboxProps) {
   const { onClose, imageSource, name, description } = props
   const { modalRef, contentRef } = useModal(onClose)
 
+  const [imgLoading, setImgLoading] = React.useState(true)
+
   return (
     <LightboxModal ref={modalRef} tabIndex={-1}>
       <div className="content" ref={contentRef}>
-        <img src={imageSource} alt={name} />
-        <div className="caption">
-          <h2>{name}</h2>
-          {description}
-        </div>
         <button onClick={onClose} aria-labelledby={t('close')}><CloseIcon /></button>
+        <React.Suspense fallback={<Loading />}>
+          {imgLoading && <div className='imgPlaceholder'><Loading /></div>}
+          <img className={imgLoading ? 'loading' : ''} src={imageSource} alt={name} onLoad={() => setImgLoading(false)} />
+          <div className="caption">
+            <h2>{name}</h2>
+            {description}
+          </div>
+        </React.Suspense>
       </div>
     </LightboxModal>
   )

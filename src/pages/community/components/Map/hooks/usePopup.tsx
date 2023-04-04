@@ -1,57 +1,68 @@
-import { useRef, useMemo, useEffect, MutableRefObject } from 'react'
+import { useRef, useMemo, useCallback, useEffect, MutableRefObject } from 'react'
 import ReactDOM from 'react-dom/client'
 
-import type { Map, MapLayerMouseEvent } from 'mapbox-gl'
+import type { Map } from 'mapbox-gl'
 import { Popup as MBPopup } from 'mapbox-gl'
 
 import Popup from '../components/Popup'
+import {MarkerMouseEvent} from '../components/Marker'
 
-const usePopup = (mapRef: MutableRefObject<Map | null>, layerId: string) => {
+import type { TypePlace } from 'types'
+
+const usePopup = (mapRef: MutableRefObject<Map | null>) => {
   const activePointRef = useRef<number | string | null>(null)
-  const popup = useMemo(() => new MBPopup({closeButton: false, offset: 15, closeOnClick: false, className: "tsPopup"}),[]);
+  const popup = useMemo(
+    () => new MBPopup(
+      {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
+    ),
+    []
+  );
 
-  useEffect(() => {
+  const closePopup = useCallback(() => {
+    popup.remove()
+  }, [popup])
+
+  const openPopup = useCallback((e: MarkerMouseEvent) => {
     if (!mapRef.current) return
     const map = mapRef.current
+    const feature = e.properties as TypePlace
 
-    function closePopup() {
-      popup.remove()
-    }
+    // If map is moving, don't call again
+    if (map.isMoving()) return
+    // Ensure former Popup is closed if active ref is set but doesn't match new
+    // mouse event
+    if ((activePointRef.current !== feature.id) && popup.isOpen()) popup.remove()
+    // If the Popup is already open, don't do anything else.
+    if (popup.isOpen()) return
 
-    function openPopup(e: MapLayerMouseEvent) {
-      if (!e.features) return
-      const feature = e.features[0]
-      if (activePointRef.current === feature.id && popup.isOpen()) return
+    // Set active point ref
+    activePointRef.current = feature.id
 
-      if (feature.id) activePointRef.current = feature.id
+    const lngLat = e.markerTarget.getLngLat()
+    const el = document.createElement("div")
+    const popupNode = ReactDOM.createRoot(el)
+    el.setAttribute('tabindex', '0')
 
-      if (feature.geometry.type === 'Point') {
-        const el = document.createElement("div")
-        el.setAttribute('tabindex', '0')
-        const popupNode = ReactDOM.createRoot(el)
-        const lngLat = feature.geometry.coordinates as [number, number]
+    popupNode.render(
+      <Popup {...feature} handleClose={closePopup} />
+    )
 
-        popupNode.render(
-          <Popup {...feature.properties} handleClose={closePopup} />
-          )
-        popup.setLngLat(lngLat).setDOMContent(el).addTo(map);
-        map.easeTo({center: lngLat, duration: 2000})
-      }
-    }
+    popup.setLngLat(lngLat).setDOMContent(el).addTo(map)
+  }, [popup, mapRef, closePopup])
+
+  useEffect(() => {
     function resetActiveRef() {
       activePointRef.current = null
     }
 
-    map.on('mouseenter', layerId, openPopup)
     popup.on('close', resetActiveRef)
 
     return () => {
-      map.off('mouseenter', layerId, openPopup)
       popup.off('close', resetActiveRef)
     }
-  }, [popup, mapRef, layerId])
+  }, [popup])
 
-  return { popup }
+  return { popup, openPopup, closePopup }
 }
 
 export default usePopup

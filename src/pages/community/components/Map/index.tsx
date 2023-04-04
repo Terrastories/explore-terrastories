@@ -1,6 +1,6 @@
 import React from 'react'
 
-import type { GeoJSONSource, Projection, MapLayerMouseEvent } from 'mapbox-gl'
+import type { Projection } from 'mapbox-gl'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -10,12 +10,16 @@ import useMobile from 'hooks/useMobile'
 
 import Brand from './components/Brand'
 import HomeButton from './components/HomeButton'
+import Marker from './components/Marker'
 import Minimap from './components/Minimap'
 
+import useSupercluster from './hooks/useSupercluster'
 import usePopup from './hooks/usePopup'
-import usePointerCursor from './hooks/usePointerCursor'
 
-import { addMapGeoPoints, addMapImage, loadInitialMapData } from './utils/mapbox'
+import { ReactComponent as MarkerSVG } from './assets/marker.svg'
+import { ReactComponent as ClusterSVG } from './assets/cluster.svg'
+
+import { loadInitialMapData } from './utils/mapbox'
 
 import './styles.css'
 
@@ -59,14 +63,9 @@ export default function Map() {
         projection: {name: config.mapProjection} as Projection
       })
 
-      // Load and add images (can happen before map is loaded)
-      addMapImage({mapRef, url: '/place-marker.png', name: 'ts-marker'})
-      addMapImage({mapRef, url: '/place-marker-cluster.png', name: 'ts-marker-cluster'})
-
       // Add Layers
       mapRef.current.once('load', () => {
         loadInitialMapData({mapRef, points, ...config})
-        addMapGeoPoints({mapRef})
       })
 
       // Add MiniMap
@@ -77,6 +76,7 @@ export default function Map() {
         }), "top-right");
       }
 
+      // Add Brand Logo
       mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right");
 
       // Add Home Control
@@ -89,63 +89,64 @@ export default function Map() {
     }
   }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
 
-  usePopup(mapRef, 'terrastories-points-layer')
-  usePointerCursor(mapRef, ['terrastories-points-layer', 'clusters'])
+  // Initialize Popup
+  const { openPopup } = usePopup(mapRef)
 
-  // Cluster or Place Marker Events
-  React.useEffect(() => {
+  // Cluster and Point Handlers
+  const { supercluster, clusters } = useSupercluster({mapRef, points})
+
+  const handleClusterExpansion = React.useCallback((e: any) => {
     if (!mapRef.current) return
-
     const map = mapRef.current
 
-    function handleClusterExpansion(e: MapLayerMouseEvent) {
-      if (!e.features) return
-      const feature = e.features[0]
+    map.easeTo({
+      zoom: supercluster.getClusterExpansionZoom(e.properties.cluster_id),
+      center: e.markerTarget.getLngLat(),
+      duration: 2000
+    })
 
-      if (feature.properties && feature.properties.cluster_id) {
-        const clusterId = feature.properties.cluster_id
-        const source = map.getSource(feature.source) as GeoJSONSource
+  }, [supercluster, mapRef])
 
-        source.getClusterExpansionZoom(clusterId, (error, zoom) => {
-          if (!error && feature.geometry.type === 'Point')
-            map.easeTo({center: feature.geometry.coordinates as [number, number], zoom: zoom, duration: 2000})
-        })
-      }
-    }
-
-    function handlePointClick(e: MapLayerMouseEvent) {
-      if (!e.features) return
-
-      const feature = e.features[0]
-      if (!feature.id) return
-
-      if (selectedPlace && selectedPlace.id === feature.id ) return
-      fetchPlace(feature.id).then((points) => updateStoryPoints(points))
-    }
-
-    map.on('click', 'clusters', handleClusterExpansion)
-    map.on('click', 'terrastories-points-layer', handlePointClick)
-
-    return () => {
-      map.off('click', 'clusters', handleClusterExpansion)
-      map.off('click', 'terrastories-points-layer', handlePointClick)
-    }
+  const handlePointClick = React.useCallback((e: any) => {
+    if (selectedPlace && (selectedPlace.id === e.properties.id)) return
+    fetchPlace(e.properties.id).then((points) => updateStoryPoints(points))
   }, [selectedPlace, fetchPlace, updateStoryPoints])
 
-  // points updated
-  React.useEffect(() => {
-    if (points.features.length === 0) return
+  // Create Markers from Clusters
+  const markers = React.useMemo(
+    () =>
+      clusters.map((cluster) => {
+        const map = mapRef.current as mapboxgl.Map
+        const [lng, lat] = cluster.geometry.coordinates
+        const el = document.createElement('div')
+        el.classList.add('tsMarker')
+        if (cluster.properties.cluster) {
+          return(
+            <Marker element={el} feature={{...cluster.properties}} onClick={handleClusterExpansion} key={cluster.id} map={map} point={[lng, lat]}>
+              <ClusterSVG />
+              <span>{cluster.properties.point_count_abbreviated}</span>
+            </Marker>
+          )
+        }
+        return(
+          <Marker
+            element={el}
+            onMouseEnter={openPopup}
+            onClick={handlePointClick}
+            key={cluster.id}
+            map={map}
+            point={[lng, lat]}
+            offset={[10, -11]}
+            feature={{id: cluster.id, ...cluster.properties}}
+          >
+          <MarkerSVG />
+        </Marker>
+        )
+    }),
+    [clusters, openPopup, mapRef, handleClusterExpansion, handlePointClick]
+  )
 
-    if (!mapRef.current) return
-    if (!mapRef.current.loaded()) return
-
-    const map = mapRef.current
-    const source = map.getSource('terrastories-points') as GeoJSONSource
-    if (!source) return
-    source.setData(points)
-  }, [points])
-
-  // bounds updated
+  // Map Bounds Changed
   React.useEffect(() => {
     if (!mapRef.current) return
     const map = mapRef.current
@@ -162,6 +163,7 @@ export default function Map() {
       left: 0,
       top: 0,
     }}>
+      {markers}
     </div>
   )
 }

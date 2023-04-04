@@ -1,5 +1,5 @@
 import type { LngLatBoundsLike } from 'mapbox-gl'
-import { FeatureCollection } from 'geojson'
+import { Feature, Point } from 'geojson'
 
 export type TypeMedia = {
   contentType: string,
@@ -26,7 +26,7 @@ export type TypePlace = {
   typeOfPlace: string,
   region: string,
   placenameAudio: string,
-  photoUrl: string,
+  photoUrl: string
 }
 
 export type TypeStory = {
@@ -35,7 +35,7 @@ export type TypeStory = {
   desc?: string,
   topic?: string,
   language?: string,
-  points: any,
+  points: Array<Feature<Point, any>>,
   media: TypeMedia[],
   speakers: TypeSpeaker[],
   places: TypePlace[],
@@ -72,7 +72,7 @@ export type TypeCommunity = {
   storiesCount: number,
   categories: CategoryOption[],
   filters: FilterOption[],
-  points: FeatureCollection,
+  points: Array<Feature<Point, any>>,
   mapConfig: MapData
 }
 

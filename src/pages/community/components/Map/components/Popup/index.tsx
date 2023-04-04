@@ -14,6 +14,7 @@ type FeatureProps = {
   description?: string,
   placenameAudio?: string,
   photo?: string,
+  thumbnail?: string,
   region?: string,
   typeOfPlace?: string,
 }
@@ -62,6 +63,7 @@ padding: 0 10px 10px;
 const StyledImage = styled.img`
 max-height: 200px;
 object-fit: cover;
+cursor: pointer;
 `
 
 const CloseButton = styled.button`
@@ -92,11 +94,14 @@ export default function Popup(props: PopupProps) {
     description,
     placenameAudio,
     photo,
+    thumbnail,
     region,
     typeOfPlace,
   } = props
 
   const [showModal, setShowModal] = useState<boolean>(false)
+
+  let popupImage = thumbnail || photo
 
   return (
     <>
@@ -112,8 +117,8 @@ export default function Popup(props: PopupProps) {
             playIconUrl={speakerIcon}
             audioControls={['play']} />}
       </Heading>
-      {photo &&
-        <StyledImage src={photo} alt={name} onClick={() => setShowModal(true)} />}
+      {popupImage &&
+        <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
       <Content>
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}

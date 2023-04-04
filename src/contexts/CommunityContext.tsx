@@ -3,7 +3,7 @@ import { createContext, useContext, useState, ReactNode } from 'react'
 import { getStories, getStory } from 'api/storyApi'
 import { getPlace } from 'api/placeApi'
 
-import type { FeatureCollection } from 'geojson'
+import type { Feature, Point } from 'geojson'
 import type { TypeStory, TypePlace, FilterOption } from 'types'
 
 type FilterState = {
@@ -36,11 +36,11 @@ const sortOptions:{
 }
 
 interface CommunityCtx {
-  closePlaceChip: () => Promise<FeatureCollection>
+  closePlaceChip: () => Promise<Array<Feature<Point>>>
   dismissIntro: () => void
-  fetchStories: (urlParams: object, useFilterState?: boolean) => Promise<FeatureCollection>
-  fetchStory: (storyId: string) => Promise<FeatureCollection>
-  fetchPlace: (placeId: string | number) => Promise<FeatureCollection>
+  fetchStories: (urlParams: object, useFilterState?: boolean) => Promise<Array<Feature<Point>>>
+  fetchStory: (storyId: string) => Promise<Array<Feature<Point>>>
+  fetchPlace: (placeId: string | number) => Promise<Array<Feature<Point>>>
   handleFilter: (category: string | undefined, options: FilterOption[]) => SelectedFilters
   listView: boolean
   loading: boolean
@@ -67,9 +67,9 @@ const CommunityContext = createContext<CommunityCtx>({
   resetSelections: () => { return },
 
   // API Wrappers
-  fetchStories: (p) => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
-  fetchStory: (p) => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
-  fetchPlace: (p) => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
+  fetchStories: (p) => { return Promise.resolve([]) },
+  fetchStory: (p) => { return Promise.resolve([]) },
+  fetchPlace: (p) => { return Promise.resolve([]) },
 
   // Panel Helpers
   dismissIntro: () => { return },
@@ -84,7 +84,7 @@ const CommunityContext = createContext<CommunityCtx>({
 
   // Place Detail
   selectedPlace: undefined,
-  closePlaceChip: () => { return Promise.resolve({type: "FeatureCollection", features:[]}) },
+  closePlaceChip: () => { return Promise.resolve([]) },
 
   // Sort Helpers
   sortStories: (s) => { return s},

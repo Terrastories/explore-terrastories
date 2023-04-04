@@ -1,23 +1,23 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 
 import type { LngLatBoundsLike } from 'mapbox-gl'
-import type { FeatureCollection } from 'geojson'
+import type { GeoJsonProperties, Feature, Point } from 'geojson'
 import bbox from '@turf/bbox'
 
 import type { MapData } from 'types'
 
 interface MapConfig {
-  points: FeatureCollection
+  points: Array<Feature<Point, GeoJsonProperties>>
   setMapConfig: (c: MapData) => void
-  stashedPoints: FeatureCollection | undefined
-  setStashedPoints: (points: FeatureCollection | undefined) => void
-  updateStoryPoints: (newPoints: FeatureCollection) => void
+  stashedPoints: Array<Feature<Point, GeoJsonProperties>> | undefined
+  setStashedPoints: (points: Array<Feature<Point, GeoJsonProperties>> | undefined) => void
+  updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>) => void
   bounds?: LngLatBoundsLike
 }
 
 const MapContext = createContext<MapConfig & MapData>({
   // Map Layers
-  points: {type: "FeatureCollection", features:[]},
+  points: [],
   setMapConfig: (c: MapData) => {return},
   stashedPoints: undefined,
   setStashedPoints: (p) => { return p },
@@ -34,15 +34,19 @@ const MapContext = createContext<MapConfig & MapData>({
   mapProjection: 'mercator'
 })
 
-export const MapContextProvider = ({ children, initialPoints, initialMapConfig }: {children: ReactNode, initialPoints: FeatureCollection, initialMapConfig: MapData}) => {
-  const [points, setPoints] = useState<FeatureCollection>(initialPoints)
-  const [stashedPoints, setStashedPoints] = useState<FeatureCollection>()
+export const MapContextProvider = ({ children, initialPoints, initialMapConfig }: {children: ReactNode, initialPoints: Array<Feature<Point, GeoJsonProperties>>, initialMapConfig: MapData}) => {
+  const [points, setPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>(initialPoints)
+  const [stashedPoints, setStashedPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>()
 
   const [bounds, setBounds] = useState<LngLatBoundsLike>()
 
-  function updateStoryPoints(newPoints: FeatureCollection) {
+  function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>) {
     setPoints(newPoints)
-    setBounds(bbox(newPoints) as LngLatBoundsLike)
+    const bounds = {
+      type: 'FeatureCollection',
+      features: newPoints
+    }
+    setBounds(bbox(bounds) as LngLatBoundsLike)
   }
 
   const [mapConfig, setMapConfig] = useState<MapData>(initialMapConfig)

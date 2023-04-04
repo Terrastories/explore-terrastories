@@ -37,3 +37,19 @@
   vertical-align: middle;
   padding: 5px;
 }
+
+.tsMarker {
+  cursor: pointer;
+}
+
+.tsMarker span {
+  font-family: 'OpenSansCondensed-Bold';
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  line-height: 1.5rem;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+}

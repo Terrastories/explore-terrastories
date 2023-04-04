@@ -1,5 +1,5 @@
 import React from 'react';
-import { FeatureCollection } from 'geojson'
+import { Feature, Point } from 'geojson'
 import type { MapData } from 'types'
 
 type MapImageOptions = {
@@ -18,7 +18,7 @@ export function addMapImage({mapRef, url, name}: MapImageOptions) {
 type LoadMapOptions = {
   mapRef: React.MutableRefObject<any>,
   localMapServer?: boolean,
-  points: FeatureCollection
+  points: Array<Feature<Point, any>>
 }
 
 export function loadInitialMapData({
@@ -33,7 +33,10 @@ export function loadInitialMapData({
     'terrastories-points',
     {
       type: 'geojson',
-      data: points,
+      data: {
+        type: 'FeatureCollection',
+        features: points,
+      },
       cluster: true,
       clusterMaxZoom: 14,
       clusterRadius: 50
@@ -74,7 +77,7 @@ export function loadInitialMapData({
 
 type GeoPointsOptions = {
   mapRef: React.MutableRefObject<any>,
-  points?: FeatureCollection,
+  points?: Array<Feature<Point>>,
 }
 
 export function addMapGeoPoints({
