@@ -57,7 +57,7 @@ svg.icon--pressed {
 `
 
 const Content = styled.div`
-padding: 0 10px 10px;
+padding: 5px;
 `
 
 const StyledImage = styled.img`

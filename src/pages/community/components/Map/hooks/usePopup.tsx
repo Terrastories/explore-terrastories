@@ -42,6 +42,8 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
     const el = document.createElement("div")
     const popupNode = ReactDOM.createRoot(el)
     el.setAttribute('tabindex', '0')
+    // ensures there is no added margins
+    el.style.display = 'inline-grid'
 
     popupNode.render(
       <Popup {...feature} handleClose={closePopup} />
