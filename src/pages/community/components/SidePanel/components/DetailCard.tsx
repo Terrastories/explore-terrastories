@@ -123,7 +123,7 @@ export default function PlaceDetailCard() {
               <Icon icon={'language'} alt={'language'} />
               {language}
             </span>}
-          {<span className={'badge'}>{topic}</span>}
+          {topic && <span className={'badge'}>{topic}</span>}
         { places && <div className='placesGrid'>
           {places.map((p) => (
             <div key={p.id} className={'iconGroup'}>
