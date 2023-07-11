@@ -42,6 +42,11 @@ function Home() {
     })
   }, [setSearchQuery])
 
+  // Translate title (default is English)
+  React.useEffect(() => {
+    document.title = t('explore') + ' Terrastories';
+  }, [t])
+
   return (
     <main className='homeMain'>
       <Header />

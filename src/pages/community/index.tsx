@@ -1,6 +1,7 @@
 import React from 'react'
 import { Await, defer, useLoaderData, useAsyncValue } from 'react-router-dom'
 import type { LoaderFunctionArgs } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import NotFound from 'components/NotFound'
 
@@ -30,12 +31,33 @@ export async function communityLoader({request, params}: LoaderFunctionArgs) {
 }
 
 function Provider() {
+  const { t, i18n } = useTranslation()
   const { updateStoryPoints, setMapConfig, setStashedPoints } = useMapConfig()
   const { resetSelections, slug } = useCommunity()
 
   const communityRef = React.useRef(slug)
 
   const community = useAsyncValue() as TypeCommunity
+
+  const updateBrowserTitle = React.useCallback(() => {
+    let title = t('explore') + ' Terrastories'
+    if (community.name)
+      title += ' | ' + community.name
+    document.title =  title
+  }, [t, community])
+
+  // Ensure browser title is updated on community first render
+  React.useEffect(() => {
+    updateBrowserTitle()
+  }, [updateBrowserTitle])
+
+  // Ensure browser title is updated every time langauge is changed
+  React.useEffect(() => {
+    i18n.on('languageChanged', updateBrowserTitle)
+    return () => {
+      i18n.off('languageChanged', updateBrowserTitle)
+    }
+  }, [i18n, updateBrowserTitle])
 
   React.useEffect(() => {
     if (communityRef.current !== community.slug ) {
