@@ -27,7 +27,7 @@ export default function LanguagePicker() {
     <React.Suspense>
       <Select
         useTinySelect={true}
-        defaultValue={{
+        value={{
           label: t(`languages.${i18n.resolvedLanguage}`),
           value: i18n.resolvedLanguage
         }}
