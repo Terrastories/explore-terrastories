@@ -1,15 +1,23 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 
-import type { LngLatBoundsLike } from 'mapbox-gl'
+import type { LngLatLike, LngLatBoundsLike } from 'mapbox-gl'
 import type { GeoJsonProperties, Feature, Point } from 'geojson'
+
 import bbox from '@turf/bbox'
+import center from '@turf/center'
+import {featureCollection} from '@turf/helpers'
+
+type MapBounds = {
+  bounds: LngLatBoundsLike,
+  center: LngLatLike
+}
 
 interface MapConfig {
   points: Array<Feature<Point, GeoJsonProperties>>
   stashedPoints: Array<Feature<Point, GeoJsonProperties>> | undefined
   setStashedPoints: (points: Array<Feature<Point, GeoJsonProperties>> | undefined) => void
   updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>) => void
-  bounds?: LngLatBoundsLike
+  bounds?: MapBounds
 }
 
 const MapContext = createContext<MapConfig>({
@@ -24,15 +32,15 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
   const [points, setPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>(initialPoints)
   const [stashedPoints, setStashedPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>()
 
-  const [bounds, setBounds] = useState<LngLatBoundsLike>()
+  const [bounds, setBounds] = useState<MapBounds>()
 
   function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>) {
     setPoints(newPoints)
-    const bounds = {
-      type: 'FeatureCollection',
-      features: newPoints
-    }
-    setBounds(bbox(bounds) as LngLatBoundsLike)
+    const bounds = featureCollection(newPoints)
+    setBounds({
+      bounds: bbox(bounds) as LngLatBoundsLike,
+      center: center(bounds).geometry.coordinates as LngLatLike
+    })
   }
 
   return (

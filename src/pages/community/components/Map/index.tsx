@@ -152,7 +152,7 @@ export default function Map({config}: {config: MapData}) {
     if (!mapRef.current) return
     const map = mapRef.current
     if (bounds) {
-      map.fitBounds(bounds, {padding: 50, duration: 2000.0, maxZoom: 12})
+      map.fitBounds(bounds.bounds, {center: bounds.center, padding: 50, duration: 2000.0, maxZoom: 12})
     }
   }, [bounds])
 
