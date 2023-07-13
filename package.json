@@ -17,7 +17,7 @@
     "axios": "^1.2.1",
     "i18next": "^22.4.13",
     "i18next-browser-languagedetector": "^7.0.1",
-    "mapbox-gl": "^2.12.0",
+    "mapbox-gl": "^2.15.0",
     "plyr-react": "^5.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
