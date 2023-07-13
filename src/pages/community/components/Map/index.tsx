@@ -20,14 +20,15 @@ import { ReactComponent as MarkerSVG } from './assets/marker.svg'
 import { ReactComponent as ClusterSVG } from './assets/cluster.svg'
 
 import { loadInitialMapData } from './utils/mapbox'
+import type { MapData } from 'types'
 
 import './styles.css'
 
-export default function Map() {
+export default function Map({config}: {config: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
-  const { points, updateStoryPoints, bounds, ...config } = useMapConfig()
+  const { points, updateStoryPoints, bounds } = useMapConfig()
   const { selectedPlace, fetchPlace } = useCommunity()
 
   const isMobile = useMobile()

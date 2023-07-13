@@ -4,37 +4,23 @@ import type { LngLatBoundsLike } from 'mapbox-gl'
 import type { GeoJsonProperties, Feature, Point } from 'geojson'
 import bbox from '@turf/bbox'
 
-import type { MapData } from 'types'
-
 interface MapConfig {
   points: Array<Feature<Point, GeoJsonProperties>>
-  setMapConfig: (c: MapData) => void
   stashedPoints: Array<Feature<Point, GeoJsonProperties>> | undefined
   setStashedPoints: (points: Array<Feature<Point, GeoJsonProperties>> | undefined) => void
   updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>) => void
   bounds?: LngLatBoundsLike
 }
 
-const MapContext = createContext<MapConfig & MapData>({
+const MapContext = createContext<MapConfig>({
   // Map Layers
   points: [],
-  setMapConfig: (c: MapData) => {return},
   stashedPoints: undefined,
   setStashedPoints: (p) => { return p },
-  updateStoryPoints: (p) => { return p },
-
-  // Map Config Defaults
-  useLocalServer: false,
-  center: [0, 0],
-  zoom: 0,
-  pitch: 0,
-  bearing: 0,
-  maxBounds: undefined,
-  mapbox3dEnabled: false,
-  mapProjection: 'mercator'
+  updateStoryPoints: (p) => { return p }
 })
 
-export const MapContextProvider = ({ children, initialPoints, initialMapConfig }: {children: ReactNode, initialPoints: Array<Feature<Point, GeoJsonProperties>>, initialMapConfig: MapData}) => {
+export const MapContextProvider = ({ children, initialPoints }: {children: ReactNode, initialPoints: Array<Feature<Point, GeoJsonProperties>>}) => {
   const [points, setPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>(initialPoints)
   const [stashedPoints, setStashedPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>()
 
@@ -49,18 +35,14 @@ export const MapContextProvider = ({ children, initialPoints, initialMapConfig }
     setBounds(bbox(bounds) as LngLatBoundsLike)
   }
 
-  const [mapConfig, setMapConfig] = useState<MapData>(initialMapConfig)
-
   return (
     <MapContext.Provider
       value={{
         points,
-        setMapConfig,
         updateStoryPoints,
         stashedPoints,
         setStashedPoints,
-        bounds,
-        ...mapConfig
+        bounds
       }}
     >
       {children}

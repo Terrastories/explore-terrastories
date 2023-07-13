@@ -32,7 +32,7 @@ export async function communityLoader({request, params}: LoaderFunctionArgs) {
 
 function Provider() {
   const { t, i18n } = useTranslation()
-  const { updateStoryPoints, setMapConfig, setStashedPoints } = useMapConfig()
+  const { updateStoryPoints, setStashedPoints } = useMapConfig()
   const { resetSelections, slug } = useCommunity()
 
   const communityRef = React.useRef(slug)
@@ -64,15 +64,14 @@ function Provider() {
       communityRef.current = community.slug
 
       resetSelections()
-      setMapConfig(community.mapConfig)
       setStashedPoints(undefined)
       updateStoryPoints(community.points)
     }
-  }, [communityRef, community, updateStoryPoints, setMapConfig, setStashedPoints, resetSelections])
+  }, [communityRef, community, updateStoryPoints, setStashedPoints, resetSelections])
 
   return (
     <React.Fragment>
-      <Map />
+      <Map key={community.slug} config={community.mapConfig} />
       <SidePanel community={community} />
     </React.Fragment>
   )
@@ -88,7 +87,7 @@ export default function Community() {
           errorElement={<NotFound />}>
             {(community) => (
               <CommunityProvider slug={community.slug}>
-                <MapContextProvider initialPoints={community.points} initialMapConfig={community.mapConfig}>
+                <MapContextProvider initialPoints={community.points}>
                   <Provider />
                 </MapContextProvider>
               </CommunityProvider>
