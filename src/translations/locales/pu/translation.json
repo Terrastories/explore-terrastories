@@ -27,6 +27,14 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "ਕਹਾਣੀਆਂ ਨੂੰ ਫਿਲਟਰ ਕਰੋ",
+  "filterable_categories": {
+    "places": "ਸਥਾਨ",
+    "region": "ਖੇਤਰ",
+    "type_of_place": "ਜਗ੍ਹਾ ਦੀ ਕਿਸਮ",
+    "speakers": "ਸਪੀਕਰ",
+    "topic": "ਵਿਸ਼ਾ",
+    "language": "ਭਾਸ਼ਾ"
+  },
   "go_back": "Go back",
   "login": "ਲਾਗਇਨ",
   "no_match": "No {{resource}} match '{{input}}'",

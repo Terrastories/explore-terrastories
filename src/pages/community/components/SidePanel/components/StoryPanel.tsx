@@ -7,10 +7,10 @@ import StoryFilters from './StoryFilters'
 import DetailCard from './DetailCard'
 import StoryList from './StoryList'
 
-import { FilterOption, CategoryOption } from 'types'
+import { FilterOption } from 'types'
 
 type PanelProps = {
-  categories: CategoryOption[],
+  categories: string[],
   filters: FilterOption[],
   storiesCount: number,
 }

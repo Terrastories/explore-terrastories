@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "Filtrar historias",
+  "filterable_categories": {
+    "places": "Lugares",
+    "region": "Región",
+    "type_of_place": "Tipo de lugar",
+    "speakers": "Oradores",
+    "topic": "Tema",
+    "language": "Idioma",
+    "speaker_community": "Comunidad del Orador"
+  },
   "go_back": "Regresa",
   "login": "Iniciar sesión",
   "no_match": "No {{resource}} match '{{input}}'",

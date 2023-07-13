@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "フィルタ",
+  "filterable_categories": {
+    "places": "プレース",
+    "region": "リージョン",
+    "type_of_place": "プレースタイプ",
+    "speakers": "スピーカー",
+    "topic": "トピック",
+    "language": "言語",
+    "speaker_community": "スピーカーのコミュニティ"
+  },
   "go_back": "Go back",
   "login": "ログイン",
   "no_match": "No {{resource}} match '{{input}}'",

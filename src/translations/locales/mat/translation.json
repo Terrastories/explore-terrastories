@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "Luku fini",
+  "filterable_categories": {
+    "places": "Plaatsen",
+    "region": "Pisiwata",
+    "type_of_place": "Sooti kamia",
+    "speakers": "Sprekers",
+    "topic": "Onderwerp",
+    "language": "Tongo",
+    "speaker_community": "Sprekersgemeenschap"
+  },
   "go_back": "Go back",
   "login": "Skiif i ne",
   "no_match": "No {{resource}} match '{{input}}'",

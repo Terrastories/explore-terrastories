@@ -7,11 +7,16 @@ import { useCommunity } from 'contexts/CommunityContext'
 import { useMapConfig } from 'contexts/MapContext'
 
 import type { ActionMeta, SelectInstance, SingleValue, PropsValue } from 'react-select'
-import { FilterOption, CategoryOption } from 'types'
+import { FilterOption } from 'types'
 
 type Props = {
-  categories: CategoryOption[],
+  categories: string[],
   filters: FilterOption[],
+}
+
+interface CategoryOption {
+  label: string
+  value: string
 }
 
 interface IFilterState {
@@ -112,13 +117,15 @@ export default function StoryFilters(props: Props) {
     }
   }, [selectedFilter, filters])
 
+  const localizedCategories = categories.map((c) => ({label: t(`filterable_categories.${c}`), value: c})) as CategoryOption[]
+
   return (
     <FilterSelectGroup>
       <div>{t('filter_stories')}</div>
       <Select
         placeholder={t('select_category')}
-        options={categories}
-        value={categories.find(c => c.value === selectedFilter)}
+        options={localizedCategories}
+        value={localizedCategories.find(c => c.value === selectedFilter)}
         className={"filterSelect"}
         isClearable={true}
         onChange={handleCategoryChange} />

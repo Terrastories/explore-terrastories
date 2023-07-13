@@ -27,6 +27,14 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "कहानियों को फ़िल्टर करें",
+  "filterable_categories": {
+    "places": "स्थानों",
+    "region": "क्षेत्र",
+    "type_of_place": "स्थान का प्रकार",
+    "speakers": "वक्ताओं",
+    "topic": "विषय",
+    "language": "भाषा"
+  },
   "go_back": "Go back",
   "login": "लॉग इन करें",
   "no_match": "No {{resource}} match '{{input}}'",

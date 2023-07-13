@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "Chuja hadithi",
+  "filterable_categories": {
+    "places": "Maeneo",
+    "region": "Eneo",
+    "type_of_place": "Aina ya eneo",
+    "speakers": "Wazungumzaji",
+    "topic": "Mada",
+    "language": "Lugha",
+    "speaker_community": "Jumuiya ya mzungumzaji"
+  },
   "go_back": "Go back",
   "login": "Ingia",
   "no_match": "No {{resource}} match '{{input}}'",

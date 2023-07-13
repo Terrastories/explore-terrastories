@@ -70,15 +70,10 @@ export type TypeCommunity = {
   details: TypeCommunityDetails,
   displayImage?: string,
   storiesCount: number,
-  categories: CategoryOption[],
+  categories: string[],
   filters: FilterOption[],
   points: Array<Feature<Point, any>>,
   mapConfig: MapData
-}
-
-export interface CategoryOption {
-  label: string
-  value: string
 }
 
 export interface FilterOption {

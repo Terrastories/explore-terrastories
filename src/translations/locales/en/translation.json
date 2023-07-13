@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "Filter Stories",
+  "filterable_categories": {
+    "places": "Places",
+    "region": "Region",
+    "type_of_place": "Type of place",
+    "speakers": "Speakers",
+    "topic": "Topic",
+    "language": "Language",
+    "speaker_community": "Speaker Community"
+  },
   "go_back": "Go back",
   "login": "Log In",
   "no_match": "No {{resource}} match '{{input}}'",

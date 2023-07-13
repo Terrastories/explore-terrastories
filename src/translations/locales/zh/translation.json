@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "筛选故事",
+  "filterable_categories": {
+    "places": "地点",
+    "region": "地区",
+    "type_of_place": "地点类型",
+    "speakers": "演讲人",
+    "topic": "主题",
+    "language": "语言",
+    "speaker_community": "演讲者的社区"
+  },
   "go_back": "Go back",
   "login": "登录",
   "no_match": "No {{resource}} match '{{input}}'",

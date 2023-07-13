@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "ታሪኮችን አጣራ",
+  "filterable_categories": {
+    "places": "ቦታዎች",
+    "region": "ክልል",
+    "type_of_place": "የቦታ አይነት",
+    "speakers": "ተናጋሪዎች",
+    "topic": "ርዕስ",
+    "language": "ቋንቋ",
+    "speaker_community": "የተናጋሪው ማህበረሰብ"
+  },
   "go_back": "Go back",
   "login": "ግባ",
   "no_match": "ምንም {{resources}} ተዛማጅ '{{input}}'።",

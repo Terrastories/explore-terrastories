@@ -27,6 +27,15 @@
     "unsupported_media": "Unable to render this media."
   },
   "filter_stories": "Verhalen filteren",
+  "filterable_categories": {
+    "places": "Plaatsen",
+    "region": "Regio",
+    "type_of_place": "Soort plek",
+    "speakers": "Sprekers",
+    "topic": "Onderwerp",
+    "language": "Taal",
+    "speaker_community": "Sprekersgemeenschap"
+  },
   "go_back": "Go back",
   "login": "Login",
   "no_match": "No {{resource}} match '{{input}}'",
