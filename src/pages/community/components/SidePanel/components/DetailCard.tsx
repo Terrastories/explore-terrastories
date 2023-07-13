@@ -2,12 +2,10 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Icon from 'components/Icon'
-import Media from 'components/Media'
 
 import { useCommunity } from 'contexts/CommunityContext'
 import { useMapConfig } from 'contexts/MapContext'
 
-import speakerIconUrl from '../speakerPhone.svg'
 import type { TypeStory, TypePlace } from 'types'
 
 const DetailCardContainer = styled.div`
@@ -141,7 +139,6 @@ export default function PlaceDetailCard() {
     const {
       name,
       description,
-      placenameAudio,
       region,
       typeOfPlace,
     } = selectedPlace as TypePlace
@@ -150,13 +147,6 @@ export default function PlaceDetailCard() {
         <CloseButton onClick={handleClosePlaceDetail} aria-labelledby={t('close')}><Icon icon={'close'} alt={t('close')} /></CloseButton>
         <Heading>
           <h1>{name}</h1>
-          {placenameAudio &&
-            <Media
-              blob={`${name}-audio`}
-              url={placenameAudio}
-              contentType='audio'
-              playIconUrl={speakerIconUrl}
-              audioControls={['play']} />}
         </Heading>
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
