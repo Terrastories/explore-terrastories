@@ -19,7 +19,7 @@ import usePopup from './hooks/usePopup'
 import { ReactComponent as MarkerSVG } from './assets/marker.svg'
 import { ReactComponent as ClusterSVG } from './assets/cluster.svg'
 
-import { loadInitialMapData } from './utils/mapbox'
+import { loadTerrainAndFog } from './utils/mapbox'
 import type { MapData } from 'types'
 
 import './styles.css'
@@ -64,9 +64,9 @@ export default function Map({config}: {config: MapData}) {
         projection: {name: config.mapProjection} as Projection
       })
 
-      // Add Layers
+      // Add applicable 3D and Globe Layers
       mapRef.current.once('load', () => {
-        loadInitialMapData({mapRef, points, ...config})
+        loadTerrainAndFog({mapRef, ...config})
       })
 
       // Add MiniMap
@@ -88,7 +88,7 @@ export default function Map({config}: {config: MapData}) {
       const nav = new mapboxgl.NavigationControl({});
       mapRef.current.addControl(nav, 'top-right')
     }
-  }, [mapContainerRef, resetMap, points, mapRef, config, isMobile])
+  }, [mapContainerRef, resetMap, mapRef, config, isMobile])
 
   // Initialize Popup
   const { openPopup } = usePopup(mapRef)
