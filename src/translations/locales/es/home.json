@@ -5,7 +5,6 @@
     "placeholder": "Busca una communidad"
   },
   "sidebar": {
-    "intro": "Terrastories son grabaciones audiovisuales de historias autóctonas.",
-    "about": "Esta aplicación compatible offline permite a las comunidades locales ubicar en un mapa sus narraciones tradicionales sobre los lugares que representan un valor significativo para ellos."
+    "about": "Terrastories son grabaciones audiovisuales de historias autóctonas.\n\nEsta aplicación compatible offline permite a las comunidades locales ubicar en un mapa sus narraciones tradicionales sobre los lugares que representan un valor significativo para ellos."
   }
 }

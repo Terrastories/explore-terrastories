@@ -69,6 +69,7 @@ export type TypeCommunity = {
   description?: string,
   details: TypeCommunityDetails,
   displayImage?: string,
+  staticMapUrl?: string,
   storiesCount: number,
   categories: string[],
   filters: FilterOption[],

@@ -2,6 +2,7 @@ import React, { startTransition } from 'react'
 import { Await, useLoaderData, useSearchParams } from 'react-router-dom'
 import type { LoaderFunctionArgs } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 import { getCommunities } from 'api/communityApi'
 
@@ -13,8 +14,6 @@ import CommunityList from './components/CommunityList'
 
 import { TypeCommunity } from 'types'
 
-import './styles.css'
-
 export async function homeLoader({request}: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get("query");
@@ -24,6 +23,13 @@ export async function homeLoader({request}: LoaderFunctionArgs) {
 type CommunitiesThing = {
   communities: Promise<TypeCommunity[]>
 }
+
+const MainContent = styled.div`
+margin: 0 3rem;
+display: grid;
+gap: 3rem;
+grid-template-columns: 1fr 4fr;
+`
 
 function Home() {
   const { t } = useTranslation()
@@ -50,14 +56,13 @@ function Home() {
   return (
     <main className='homeMain'>
       <Header />
-      <div className="contentMain">
+      <MainContent>
         <React.Suspense fallback={<Loading />}>
           <Sidebar
             searchQuery={searchQuery.get('query')}
             handleSearch={handleSearch}
           />
           <div>
-            <h2>{t('communities')}</h2>
             <React.Suspense fallback={<Loading />}>
               <Await
                 resolve={data.communities}
@@ -69,7 +74,7 @@ function Home() {
             </React.Suspense>
           </div>
         </React.Suspense>
-      </div>
+      </MainContent>
     </main>
   );
 }

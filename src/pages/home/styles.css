@@ -1,9 +1,0 @@
-main.homeMain {
-  margin: 0 3rem;
-}
-
-div.contentMain {
-  display: grid;
-  gap: 3rem;
-  grid-template-columns: 200px 4fr;
-}

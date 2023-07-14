@@ -3,8 +3,8 @@
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: masonry; /* only maybe works on Firefox */
   gap: 3rem;
-  margin-bottom: 3rem;
-  max-width: 700px;
+  margin: 3rem 0;
+  max-width: 800px;
 }
 
 .emptyGrid {
@@ -19,6 +19,7 @@
   display: block;
   text-decoration: none;
   color: black;
+  max-width: 376px;
 }
 
 .communityItem:hover, .communityItem:active {
@@ -37,12 +38,20 @@
 }
 
 .communityItem img {
-  height: 150px;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
-@media screen and (min-width: 768px) {
+.staticMapBox {
+  height: 250px;
+  width: 100%;
+  border: 0.5px solid #cfcfcf;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 10px #cfcfcf);
+}
+
+@media screen and (min-width: 1000px) {
   .communityGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
