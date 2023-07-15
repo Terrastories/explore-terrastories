@@ -1,15 +1,9 @@
 .panelContainer {
+  user-select: none;
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 40%;
-  transition: height 1s ease-in-out;
-}
-
-.panelContainer.panelFullScreen {
-  /* 50px is the height of the mobile fullscreen header */
-  /* 2.5rem is the height of the mobile panel tab */
-  height: calc(100% - 50px - 2.5rem);
+  max-height: calc(100% - 50px - 2.5rem);
 }
 
 .panelContainer .panel {
@@ -21,14 +15,9 @@
   background: #efefef;
 
   padding: 1rem;
-  transition: height 1s ease-in-out;
 
   display: flex;
   flex-direction: column;
-}
-
-.panelContainer.panelClosed {
-  height: 0;
 }
 
 .panelContainer .panelTab {
@@ -56,7 +45,7 @@
   transform: none;
 }
 
-.panelContainer.panelFullScreen .panelTab::before {
+/* .panelContainer.panelFullScreen .panelTab::before {
   display: inline-block;
   content: "▲";
   transform: rotate(180deg);
@@ -74,7 +63,7 @@
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transition: transform 1s ease-in-out 0.9s;
-}
+} */
 
 /* Panel Bottom Link Bar */
 .panelContainer .panel .panelLinks {
@@ -95,8 +84,9 @@
   .panelContainer {
     max-width: 25rem;
     height: 100%;
+    max-height: 100%;
 
-    transition: transform 1s ease-in-out;
+    /* transition: transform 1s ease-in-out; */
   }
 
   .panelContainer .panel {
@@ -107,10 +97,10 @@
 
   .panelContainer.panelClosed {
     height: 100%;
-    -webkit-transform: translateX(-100%);
+    /* -webkit-transform: translateX(-100%);
     -moz-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
-    transform: translateX(-100%);
+    transform: translateX(-100%); */
   }
 
   /* Panel Tab for controlling the Panel */

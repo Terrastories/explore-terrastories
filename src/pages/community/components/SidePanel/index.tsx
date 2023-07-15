@@ -1,6 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { animated, SpringValues } from '@react-spring/web'
 
 import LanguagePicker from 'components/LanguagePicker'
 
@@ -11,6 +12,9 @@ import Header from './components/Header'
 import ExploreIntro from './components/ExploreIntro'
 import StoryPanel from './components/StoryPanel'
 
+import useMouseDraggable from './hooks/useMouseDraggable'
+import useTouchDraggable from './hooks/useTouchDraggable'
+
 import useMobile from 'hooks/useMobile'
 
 import type { TypeCommunity } from 'types'
@@ -20,56 +24,43 @@ import './styles.css'
 type PanelProps = {
   community: TypeCommunity
 }
+type PanelSpringValues = SpringValues<{
+  height?: string
+  x?: number
+}>
 
 export default function SidePanel({ community }: PanelProps) {
-  const { t } = useTranslation();
-  const [open, setOpen] = React.useState<boolean>(true)
-  const [fullScreen, setfullScreen] = React.useState<boolean>(false)
-  const [touchStart, setTouchStart] = React.useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = React.useState<number | null>(null)
+  const { t } = useTranslation()
+
+  const panelRef = React.useRef<HTMLDivElement>(null)
+  const panelResizeableRef = React.useRef<HTMLDivElement>(null)
 
   const { showIntro } = useCommunity()
+  const { isMobile } = useMobile()
 
-  const isMobile = useMobile()
+  // Community Switcher Modal
+  const [showCommunitySwitcherModal, setShowCommunitySwitcherModal] = React.useState<boolean>(false)
 
-  // Panel Event Handlers
-  const handlePanelToggle: React.MouseEventHandler = () => {
-    // Don't handle mouse toggle events if mobile (this should only be relevant on browser mobile)
-    if (isMobile) return
+  // Panel Responsive Mouse Events
+  const { browserSprings, open } = useMouseDraggable(panelRef, panelResizeableRef, isMobile)
 
-    setOpen(!open)
-  }
+  // Panel Mobile Touch Events
+  const { mobileSprings, dragging, touchEnd } = useTouchDraggable(panelRef, panelResizeableRef, isMobile)
 
-  const handlePanelSwipeStart: React.TouchEventHandler = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientY)
-  }
-  const handlePanelSwipeMove: React.TouchEventHandler = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientY)
-  }
-  const handlePanelSwipeEnd: React.TouchEventHandler = (e: React.TouchEvent) => {
-    if (!touchStart || !touchEnd) return
 
-    if (fullScreen && touchStart < touchEnd) {
-      setfullScreen(false)
-    } else if (open && touchStart > touchEnd) {
-      setfullScreen(true)
+  // Dynamic Panel Styles
+  // These are either set by react-spring or mobile drag events
+  const panelStyles = (springs: PanelSpringValues) => {
+    if (dragging) {
+      return { top: touchEnd }
     } else {
-      setOpen(!open)
+      return springs
     }
   }
 
-  // Modal
-  const [showCommunitySwitcherModal, setShowCommunitySwitcherModal] = React.useState<boolean>(false)
-
   return (
-    <div className={`panelContainer ${fullScreen ? "panelFullScreen" : open ? "panelOpen" : "panelClosed"}`}>
-      <div className="panelTab"
-        onClick={handlePanelToggle}
-        onTouchStart={handlePanelSwipeStart}
-        onTouchMove={handlePanelSwipeMove}
-        onTouchEnd={handlePanelSwipeEnd}
-      ></div>
+    <animated.div ref={panelRef} style={panelStyles(isMobile ? mobileSprings : browserSprings)} className={`panelContainer ${open ? "panelOpen" : "panelClosed"}`}>
+      <div ref={panelResizeableRef} className="panelTab"></div>
       <div className="panel">
         <Header
           displayLogo={community.details.displayImage}
@@ -94,6 +85,6 @@ export default function SidePanel({ community }: PanelProps) {
         <CommunitySwitcherModal handleClose={() => setShowCommunitySwitcherModal(false)} />,
         document.body
       )}
-    </div>
+    </animated.div>
   )
 }

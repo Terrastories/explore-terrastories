@@ -37,3 +37,7 @@ code {
 * {
   box-sizing: border-box;
 }
+
+html.disableOverflowSwipe, body.disableOverflowSwipe {
+  overscroll-behavior: none;
+}

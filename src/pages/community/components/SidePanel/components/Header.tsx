@@ -40,7 +40,7 @@ const StyledHeader = styled.div`
 `
 
 export default function Header({displayLogo, name}:{displayLogo?: string, name: string}) {
-  const isMobile = useMobile()
+  const { isMobile } = useMobile()
 
   const { showIntro, toggleIntroPanel } = useCommunity()
 

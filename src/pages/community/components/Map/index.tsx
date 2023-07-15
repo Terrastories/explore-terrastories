@@ -31,7 +31,7 @@ export default function Map({config}: {config: MapData}) {
   const { points, updateStoryPoints, bounds } = useMapConfig()
   const { selectedPlace, fetchPlace } = useCommunity()
 
-  const isMobile = useMobile()
+  const { isMobile } = useMobile()
 
   const resetMap = React.useCallback((trigger = "") => {
     if (mapRef.current) {

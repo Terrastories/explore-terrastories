@@ -16,5 +16,10 @@ export default function useMobile() {
     }
   })
 
-  return isMobile
+  const toggleOverscroll = () => {
+    document.documentElement.classList.toggle('disableOverflowSwipe')
+    document.body.classList.toggle('disableOverflowSwipe')
+  }
+
+  return { isMobile, toggleOverscroll }
 }
