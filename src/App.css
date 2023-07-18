@@ -65,7 +65,7 @@ p {
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
 }
-.badge > img {
+.badge > svg {
   height: 18px;
   width: 18px;
   vertical-align: middle;

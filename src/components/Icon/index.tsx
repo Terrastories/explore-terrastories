@@ -1,39 +1,34 @@
-import LanguageWorldIcon from './assets/language.svg'
-import PinIcon from './assets/pin.svg'
-import GridIcon from './assets/gridView.svg'
-import ListIcon from './assets/listView.svg'
-import SortIcon from './assets/sort.svg'
-import CloseIcon from './assets/closeX.svg'
-import SpeakerIcon from './assets/speakerPhone.svg'
+import {ReactComponent as LanguageWorldIcon } from './assets/language.svg'
+import {ReactComponent as PinIcon } from './assets/pin.svg'
+import {ReactComponent as GridIcon } from './assets/gridView.svg'
+import {ReactComponent as ListIcon } from './assets/listView.svg'
+import {ReactComponent as SortIcon } from './assets/sort.svg'
+import {ReactComponent as CloseIcon } from './assets/closeX.svg'
+import {ReactComponent as AudioIcon } from './assets/volume.svg'
+import {ReactComponent as ImageIcon } from './assets/image.svg'
+import {ReactComponent as VideoIcon } from './assets/video.svg'
 
 export default function Icon({icon, alt}:{icon: string, alt: string}) {
-  var src
   switch (icon) {
     case 'language':
-      src = LanguageWorldIcon
-      break
+      return <LanguageWorldIcon/>
     case 'pin':
-      src = PinIcon
-      break
+      return <PinIcon/>
     case 'grid':
-      src = GridIcon
-      break
+      return <GridIcon/>
     case 'list':
-      src = ListIcon
-      break
+      return <ListIcon/>
     case 'sort':
-      src = SortIcon
-      break
+      return <SortIcon/>
     case 'close':
-      src = CloseIcon
-      break
-    case 'speaker':
-      src = SpeakerIcon
-      break
+      return <CloseIcon/>
+    case 'audio':
+      return <AudioIcon/>
+    case 'image':
+      return <ImageIcon />
+    case 'video':
+      return <VideoIcon />
     default:
       throw new Error('Icon does not exist')
   }
-  return (
-    <img src={src} alt={alt} />
-  )
 }
