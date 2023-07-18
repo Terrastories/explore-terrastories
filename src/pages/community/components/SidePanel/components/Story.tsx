@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { useCommunity } from 'contexts/CommunityContext'
 import { useMapConfig } from 'contexts/MapContext'
 
+import Icon from 'components/Icon'
+
 import type { TypeStory } from 'types'
 
 type Props = {
@@ -19,9 +21,40 @@ box-shadow: 0 1px 4px rgb(102 102 102 / 10%);
   cursor: pointer;
   box-shadow: 0 0 4px 2px rgb(102 102 102 / 20%);
 }
+`
 
+const StoryHeader = styled.div`
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.5rem;
 h2 {
   font-size: 1.25rem;
+  margin: 0;
+
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+
+    svg {
+      height: 18px;
+      width: 18px;
+    }
+  }
+}
+`
+
+const MediaTypesIndicators = styled.span`
+svg {
+  fill: #606060;
+  vertical-align: middle;
+  height: 18px;
+  width: 18px;
+  margin: 2px;
 }
 `
 
@@ -47,9 +80,22 @@ export default function Story({story}: Props) {
 
   return (
     <StoryListItem onClick={handleStoryClick} data-story-id={story.id}>
-      <h2>{story.title}</h2>
+      <StoryHeader>
+        <h2>
+          <span>
+            <Icon icon={'language'} alt={'language'} />
+            {story.language}
+          </span>
+          {story.title}
+        </h2>
+        {story.mediaContentTypes &&
+          <MediaTypesIndicators>
+            {story.mediaContentTypes.map((m) => (
+              <Icon key={m} icon={m} alt={m} />
+            ))}
+          </MediaTypesIndicators>}
+      </StoryHeader>
       <p className={'clamp'}>{story.desc}</p>
-      <div>{story.language}</div>
     </StoryListItem>
   )
 }

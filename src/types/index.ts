@@ -37,6 +37,7 @@ export type TypeStory = {
   language?: string,
   points: Array<Feature<Point, any>>,
   media: TypeMedia[],
+  mediaContentTypes?: [],
   speakers: TypeSpeaker[],
   places: TypePlace[],
   createdAt: string,
