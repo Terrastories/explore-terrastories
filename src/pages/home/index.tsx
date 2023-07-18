@@ -26,9 +26,12 @@ type CommunitiesThing = {
 
 const MainContent = styled.div`
 margin: 0 3rem;
-display: grid;
-gap: 3rem;
-grid-template-columns: 1fr 4fr;
+
+@media screen and (min-width: 768px) {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 1fr 4fr;
+}
 `
 
 function Home() {
@@ -62,17 +65,15 @@ function Home() {
             searchQuery={searchQuery.get('query')}
             handleSearch={handleSearch}
           />
-          <div>
-            <React.Suspense fallback={<Loading />}>
-              <Await
-                resolve={data.communities}
-                errorElement={<div>{t('errors.generic')}</div>}>
-                  {(communities) => (
-                    <CommunityList communities={communities} />
-                  )}
-              </Await>
-            </React.Suspense>
-          </div>
+          <React.Suspense fallback={<Loading />}>
+            <Await
+              resolve={data.communities}
+              errorElement={<div>{t('errors.generic')}</div>}>
+                {(communities) => (
+                  <CommunityList communities={communities} />
+                )}
+            </Await>
+          </React.Suspense>
         </React.Suspense>
       </MainContent>
     </main>

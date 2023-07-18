@@ -5,6 +5,9 @@
   gap: 3rem;
   margin: 3rem 0;
   max-width: 800px;
+  padding-bottom: 4rem;
+
+  justify-items: center;
 }
 
 .emptyGrid {
@@ -20,6 +23,7 @@
   text-decoration: none;
   color: black;
   max-width: 376px;
+  width: 100%;
 }
 
 .communityItem:hover, .communityItem:active {
