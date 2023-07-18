@@ -55,6 +55,16 @@
   font-weight: bold;
 }
 
+@media (max-resolution: 96dpi) {
+  .tsMarker {
+    will-change: unset;
+  }
+
+  .tsPopup {
+    will-change: unset;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .tsMiniMap {
     display: block;
