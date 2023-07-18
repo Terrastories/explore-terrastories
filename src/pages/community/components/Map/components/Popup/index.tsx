@@ -24,6 +24,8 @@ type PopupProps = FeatureProps & {
 }
 
 const Heading = styled.div`
+width: 240px; // mapbox's popup width
+
 padding-top: 0.6rem;
 background-color: #33aa8b;
 color: white;
@@ -42,6 +44,9 @@ h1 {
   font-size: 20px;
   margin: 0;
   padding: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .plyr {
