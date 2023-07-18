@@ -21,6 +21,13 @@ const StyledHeader = styled.div`
     padding: 0.25rem 0rem;
     justify-content: center;
     margin-bottom: auto;
+
+    h1 {
+      padding: 0 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   img {
