@@ -36,11 +36,13 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
 
   function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>) {
     setPoints(newPoints)
-    const bounds = featureCollection(newPoints)
-    setBounds({
-      bounds: bbox(bounds) as LngLatBoundsLike,
-      center: center(bounds).geometry.coordinates as LngLatLike
-    })
+    if (newPoints.length > 0) {
+      const bounds = featureCollection(newPoints)
+      setBounds({
+        bounds: bbox(bounds) as LngLatBoundsLike,
+        center: center(bounds).geometry.coordinates as LngLatLike
+      })
+    }
   }
 
   return (
