@@ -5,6 +5,7 @@ import Home, { homeLoader } from 'pages/home'
 import Community, { communityLoader } from 'pages/community';
 
 import Layout from 'components/Layout';
+import Loading from 'components/Loading';
 import NotFound from 'components/NotFound';
 
 import './App.css';
@@ -31,7 +32,7 @@ function App() {
   ]);
 
   return (
-    <RouterProvider router={router} fallbackElement={<NotFound />} />
+    <RouterProvider router={router} fallbackElement={<Loading />} />
   );
 }
 
