@@ -11,7 +11,7 @@ const ExplorePanel = styled.div`
   margin-top: 1rem;
   margin-bottom: auto;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-wrap: break-word;
 
   h1 {
