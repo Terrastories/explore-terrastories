@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, startTransition } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Input from 'components/Input'
@@ -45,21 +46,36 @@ const StyledSidebar = styled.div`
     background-color: #f6f6f6;
     border-radius: 6px;
   }
-
 }
 `
 
-type SidebarProps = {
-  searchQuery: string | null,
-  handleSearch: (v: string) => void
-}
-
-export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
+export default function Sidebar() {
   const { t } = useTranslation(['home'])
-  const [query, setQuery] = useState(searchQuery)
+
+  const [searchQuery, setSearchQuery] = useSearchParams()
+  const [query, setQuery] = useState(searchQuery.get('query'))
 
   const { isMobile } = useMobile()
 
+  // useCallback to avoid rerender loop
+  const handleSearch = useCallback((value: string) => {
+    if (searchQuery.get('query') === value) return
+    if (searchQuery.get('query') === null && value === '') return
+    // startTransition allows us to update the UI with loading icons
+    // while the request is firing; this avoids the *doing nothing feel*
+    // and the splatting the results.
+    startTransition(() => {
+      if (value === '') {
+        setSearchQuery({})
+      } else {
+       setSearchQuery({query: value})
+      }
+    })
+  }, [searchQuery, setSearchQuery])
+
+  // Using separate component state for query/setQuery from the provided
+  // useSearchParams() allows us to time delay actually updating the URL
+  // to avoid attempting to call the API on each character change.
   useEffect(() => {
     if (query === null) return
     const timer = setTimeout(() => handleSearch(query), 500)
@@ -77,7 +93,7 @@ export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
           <Input
             placeholder={t('search.placeholder')}
             type="text"
-            defaultValue={searchQuery}
+            defaultValue={searchQuery.get('query')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             />
         </div>}
@@ -89,7 +105,7 @@ export default function Sidebar({searchQuery, handleSearch}:SidebarProps) {
           className='fixedSearch'
           placeholder={t('search.placeholder')}
           type="text"
-          defaultValue={searchQuery}
+          defaultValue={searchQuery.get('query')}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />}
     </StyledSidebar>

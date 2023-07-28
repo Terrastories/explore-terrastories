@@ -1,5 +1,5 @@
-import React, { startTransition } from 'react'
-import { Await, useLoaderData, useSearchParams } from 'react-router-dom'
+import React from 'react'
+import { Await, useLoaderData } from 'react-router-dom'
 import type { LoaderFunctionArgs } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -36,20 +36,8 @@ margin: 0 3rem;
 
 function Home() {
   const { t } = useTranslation()
-  const [searchQuery, setSearchQuery] = useSearchParams()
 
   const data = useLoaderData() as CommunitiesThing
-
-  // useCallback to avoid rerender loop
-  const handleSearch = React.useCallback((value: string) => {
-    startTransition(() => {
-      if (value === '') {
-        setSearchQuery({})
-      } else {
-       setSearchQuery({query: value})
-      }
-    })
-  }, [setSearchQuery])
 
   // Translate title (default is English)
   React.useEffect(() => {
@@ -60,20 +48,15 @@ function Home() {
     <main className='homeMain'>
       <Header />
       <MainContent>
+        <Sidebar />
         <React.Suspense fallback={<Loading />}>
-          <Sidebar
-            searchQuery={searchQuery.get('query')}
-            handleSearch={handleSearch}
-          />
-          <React.Suspense fallback={<Loading />}>
-            <Await
-              resolve={data.communities}
-              errorElement={<div>{t('errors.generic')}</div>}>
-                {(communities) => (
-                  <CommunityList communities={communities} />
-                )}
-            </Await>
-          </React.Suspense>
+          <Await
+            resolve={data.communities}
+            errorElement={<div>{t('errors.generic')}</div>}>
+              {(communities) => (
+                <CommunityList communities={communities} />
+              )}
+          </Await>
         </React.Suspense>
       </MainContent>
     </main>
