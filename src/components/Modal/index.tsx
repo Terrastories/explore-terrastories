@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import useModal from 'hooks/useModal'
 
-import { ReactComponent as CloseIcon } from './assets/closeIcon.svg'
+import Icon from 'components/Icon'
 
 const ContentModal = styled.div`
 display: flex;
@@ -42,6 +42,8 @@ button#closeButton {
 
   svg {
     fill: #d7d7d7;
+    height: 24px;
+    width: 24px;
   }
 }
 `
@@ -60,7 +62,7 @@ export default function Modal(props: ModalProps) {
     <ContentModal ref={modalRef} tabIndex={-1}>
       <div className="content" ref={contentRef}>
         {children}
-        <button onClick={onClose} id='closeButton' aria-labelledby={t('close')}><CloseIcon /></button>
+        <button onClick={onClose} id='closeButton' aria-labelledby={t('close')}><Icon icon="close" alt={t('close')} /></button>
       </div>
     </ContentModal>
   )

@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import Media from 'components/Media'
 import Lightbox from 'components/Lightbox'
+import Icon from 'components/Icon'
 
 import { ReactComponent as CloseIcon } from './assets/closeIcon.svg'
 import speakerIcon from './assets/plyrSpeakerIcon.svg'
@@ -129,7 +130,7 @@ export default function Popup(props: PopupProps) {
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
       </Content>
       <CloseButton onClick={props.handleClose} aria-labelledby={t('close')}>
-        <CloseIcon />
+        <Icon icon="close" alt={t('close')} />
       </CloseButton>
       {showModal && photo && name && createPortal(
         <Lightbox
