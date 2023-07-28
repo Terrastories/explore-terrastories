@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 
 import { useCommunity } from 'contexts/CommunityContext'
 
-import Loading from 'components/Loading'
-
 import { TypeCommunityDetails } from 'types'
 
 const ExplorePanel = styled.div`
@@ -72,14 +70,13 @@ export default function ExporeIntro({details}: Props) {
     displayImage
   } = details
 
-  const { loading, dismissIntro } = useCommunity()
+  const { dismissIntro } = useCommunity()
 
   return (
     <ExplorePanel>
       {displayImage && <h1>{name}</h1>}
       <p>{description}</p>
-      <Button disabled={loading} onClick={dismissIntro}>
-        {loading && <Loading />}
+      <Button onClick={dismissIntro}>
         {t('start_exploring')}
       </Button>
       {sponsorLogos.length > 0 &&
