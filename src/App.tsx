@@ -16,6 +16,11 @@ function App() {
       path: "/",
       element: <Layout />,
       errorElement: <NotFound />,
+      // note(LM): Don't revalidate on parent "index" route
+      // Without this, the "/" path & "index: true" child
+      // will both revalidate on any change resulting in multiple
+      // calls to the API (aka: when search params are changed)
+      shouldRevalidate: () => false,
       children: [
         {
           index: true,
