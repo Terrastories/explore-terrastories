@@ -71,7 +71,7 @@ export default function StoryList() {
     </StoryListControl>
     <StoryListContainer className={listView ? 'list' : 'grid'}>
       {loading && <Loading />}
-      {!hasStories &&
+      {!loading && !hasStories &&
         <EmptyList message={t('translation:errors.empty', {resources: t('translation:stories')})} />}
       {!loading && stories.map((story) => (
         <Story
