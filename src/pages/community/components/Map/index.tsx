@@ -29,7 +29,7 @@ export default function Map({config}: {config: MapData}) {
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
   const { points, updateStoryPoints, bounds } = useMapConfig()
-  const { selectedPlace, fetchPlace } = useCommunity()
+  const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
 
   const { isMobile } = useMobile()
 
@@ -91,7 +91,7 @@ export default function Map({config}: {config: MapData}) {
   }, [mapContainerRef, resetMap, mapRef, config, isMobile])
 
   // Initialize Popup
-  const { openPopup } = usePopup(mapRef)
+  const { popup, openPopup, closePopup } = usePopup(mapRef)
 
   // Cluster and Point Handlers
   const { supercluster, clusters } = useSupercluster({mapRef, points})
@@ -146,6 +146,24 @@ export default function Map({config}: {config: MapData}) {
     }),
     [clusters, openPopup, mapRef, handleClusterExpansion, handlePointClick]
   )
+
+  // Close popup if selectedPlace is changed to undefined and popup is open.
+  React.useEffect(() => {
+    if (selectedPlace === undefined && popup.isOpen()) closePopup()
+  }, [selectedPlace, popup, closePopup])
+
+  // Closing a popup when selectedPlace is active should reset the map.
+  React.useEffect(() => {
+    function resetMapMarkersOnPopupClose() {
+      if (selectedPlace !== undefined)
+        closePlaceChip().then((points) => updateStoryPoints(points))
+    }
+    popup.on('close', resetMapMarkersOnPopupClose)
+
+    return () => {
+      popup.off('close', resetMapMarkersOnPopupClose)
+    }
+  }, [popup, selectedPlace, closePlaceChip, updateStoryPoints])
 
   // Map Bounds Changed
   React.useEffect(() => {
