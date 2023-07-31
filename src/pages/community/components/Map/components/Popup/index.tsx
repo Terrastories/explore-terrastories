@@ -7,7 +7,6 @@ import Media from 'components/Media'
 import Lightbox from 'components/Lightbox'
 import Icon from 'components/Icon'
 
-import { ReactComponent as CloseIcon } from './assets/closeIcon.svg'
 import speakerIcon from './assets/plyrSpeakerIcon.svg'
 
 type FeatureProps = {
