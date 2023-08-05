@@ -52,6 +52,13 @@ p {
   overflow: hidden;
 }
 
+.clampTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /****
  * Badges
  *
