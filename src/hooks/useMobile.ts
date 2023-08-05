@@ -6,6 +6,10 @@ export default function useMobile() {
 
   useEffect(() => {
     function handleWindowSizeChange() {
+      // NOTE(LM): do not resize window if window is resized due
+      // to entering fullscreen mode.
+      if (document.fullscreenEnabled) return
+
       setWidth(window.innerWidth);
     }
 
@@ -14,7 +18,7 @@ export default function useMobile() {
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange)
     }
-  })
+  }, [])
 
   const toggleOverscroll = () => {
     document.documentElement.classList.toggle('disableOverflowSwipe')
