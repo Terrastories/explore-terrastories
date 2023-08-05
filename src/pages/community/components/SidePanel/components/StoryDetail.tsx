@@ -42,13 +42,12 @@ export default function StoryDetail() {
   } = selectedStory as TypeStory
 
   return (
-    <>
-    <SpeakersList>
-      { speakers && speakers.map((s) => (
-        <Avatar key={s.id} badge={'Speaker'} {...s} />
-      ))}
-    </SpeakersList>
     <StoryDetailContainer>
+      <SpeakersList>
+        { speakers && speakers.map((s) => (
+          <Avatar key={s.id} badge={'Speaker'} {...s} />
+        ))}
+      </SpeakersList>
       { desc &&
         <section>{desc}</section>}
 
@@ -58,6 +57,5 @@ export default function StoryDetail() {
         </section>
       ))}
     </StoryDetailContainer>
-    </>
   )
 }
