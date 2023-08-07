@@ -48,8 +48,8 @@ function Home() {
     <main className='homeMain'>
       <Header />
       <MainContent>
-        <Sidebar />
         <React.Suspense fallback={<Loading />}>
+          <Sidebar />
           <Await
             resolve={data.communities}
             errorElement={<div>{t('errors.generic')}</div>}>
