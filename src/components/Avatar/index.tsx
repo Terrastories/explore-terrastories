@@ -34,8 +34,8 @@ export default function Avatar(props: AvatarProps) {
 
   return (
     <AvatarCard>
-      <RoundImage src={imgSrc} alt={name} />
-      <div>{name}</div>
+      <RoundImage src={imgSrc} alt={name} title={name} />
+      <div title={name}>{name}</div>
       { badge &&
         <span className={'badge'}>{badge}</span>}
     </AvatarCard>
