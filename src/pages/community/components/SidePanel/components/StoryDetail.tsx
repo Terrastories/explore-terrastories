@@ -78,6 +78,8 @@ margin-bottom: auto;
 
   background-color: #fff;
   box-shadow: 0 1px 4px rgba(102,102,102, 0.1);
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 `
 
