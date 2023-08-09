@@ -32,6 +32,8 @@ margin-top: 1rem;
 p {
   padding: 0.2rem;
   padding-top: 0.5rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 `
 const Heading = styled.div`
