@@ -5,7 +5,7 @@ import Select from 'components/Select'
 import type {SingleValue} from 'react-select'
 
 interface LanguageOption {
-  value: string
+  value: string | undefined
   label: string
 }
 
