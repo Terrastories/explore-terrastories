@@ -65,14 +65,13 @@ export default function SidePanel({ community }: PanelProps) {
         <Header
           displayLogo={community.details.displayImage}
           name={community.name} />
-        {showIntro &&
-          <ExploreIntro
-            details={community.details} />}
-        {!showIntro &&
-          <StoryPanel
-            categories={community.categories}
-            filters={community.filters}
-            storiesCount={community.storiesCount} />}
+        {showIntro
+          ? <ExploreIntro details={community.details} />
+          : <StoryPanel
+              categories={community.categories}
+              filters={community.filters}
+              storiesCount={community.storiesCount}
+            />}
         <div className="panelLinks">
           <div>
             <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>

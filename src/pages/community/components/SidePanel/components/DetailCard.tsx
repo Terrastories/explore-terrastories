@@ -80,7 +80,7 @@ width: 20px;
   background: rgb(205 205 205);
 }
 `
-export default function PlaceDetailCard() {
+export default function DetailCard() {
   const { t } = useTranslation()
   const { closePlaceChip, selectedPlace, selectedStory, setSelectedStory,  } = useCommunity()
   const { updateStoryPoints, stashedPoints, setStashedPoints } = useMapConfig()

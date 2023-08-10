@@ -11,7 +11,7 @@ type Props = {
   story: TypeStory
 }
 
-const StoryListItem = styled.div`
+const ItemContainer = styled.div`
 padding: 1rem;
 
 background-color: #fff;
@@ -61,7 +61,7 @@ svg {
 }
 `
 
-export default function Story({story}: Props) {
+export default function StoryListItem({story}: Props) {
   const { fetchStory } = useCommunity()
   const { setStashedPoints, updateStoryPoints, points } = useMapConfig()
 
@@ -82,7 +82,7 @@ export default function Story({story}: Props) {
   }
 
   return (
-    <StoryListItem onClick={handleStoryClick} data-story-id={story.id}>
+    <ItemContainer onClick={handleStoryClick} data-story-id={story.id}>
       <StoryMeta>
         <span>
           <Icon icon={'language'} alt={'language'} />
@@ -99,6 +99,6 @@ export default function Story({story}: Props) {
         {story.title}
       </h2>
       <p className={'clamp'}>{story.desc}</p>
-    </StoryListItem>
+    </ItemContainer>
   )
 }

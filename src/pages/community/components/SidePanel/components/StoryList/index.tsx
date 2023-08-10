@@ -6,8 +6,8 @@ import EmptyList from 'components/EmptyList'
 import Icon from 'components/Icon'
 import Loading from 'components/Loading'
 
-import Sort from './Sort'
-import Story from './Story'
+import Sort from './components/Sort'
+import StoryListItem from './components/StoryListItem'
 
 import { useCommunity } from 'contexts/CommunityContext'
 
@@ -74,7 +74,7 @@ export default function StoryList() {
       {!loading && !hasStories &&
         <EmptyList message={t('translation:errors.empty', {resources: t('translation:stories')})} />}
       {!loading && stories.map((story) => (
-        <Story
+        <StoryListItem
           key={story.id}
           story={story} />
       ))}
