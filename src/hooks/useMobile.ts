@@ -8,7 +8,7 @@ export default function useMobile() {
     function handleWindowSizeChange() {
       // NOTE(LM): do not resize window if window is resized due
       // to entering fullscreen mode.
-      if (document.fullscreenEnabled) return
+      if (document.fullscreenElement !== null) return
 
       setWidth(window.innerWidth);
     }
