@@ -29,11 +29,15 @@ margin-top: 1rem;
   align-items: center;
 }
 
-p {
-  padding: 0.2rem;
-  padding-top: 0.5rem;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+div {
+  max-height: 30vh;
+  overflow-y: auto;
+  p {
+    padding: 0.2rem;
+    padding-top: 0.5rem;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
 }
 `
 const Heading = styled.div`
@@ -152,7 +156,7 @@ export default function DetailCard() {
         </Heading>
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
-        {description && <p>{description}</p>}
+        {description && <div><p>{description}</p></div>}
       </DetailCardContainer>
     )
   }
