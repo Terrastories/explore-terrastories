@@ -1,7 +1,10 @@
-# Getting Started with Create React App
+# Explore Terrastories
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Connecting Explore to the Terrastories API
+
+To use this application, you will need to have a [Terrastories](https://github.com/terrastories/terrastories) server up and running, and ensure that your Explore Terrastories site has permission to make requests to the Terrastories API by adding your Explore Terrastories host to the `CORS_ORIGINS` variable in the Terrastories `.env` file.
 ## Available Scripts
 
 In the project directory, you can run:
