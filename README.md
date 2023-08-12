@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Connecting Explore to the Terrastories API
 
-To use this application, you will need to have a [Terrastories](https://github.com/terrastories/terrastories) server up and running, and ensure that your Explore Terrastories site has permission to make requests to the Terrastories API by adding your Explore Terrastories host to the `CORS_ORIGINS` variable in the Terrastories `.env` file.
+To use this application, you will need to have a [Terrastories](https://github.com/terrastories/terrastories) server up and running, and defined as the API source in the `REACT_APP_API_BASE` variable in this application's `.env` file. You will also need to ensure that your Explore Terrastories site has permission to make requests to the Terrastories API by adding your Explore Terrastories host to the `CORS_ORIGINS` variable in the Terrastories server `.env` file.
 ## Available Scripts
 
 In the project directory, you can run:
