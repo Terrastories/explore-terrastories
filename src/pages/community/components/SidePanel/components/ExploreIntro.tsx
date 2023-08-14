@@ -21,6 +21,10 @@ const ExplorePanel = styled.div`
   }
 `
 
+const Description = styled.p`
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+`
 const Button = styled.button`
   background-color: #09697e;
   color: #fff;
@@ -75,7 +79,7 @@ export default function ExporeIntro({details}: Props) {
   return (
     <ExplorePanel>
       {displayImage && <h1>{name}</h1>}
-      <p>{description}</p>
+      <Description>{description}</Description>
       <Button onClick={dismissIntro}>
         {t('start_exploring')}
       </Button>
