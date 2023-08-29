@@ -31,6 +31,8 @@ export default function Icon({icon, alt}:{icon: string, alt: string}) {
       return <VideoIcon />
     case 'application':
       return <DocumentIcon />
+    case 'pdf':
+      return <DocumentIcon />
     default:
       throw new Error(`Icon does not exist: ${icon}`)
   }

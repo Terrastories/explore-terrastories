@@ -87,6 +87,6 @@ export default function Media(props: AnyMedia) {
   }
 
   return (
-    <>{t('unsupported_media')}</>
+    <>{t('errors.unsupported_media')}</>
   )
 }
