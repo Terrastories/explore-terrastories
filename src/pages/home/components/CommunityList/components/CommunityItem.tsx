@@ -58,7 +58,7 @@ export default function CommunityItem(props: TypeCommunity) {
         <div ref={staticMapContainerRef} style={{height: '250px'}} className='staticMapBox'></div>}
       <ItemBox>
         <h3>{name}</h3>
-        <div className="noColorChange">{description}</div>
+        <div className="clamp noColorChange">{description}</div>
       </ItemBox>
     </Link>
   );

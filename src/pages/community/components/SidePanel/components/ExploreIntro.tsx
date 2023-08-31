@@ -19,6 +19,11 @@ const ExplorePanel = styled.div`
   h2 {
     font-size: 1.25rem;
   }
+
+  p {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;    
+  }
 `
 
 const Button = styled.button`
