@@ -42,6 +42,8 @@ input:checked + label:after {
 input:checked ~ div {
   height: 100%;
   -webkit-line-clamp: unset;
+  max-height: 40vh;
+  overflow-y: auto;
 }
 `
 
