@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
+import Avatar from 'components/Avatar'
+import CollapsibleContainer from 'components/CollapsibleContainer'
 import Icon from 'components/Icon'
 
 import { useCommunity } from 'contexts/CommunityContext'
@@ -14,8 +16,30 @@ position: relative;
 background-color: #fff;
 box-shadow: 0 1px 4px rgb(102 102 102 / 10%);
 
-padding: 0.5rem 0.5rem 1rem;
+padding: 0.5rem 0.5rem 2rem;
 margin-top: 1rem;
+
+// Customize CollapsibleContent
+// variable sizing for Speaker content
+// when "collapsed" we want to show the avatars as small circles.
+// when "expanded" we want to show them larger w/ name & role
+#speakerList {
+  display: flex;
+}
+input:not(:checked) ~ .content > #speakerList {
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+  > * {
+    max-width: 10%;
+  }
+}
+input:checked ~ .content > #speakerList {
+  > * {
+    width: 25%;
+  }
+}
 
 .placesGrid {
   display: flex;
@@ -30,8 +54,6 @@ margin-top: 1rem;
 }
 
 div {
-  max-height: 30vh;
-  overflow-y: auto;
   p {
     padding: 0.2rem;
     padding-top: 0.5rem;
@@ -41,30 +63,10 @@ div {
 }
 `
 const Heading = styled.div`
-display: flex;
-align-items: center;
-
---plyr-color-main: #0f566b;
---plyr-control-spacing: 0;
---plyr-audio-control-background-hover: #fff;
---plyr-audio-control-color: #05323a;
---plyr-audio-control-color-hover: #09697e;
-
 h1 {
   font-size: 20px;
   margin: 0;
   padding: 0.5rem;
-}
-
-.plyr {
-  display: inline-block;
-  min-width: 18px;
-  vertical-align: middle;
-  padding-left: 2px;
-}
-
-svg.icon--pressed {
-  fill: #d97629;
 }
 `
 
@@ -84,6 +86,7 @@ width: 20px;
   background: rgb(205 205 205);
 }
 `
+
 export default function DetailCard() {
   const { t } = useTranslation()
   const { closePlaceChip, selectedPlace, selectedStory, setSelectedStory,  } = useCommunity()
@@ -107,11 +110,20 @@ export default function DetailCard() {
       topic,
       language,
       places,
+      speakers,
     } = selectedStory as TypeStory
     return (
       <DetailCardContainer>
         <CloseButton aria-labelledby={t('close')} onClick={handleCloseStoryDetail}><Icon icon={'close'} alt={t('close')} /></CloseButton>
         <Heading>
+          <div>
+          {language &&
+            <span className={'badge'}>
+              <Icon icon={'language'} alt={'language'} />
+              {language}
+            </span>}
+          {topic && <span className={'badge'}>{topic}</span>}
+          </div>
           <h1 className={'storyHeading'}>
             {selectedPlace &&
               <>
@@ -122,21 +134,25 @@ export default function DetailCard() {
           </h1>
         </Heading>
         <div>
-          {language &&
-            <span className={'badge'}>
-              <Icon icon={'language'} alt={'language'} />
-              {language}
-            </span>}
-          {topic && <span className={'badge'}>{topic}</span>}
-        { places && <div className='placesGrid'>
-          {places.map((p) => (
-            <div key={p.id} className={'iconGroup'}>
-              <Icon icon={'pin'} alt={p.name} />
-              <span>{p.name}</span>
+
+          { places &&
+            <div className='placesGrid'>
+              {places.map((p) => (
+                <div key={p.id} className={'iconGroup'}>
+                  <Icon icon={'pin'} alt={p.name} />
+                  <span>{p.name}</span>
+                </div>
+              ))}
+              </div>}
+          </div>
+
+          <CollapsibleContainer contentHeight="2rem">
+            <div id="speakerList" className="content">
+              { speakers && speakers.map((s) => (
+                <Avatar key={s.id} badge={t('speaker')} {...s} />
+              ))}
             </div>
-          ))}
-          </div>}
-        </div>
+          </CollapsibleContainer>
       </DetailCardContainer>
     )
   }
@@ -156,7 +172,7 @@ export default function DetailCard() {
         </Heading>
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
-        {description && <div><p>{description}</p></div>}
+        {description && <CollapsibleContainer contentHeight="100%">{description}</CollapsibleContainer>}
       </DetailCardContainer>
     )
   }
