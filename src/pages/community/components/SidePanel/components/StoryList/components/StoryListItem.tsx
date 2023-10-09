@@ -25,7 +25,6 @@ box-shadow: 0 1px 4px rgb(102 102 102 / 10%);
 h2 {
   font-size: 1.25rem;
   margin: 0;
-  overflow-wrap: break-word;
 }
 `
 
