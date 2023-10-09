@@ -26,7 +26,6 @@ export default function useMouseDraggable(
     if (!panelResizeableRef.current) return
     if (!isMobile) return
     const dragTab = panelResizeableRef.current
-    const pageHeight = window.innerHeight
 
     const handleTap = (e: TouchEvent) => {
       setTouchStart(e.targetTouches[0].clientY)
@@ -56,7 +55,7 @@ export default function useMouseDraggable(
 
         // fully open panel for swipe up past drawer open height
         if ((draggedHeight > drawerOpenHeight) && touchStart > touchEnd) {
-          finalHeight = pageHeight - pageTop
+          finalHeight = window.innerHeight - pageTop
         }
         // fully close planel for swipe down past drawer open height
         else if ((draggedHeight < drawerOpenHeight) && touchStart < touchEnd) {
