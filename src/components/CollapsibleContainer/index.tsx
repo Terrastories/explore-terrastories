@@ -77,7 +77,6 @@ export default function CollapsibleContainer({showMoreLabel, showLessLabel, cont
     observer.observe(el);
   }, [])
 
-  console.log(staticContent)
   return (
     <Container $showMoreLabel={showMoreLabel || t('show_more')} $showLessLabel={showLessLabel || t('show_less')} $contentHeight={contentHeight || "1.9rem"}>
       <input id="ch" type="checkbox" />
