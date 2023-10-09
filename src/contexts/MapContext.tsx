@@ -16,7 +16,7 @@ interface MapConfig {
   points: Array<Feature<Point, GeoJsonProperties>>
   stashedPoints: Array<Feature<Point, GeoJsonProperties>> | undefined
   setStashedPoints: (points: Array<Feature<Point, GeoJsonProperties>> | undefined) => void
-  updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>) => void
+  updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>, updateBounds?: boolean) => void
   bounds?: MapBounds
 }
 
@@ -34,14 +34,16 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
 
   const [bounds, setBounds] = useState<MapBounds>()
 
-  function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>) {
+  function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>, updateBounds: boolean = false) {
     setPoints(newPoints)
-    if (newPoints.length > 0) {
+    if (updateBounds) {
       const bounds = featureCollection(newPoints)
       setBounds({
         bounds: bbox(bounds) as LngLatBoundsLike,
         center: center(bounds).geometry.coordinates as LngLatLike
       })
+    } else {
+      setBounds(undefined)
     }
   }
 

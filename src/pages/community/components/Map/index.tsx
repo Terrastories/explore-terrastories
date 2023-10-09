@@ -110,7 +110,7 @@ export default function Map({config}: {config: MapData}) {
 
   const handlePointClick = React.useCallback((e: any) => {
     if (selectedPlace && (selectedPlace.id === e.properties.id)) return
-    fetchPlace(e.properties.id).then((points) => updateStoryPoints(points))
+    fetchPlace(e.properties.id).then((points) => updateStoryPoints(points, true))
   }, [selectedPlace, fetchPlace, updateStoryPoints])
 
   // Create Markers from Clusters
@@ -171,8 +171,10 @@ export default function Map({config}: {config: MapData}) {
     const map = mapRef.current
     if (bounds) {
       map.fitBounds(bounds.bounds, {center: bounds.center, padding: 50, duration: 2000.0, maxZoom: 12})
+    } else {
+      map.zoomTo(config.zoom, {duration: 2000.0})
     }
-  }, [bounds])
+  }, [bounds, config])
 
   return (
     <div ref={mapContainerRef} className={isMobile ? 'enableMapHeader' : ''} style={{

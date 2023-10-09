@@ -91,10 +91,19 @@ export default function StoryFilters(props: Props) {
   const handleOptionChange = (options: PropsValue<FilterOption>, actionMeta: ActionMeta<FilterOption>)  => {
     switch (actionMeta.action) {
       case 'select-option':
-      case 'remove-value':
-        if (!options) break
+        // update and fit map to selected points
         fetchStories(handleFilter(filterCategory, options as FilterOption[])).then(
-          (newPoints) => updateStoryPoints(newPoints)
+          (newPoints) => updateStoryPoints(newPoints, true)
+        )
+        break
+      case 'remove-value':
+        // do nothing if no options
+        if (!options) break
+
+        // update points and bounds if at least one option remains
+        const opts = options as FilterOption[]
+        fetchStories(handleFilter(filterCategory, opts)).then(
+          (newPoints) => updateStoryPoints(newPoints, opts.length > 0)
         )
         break
       case 'clear':

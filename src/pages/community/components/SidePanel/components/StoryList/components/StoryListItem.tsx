@@ -76,7 +76,7 @@ export default function StoryListItem({story}: Props) {
       .then((newPoints) => {
         if (newPoints) {
           setStashedPoints(points)
-          updateStoryPoints(newPoints)
+          updateStoryPoints(newPoints, true)
         }
       })
   }

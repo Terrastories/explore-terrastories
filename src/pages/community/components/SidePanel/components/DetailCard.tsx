@@ -93,13 +93,13 @@ export default function DetailCard() {
   const { updateStoryPoints, stashedPoints, setStashedPoints } = useMapConfig()
 
   function handleClosePlaceDetail() {
-    closePlaceChip().then((points) => updateStoryPoints(points))
+    closePlaceChip().then((points) => updateStoryPoints(points, !!stashedPoints))
   }
 
   function handleCloseStoryDetail() {
     setSelectedStory(undefined)
     if (stashedPoints) {
-      updateStoryPoints(stashedPoints)
+      updateStoryPoints(stashedPoints, !!selectedPlace)
       setStashedPoints(undefined)
     }
   }
