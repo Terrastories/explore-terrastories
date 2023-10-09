@@ -30,11 +30,12 @@ export default function useMouseDraggable(
 
     const handleTap = (e: TouchEvent) => {
       setTouchStart(e.targetTouches[0].clientY)
+      toggleOverscroll()
     }
 
     const handleDrag = (e: TouchEvent) => {
       setDragging(true)
-      toggleOverscroll()
+
       if (e.targetTouches[0].clientY < pageTop) {
         setTouchEnd(pageTop)
       } else if (e.targetTouches[0].clientY > window.innerHeight) {
@@ -66,9 +67,9 @@ export default function useMouseDraggable(
           from: {height: draggedHeight + 'px'},
           to: {height: finalHeight + 'px'}
         })
-        toggleOverscroll()
         setDragging(false)
       }
+      toggleOverscroll()
       setTouchStart(0)
       setTouchEnd(0)
     }
