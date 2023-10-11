@@ -76,7 +76,8 @@ export default function StoryList() {
       {!loading && stories.map((story) => (
         <StoryListItem
           key={story.id}
-          story={story} />
+          story={story}
+          grid={!listView} />
       ))}
     </StoryListContainer>
     </>

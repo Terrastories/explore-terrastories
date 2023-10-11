@@ -39,6 +39,7 @@
   "go_back": "Go back",
   "login": "Log In",
   "no_match": "No {{resource}} match '{{input}}'",
+  "no_media": "No Media",
   "select_a_resource": "Select a {{resource}}",
   "sorts": {
     "recent": "Most Recent",
