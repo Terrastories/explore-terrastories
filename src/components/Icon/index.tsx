@@ -8,6 +8,7 @@ import {ReactComponent as AudioIcon } from './assets/volume.svg'
 import {ReactComponent as ImageIcon } from './assets/image.svg'
 import {ReactComponent as VideoIcon } from './assets/video.svg'
 import {ReactComponent as DocumentIcon } from './assets/fileAttached.svg'
+import {ReactComponent as ChevronRightIcon } from './assets/chevronRight.svg'
 
 export default function Icon({icon, alt}:{icon: string, alt: string}) {
   switch (icon) {
@@ -33,6 +34,8 @@ export default function Icon({icon, alt}:{icon: string, alt: string}) {
       return <DocumentIcon />
     case 'pdf':
       return <DocumentIcon />
+    case 'chevron-right':
+      return <ChevronRightIcon />
     default:
       throw new Error(`Icon does not exist: ${icon}`)
   }
