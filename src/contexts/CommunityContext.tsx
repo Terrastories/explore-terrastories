@@ -234,7 +234,8 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
       setSelectedSort(sort)
       setPaginationMeta((prevState) => ({
         ...prevState,
-        ...sortOptions[sort]
+        ...sortOptions[sort],
+        offset: 0
       }))
     }
   }
