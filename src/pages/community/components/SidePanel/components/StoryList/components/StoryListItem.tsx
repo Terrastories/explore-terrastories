@@ -33,9 +33,8 @@ flex-direction: ${props => (props.$grid ? "column" : "row")};
 }
 
 > div {
-  flex-basis: ${props => (props.$grid ? "100%": "30%")};
+  flex-basis: ${props => (props.$grid ? "100%": "6rem")};
   flex-shrink: 1;
-  flex-grow: 1;
 }
 
 padding: 1rem;
@@ -56,8 +55,9 @@ h2 {
 `
 const MediaPreview = styled.div`
 position: relative;
-min-height: 5rem;
-max-height: 5rem;
+min-height: 4.5rem;
+max-height: 4.5rem;
+flex-grow: 0;
 
 .previewImage {
   width: 100%;
@@ -109,12 +109,15 @@ svg {
 `
 
 const StoryPreview = styled.div`
+flex-grow: 1;
+
 h2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   overflow-wrap: anywhere;
+  font-size: 1rem;
 }
 `
 

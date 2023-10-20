@@ -69,7 +69,7 @@ p {
  */
 .badge {
   display: inline-block;
-  font-size: smaller;
+  font-size: .8rem;
   background-color: rgba(102,102,102, 0.1);
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
