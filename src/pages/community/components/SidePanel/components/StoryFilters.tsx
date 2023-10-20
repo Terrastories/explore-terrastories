@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 
 import Select from 'components/Select'
 import { useCommunity } from 'contexts/CommunityContext'
-import { useMapConfig } from 'contexts/MapContext'
 
 import type { ActionMeta, SelectInstance, SingleValue, PropsValue } from 'react-select'
 import { FilterOption } from 'types'
@@ -43,8 +42,7 @@ export default function StoryFilters(props: Props) {
     filters,
   } = props
 
-  const { selectedFilter, selectedOptions, handleFilter, fetchStories } = useCommunity()
-  const { updateStoryPoints } = useMapConfig()
+  const { selectedFilter, selectedOptions, handleFilter, handleFilterOption } = useCommunity()
 
   const optionRef = React.useRef<SelectInstance<FilterOption>>(null)
 
@@ -71,19 +69,21 @@ export default function StoryFilters(props: Props) {
       case 'select-option':
         if (!option) break
         if (option.value === filterCategory) return
-        handleFilter(option.value, [])
+        handleFilter(option.value)
         if (optionRef.current && optionRef.current.hasValue()) optionRef.current.clearValue()
+
+        dispatch({
+          type: 'updateFilters',
+          value: {
+            filterCategory: option.value,
+            filterOptions: filters.filter((filter) => option.value === filter.category),
+          }
+        })
         break
       case 'clear':
         dispatch({type: 'clear'})
-        // selected options already empty (filters already reset to all stories)
-        let skipFetch = selectedOptions && selectedOptions.length === 0
-        let opts = handleFilter(undefined, [])
-        if (!skipFetch) {
-          fetchStories(opts).then(
-            (newPoints) => updateStoryPoints(newPoints)
-          )
-        }
+        handleFilter(undefined)
+        handleFilterOption([])
         break
       }
   }
@@ -91,25 +91,15 @@ export default function StoryFilters(props: Props) {
   const handleOptionChange = (options: PropsValue<FilterOption>, actionMeta: ActionMeta<FilterOption>)  => {
     switch (actionMeta.action) {
       case 'select-option':
-        // update and fit map to selected points
-        fetchStories(handleFilter(filterCategory, options as FilterOption[])).then(
-          (newPoints) => updateStoryPoints(newPoints, true)
-        )
+        handleFilterOption(options as FilterOption[])
         break
       case 'remove-value':
         // do nothing if no options
         if (!options) break
-
-        // update points and bounds if at least one option remains
-        const opts = options as FilterOption[]
-        fetchStories(handleFilter(filterCategory, opts)).then(
-          (newPoints) => updateStoryPoints(newPoints, opts.length > 0)
-        )
+        handleFilterOption(options as FilterOption[])
         break
       case 'clear':
-        fetchStories(handleFilter(filterCategory, [])).then(
-          (newPoints) => updateStoryPoints(newPoints)
-        )
+        handleFilterOption([])
         break
     }
   }
@@ -140,7 +130,7 @@ export default function StoryFilters(props: Props) {
         onChange={handleCategoryChange} />
       <Select
         forwardRef={optionRef}
-        value={selectedOptions}
+        value={selectedOptions || (selectedFilter ? [] : undefined)}
         isMulti
         placeholder={t('select_option')}
         options={filterOptions}

@@ -29,7 +29,7 @@ export default function Map({config}: {config: MapData}) {
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
   const { points, updateStoryPoints, bounds } = useMapConfig()
-  const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
+  const { selectedPlace, fetchPlace, closePlaceChip, fetchStories } = useCommunity()
 
   const { isMobile } = useMobile()
 
@@ -155,15 +155,17 @@ export default function Map({config}: {config: MapData}) {
   // Closing a popup when selectedPlace is active should reset the map.
   React.useEffect(() => {
     function resetMapMarkersOnPopupClose() {
-      if (selectedPlace !== undefined)
-        closePlaceChip().then((points) => updateStoryPoints(points))
+      if (selectedPlace !== undefined) {
+        closePlaceChip()
+        fetchStories().then((points) => updateStoryPoints(points))
+      }
     }
     popup.on('close', resetMapMarkersOnPopupClose)
 
     return () => {
       popup.off('close', resetMapMarkersOnPopupClose)
     }
-  }, [popup, selectedPlace, closePlaceChip, updateStoryPoints])
+  }, [popup, selectedPlace, closePlaceChip, fetchStories, updateStoryPoints])
 
   // Map Bounds Changed
   React.useEffect(() => {

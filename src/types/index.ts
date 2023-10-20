@@ -89,3 +89,11 @@ export type BoundingBoxFrame = {
   bounds?: any,
   maxZoom?: number
 }
+
+export type PaginationMeta = {
+  limit?: number,
+  offset?: number | null,
+  sort_by?: string,
+  sort_dir?: string,
+  [key: string]: any,
+}

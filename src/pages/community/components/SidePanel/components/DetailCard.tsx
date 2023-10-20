@@ -92,10 +92,6 @@ export default function DetailCard() {
   const { closePlaceChip, selectedPlace, selectedStory, setSelectedStory,  } = useCommunity()
   const { updateStoryPoints, stashedPoints, setStashedPoints } = useMapConfig()
 
-  function handleClosePlaceDetail() {
-    closePlaceChip().then((points) => updateStoryPoints(points, !!stashedPoints))
-  }
-
   function handleCloseStoryDetail() {
     setSelectedStory(undefined)
     if (stashedPoints) {
@@ -166,7 +162,7 @@ export default function DetailCard() {
     } = selectedPlace as TypePlace
     return (
       <DetailCardContainer>
-        <CloseButton onClick={handleClosePlaceDetail} aria-labelledby={t('close')}><Icon icon={'close'} alt={t('close')} /></CloseButton>
+        <CloseButton onClick={closePlaceChip} aria-labelledby={t('close')}><Icon icon={'close'} alt={t('close')} /></CloseButton>
         <Heading>
           <h1>{name}</h1>
         </Heading>

@@ -33,7 +33,7 @@ export default function Sort() {
       for(let opt of Object.keys(sortOptions)) {
         opts.push({
           label: t(`sorts.${opt}`),
-          value: sortOptions[opt].value
+          value: opt
         })
       }
       setOptions(opts)
@@ -45,13 +45,18 @@ export default function Sort() {
     if (option) sortStories(option.value)
   }
 
+  const defaultSort = (sort: string | undefined) => {
+    const sortOpt = sort ? sort : 'recent'
+    return {
+      label: t(`sorts.${sortOpt}`),
+        value: sortOpt
+    }
+  }
+
   return(
     <Select
       useTinySelect={true}
-      defaultValue={{
-        label: t(`sorts.${selectedSort}`),
-        value: selectedSort
-      }}
+      defaultValue={defaultSort(selectedSort)}
       isSearchable={false}
       components={{DropdownIndicator}}
       options={options}

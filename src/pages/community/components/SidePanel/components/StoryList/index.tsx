@@ -10,6 +10,7 @@ import Sort from './components/Sort'
 import StoryListItem from './components/StoryListItem'
 
 import { useCommunity } from 'contexts/CommunityContext'
+import { useMapConfig } from 'contexts/MapContext'
 
 const IconButton = styled.button`
 margin: 0;
@@ -37,6 +38,11 @@ margin-bottom: auto;
 overflow-x: hidden;
 overflow-y: auto;
 
+#loadMoreStoriesObserver {
+  height: 1px;
+  background-color: pink;
+}
+
 &.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -54,9 +60,65 @@ overflow-y: auto;
 
 export default function StoryList() {
   const { t } = useTranslation(['community', 'translation'])
-  const { loading, stories, listView, toggleListView } = useCommunity()
+  const observerRef = React.useRef(null)
+  const { loading, stories, selectedPlace, selectedOptions, selectedSort, fetchStories, fetchPaginatedStories, listView, toggleListView } = useCommunity()
+  const { updateStoryPoints } = useMapConfig()
 
   const hasStories = stories.length > 0
+
+  const currentSort = React.useRef(selectedSort)
+  const currentOptions = React.useRef(selectedOptions)
+
+  const updateStoryList = React.useCallback((updateBounds = false) => {
+    if (loading) return
+    fetchStories(true).then((points) => updateStoryPoints(points, updateBounds))
+  }, [fetchStories, updateStoryPoints, loading])
+
+  // Update Stories when selectedOptions have changed
+  React.useEffect(() => {
+    if (selectedOptions && currentOptions.current !== selectedOptions) {
+      currentOptions.current = selectedOptions
+      updateStoryList(selectedOptions.length > 0)
+    }
+  }, [selectedOptions, updateStoryList])
+
+  // Update Stories when a Sort has been changed
+  React.useEffect(() => {
+    if (selectedSort && currentSort.current !== selectedSort) {
+      currentSort.current = selectedSort
+
+      // Do not use filter state if sorting a Place specific story list.
+      const useFilterState = selectedPlace ? false : true
+
+      // Resolve promise, but skip updating map points.
+      // Updating will trigger a unnecessary (and confusing) map move.
+      Promise.resolve(fetchStories(useFilterState))
+    }
+  }, [selectedSort, fetchStories, selectedPlace])
+
+  // Pagination Observer
+  //
+  // Available when StoryList is not loading. This will
+  // attempt to fetch the next "page" of stories whenever
+  // the observer is 100% in view.
+  React.useEffect(() => {
+    if (loading) return
+    if (!observerRef.current) return
+
+    const el = observerRef.current
+
+    const observer = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) fetchPaginatedStories() },
+      {threshold: [1]}
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.unobserve(el);
+    }
+  }, [loading, observerRef, fetchPaginatedStories])
+
   return (
     <>
     <StoryListControl>
@@ -70,15 +132,17 @@ export default function StoryList() {
       </div>
     </StoryListControl>
     <StoryListContainer className={listView ? 'list' : 'grid'}>
-      {loading && <Loading />}
-      {!loading && !hasStories &&
+      {!loading && !selectedPlace && !hasStories &&
         <EmptyList message={t('translation:errors.empty', {resources: t('translation:stories')})} />}
-      {!loading && stories.map((story) => (
+      {stories.map((story) => (
         <StoryListItem
           key={story.id}
           story={story}
           grid={!listView} />
-      ))}
+        ))}
+      {loading ?
+        <Loading /> :
+        <span ref={observerRef}></span>}
     </StoryListContainer>
     </>
   )
