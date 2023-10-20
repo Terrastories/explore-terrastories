@@ -83,7 +83,6 @@ export default function StoryFilters(props: Props) {
       case 'clear':
         dispatch({type: 'clear'})
         handleFilter(undefined)
-        handleFilterOption([])
         break
       }
   }

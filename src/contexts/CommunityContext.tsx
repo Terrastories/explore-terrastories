@@ -14,8 +14,13 @@ type SelectedFilters = {
   [key: string]: any
 }
 
+type SortOpts = {
+  sort_by: string,
+  sort_dir: string
+}
+
 const sortOptions:{
-  [value: string]: any
+  [value: string]: SortOpts
 } = {
   'recent': {
     sort_by: 'created_at',
@@ -55,7 +60,7 @@ interface CommunityCtx {
   showIntro: boolean
   selectedSort: string | undefined
   slug: string
-  sortOptions: {[value: string]: any}
+  sortOptions: {[value: string]: SortOpts}
   sortStories: (sort: string) => void
   stories: TypeStory[]
   toggleListView: () => void
@@ -136,7 +141,9 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   function buildQueryParams(useFilterState:boolean = false): SelectedFilters {
     let queryParams:SelectedFilters = {}
     if (selectedSort) {
-      queryParams = sortOptions[selectedSort]
+      queryParams = {
+        ...sortOptions[selectedSort]
+      }
     }
     if (!useFilterState && selectedPlace) {
       queryParams = {
@@ -241,16 +248,23 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   }
 
   function handleFilter(category: string | undefined) {
-    if (selectedOptions) {
-      setFilterState({
-        selectedFilter: category,
-        selectedOptions: undefined
-      })
+    if (category) {
+      if (selectedOptions) {
+        setFilterState({
+          selectedFilter: category,
+          selectedOptions: undefined
+        })
+      } else {
+        setFilterState((prevState) => ({
+          ...prevState,
+          selectedFilter: category
+        }))
+      }
     } else {
-      setFilterState((prevState) => ({
-        ...prevState,
-        selectedFilter: category
-      }))
+      setFilterState({
+        selectedFilter: undefined,
+        selectedOptions: (selectedOptions ? [] : undefined)
+      })
     }
   }
 
