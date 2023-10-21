@@ -155,10 +155,7 @@ export default function Map({config}: {config: MapData}) {
   // Closing a popup when selectedPlace is active should reset the map.
   React.useEffect(() => {
     function resetMapMarkersOnPopupClose() {
-      if (selectedPlace !== undefined) {
-        closePlaceChip()
-        fetchStories().then((points) => updateStoryPoints(points))
-      }
+      if (selectedPlace !== undefined) closePlaceChip()
     }
     popup.on('close', resetMapMarkersOnPopupClose)
 
