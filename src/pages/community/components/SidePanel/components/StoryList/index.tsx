@@ -10,7 +10,6 @@ import Sort from './components/Sort'
 import StoryListItem from './components/StoryListItem'
 
 import { useCommunity } from 'contexts/CommunityContext'
-import { useMapConfig } from 'contexts/MapContext'
 
 const IconButton = styled.button`
 margin: 0;
@@ -61,40 +60,10 @@ overflow-y: auto;
 export default function StoryList() {
   const { t } = useTranslation(['community', 'translation'])
   const observerRef = React.useRef(null)
-  const { loading, stories, selectedPlace, selectedOptions, selectedSort, fetchStories, fetchPaginatedStories, listView, toggleListView } = useCommunity()
-  const { updateStoryPoints } = useMapConfig()
+
+  const { loading, stories, selectedPlace, fetchPaginatedStories, listView, toggleListView } = useCommunity()
 
   const hasStories = stories.length > 0
-
-  const currentSort = React.useRef(selectedSort)
-  const currentOptions = React.useRef(selectedOptions)
-
-  const updateStoryList = React.useCallback((updateBounds = false) => {
-    if (loading) return
-    fetchStories(true).then((points) => updateStoryPoints(points, updateBounds))
-  }, [fetchStories, updateStoryPoints, loading])
-
-  // Update Stories when selectedOptions have changed
-  React.useEffect(() => {
-    if (selectedOptions && currentOptions.current !== selectedOptions) {
-      currentOptions.current = selectedOptions
-      updateStoryList(selectedOptions.length > 0)
-    }
-  }, [selectedOptions, updateStoryList])
-
-  // Update Stories when a Sort has been changed
-  React.useEffect(() => {
-    if (selectedSort && currentSort.current !== selectedSort) {
-      currentSort.current = selectedSort
-
-      // Do not use filter state if sorting a Place specific story list.
-      const useFilterState = selectedPlace ? false : true
-
-      // Resolve promise, but skip updating map points.
-      // Updating will trigger a unnecessary (and confusing) map move.
-      Promise.resolve(fetchStories(useFilterState))
-    }
-  }, [selectedSort, fetchStories, selectedPlace])
 
   // Pagination Observer
   //
@@ -108,7 +77,9 @@ export default function StoryList() {
     const el = observerRef.current
 
     const observer = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) fetchPaginatedStories() },
+      ([e]) => {
+        if (e.isIntersecting) fetchPaginatedStories()
+      },
       {threshold: [1]}
     );
 

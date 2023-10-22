@@ -5,11 +5,8 @@ import { animated, SpringValues } from '@react-spring/web'
 
 import LanguagePicker from 'components/LanguagePicker'
 
-import { useCommunity } from 'contexts/CommunityContext'
-
 import CommunitySwitcherModal from './components/CommunitySwitcherModal'
 import Header from './components/Header'
-import ExploreIntro from './components/ExploreIntro'
 import StoryPanel from './components/StoryPanel'
 
 import useMouseDraggable from './hooks/useMouseDraggable'
@@ -35,7 +32,6 @@ export default function SidePanel({ community }: PanelProps) {
   const panelRef = React.useRef<HTMLDivElement>(null)
   const panelResizeableRef = React.useRef<HTMLDivElement>(null)
 
-  const { showIntro } = useCommunity()
   const { isMobile } = useMobile()
 
   // Community Switcher Modal
@@ -65,13 +61,12 @@ export default function SidePanel({ community }: PanelProps) {
         <Header
           displayLogo={community.details.displayImage}
           name={community.name} />
-        {showIntro
-          ? <ExploreIntro details={community.details} />
-          : <StoryPanel
-              categories={community.categories}
-              filters={community.filters}
-              storiesCount={community.storiesCount}
-            />}
+        <StoryPanel
+          categories={community.categories}
+          filters={community.filters}
+          storiesCount={community.storiesCount}
+          details={community.details}
+        />
         <div className="panelLinks">
           <div>
             <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import Select from 'components/Select'
 import { useCommunity } from 'contexts/CommunityContext'
+import { useMapConfig } from 'contexts/MapContext'
 
 import type { ActionMeta, SelectInstance, SingleValue, PropsValue } from 'react-select'
 import { FilterOption } from 'types'
@@ -42,9 +43,11 @@ export default function StoryFilters(props: Props) {
     filters,
   } = props
 
-  const { selectedFilter, selectedOptions, handleFilter, handleFilterOption } = useCommunity()
+  const { selectedFilter, selectedOptions, handleFilter, handleFilterOption, fetchStories } = useCommunity()
+  const { updateStoryPoints } = useMapConfig()
 
   const optionRef = React.useRef<SelectInstance<FilterOption>>(null)
+  const [updateStoryList, setUpdateStoryList] = React.useState(false)
 
   const initialFilterState:IFilterState = {
     filterCategory: undefined,
@@ -83,6 +86,11 @@ export default function StoryFilters(props: Props) {
       case 'clear':
         dispatch({type: 'clear'})
         handleFilter(undefined)
+        let skipFetch = selectedOptions && selectedOptions.length === 0
+        if (!skipFetch) {
+          handleFilterOption([])
+          setUpdateStoryList(true)
+        }
         break
       }
   }
@@ -101,7 +109,15 @@ export default function StoryFilters(props: Props) {
         handleFilterOption([])
         break
     }
+    setUpdateStoryList(true)
   }
+
+  React.useEffect(() => {
+    if (updateStoryList) {
+      setUpdateStoryList(false)
+      fetchStories(true).then((points) => updateStoryPoints(points, true))
+    }
+  }, [updateStoryList, fetchStories, updateStoryPoints])
 
   React.useEffect(() => {
     if (selectedFilter) {

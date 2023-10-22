@@ -41,7 +41,7 @@ const sortOptions:{
 }
 
 interface CommunityCtx {
-  closePlaceChip: () => void
+  closePlaceChip: () => Promise<Array<Feature<Point>>>
   dismissIntro: () => void
   fetchStories: (useFilterState?: boolean) => Promise<Array<Feature<Point>>>
   fetchPaginatedStories: () => void
@@ -92,7 +92,7 @@ const CommunityContext = createContext<CommunityCtx>({
 
   // Place Detail
   selectedPlace: undefined,
-  closePlaceChip: () => { return },
+  closePlaceChip: () => { return Promise.resolve([]) },
 
   // Sort Helpers
   sortStories: (s) => { return s},
@@ -173,6 +173,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   }
 
   async function fetchPaginatedStories() {
+    setShowIntro(false)
     if (!hasNextPage) return
 
     setLoading(true)
@@ -201,10 +202,6 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   }
 
   async function fetchPlace(placeId: string | number) {
-    // If Explore Intro panel is displayed and a user clicks on a Place marker,
-    // we want to close the intro panel.
-    setShowIntro(false)
-
     const resp = await getPlace(slug, placeId)
 
     // Set stories array to empty; this will allow the paginator to
@@ -220,11 +217,13 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     return resp.data.points
   }
 
-  function closePlaceChip() {
+  async function closePlaceChip() {
     setStories([])
     setHasNextPage(true)
     setPaginationMeta(undefined)
     setSelectedPlace(undefined)
+
+    return await fetchStories(true)
   }
 
   function dismissIntro() {
@@ -237,7 +236,9 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
 
   function sortStories(sort: string) {
     if (sortOptions[sort]) {
+      // Reset when sort is viable so StoryList is fully refreshed.
       setStories([])
+      setLoading(true)
       setSelectedSort(sort)
       setPaginationMeta((prevState) => ({
         ...prevState,
@@ -248,27 +249,16 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   }
 
   function handleFilter(category: string | undefined) {
-    if (category) {
-      if (selectedOptions) {
-        setFilterState({
-          selectedFilter: category,
-          selectedOptions: undefined
-        })
-      } else {
-        setFilterState((prevState) => ({
-          ...prevState,
-          selectedFilter: category
-        }))
-      }
-    } else {
-      setFilterState({
-        selectedFilter: undefined,
-        selectedOptions: (selectedOptions ? [] : undefined)
-      })
-    }
+    setFilterState({
+      selectedFilter: category,
+      selectedOptions: selectedOptions ? [] : undefined
+    })
   }
 
   function handleFilterOption(options: FilterOption[]) {
+    // Reset whenever filter option changes so StoryList is fully refreshed.
+    setStories([])
+    setLoading(true)
     setFilterState((prevState) => ({
       ...prevState,
       selectedOptions: options

@@ -15,7 +15,9 @@ interface SortOption {
 export default function Sort() {
   const { t } = useTranslation()
   const [options, setOptions] = React.useState<SortOption[]>()
-  const { sortStories, selectedSort, sortOptions } = useCommunity()
+  const { sortStories, selectedSort, sortOptions, fetchStories } = useCommunity()
+
+  const [updateStoryList, setUpdateStoryList] = React.useState(false)
 
   const DropdownIndicator = (
     props: DropdownIndicatorProps<SortOption, false>
@@ -40,9 +42,11 @@ export default function Sort() {
     }
   }, [options, sortOptions, t])
 
-
   const handleSortChange = (option: SingleValue<SortOption>, actionMeta: ActionMeta<SortOption>) => {
-    if (option) sortStories(option.value)
+    if (option) {
+      sortStories(option.value)
+      setUpdateStoryList(true)
+    }
   }
 
   const defaultSort = (sort: string | undefined) => {
@@ -52,6 +56,13 @@ export default function Sort() {
         value: sortOpt
     }
   }
+
+  React.useEffect(() => {
+    if (selectedSort && updateStoryList) {
+      setUpdateStoryList(false)
+      Promise.resolve(fetchStories(true))
+    }
+  }, [selectedSort, updateStoryList, fetchStories])
 
   return(
     <Select
