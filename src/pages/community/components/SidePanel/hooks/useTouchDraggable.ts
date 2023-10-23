@@ -6,7 +6,6 @@ import { useSpring } from '@react-spring/web'
 import useMobile from 'hooks/useMobile'
 
 export default function useMouseDraggable(
-  panelRef: RefObject<HTMLDivElement>,
   panelResizeableRef: RefObject<HTMLDivElement>,
   isMobile: boolean
 ) {
@@ -34,11 +33,13 @@ export default function useMouseDraggable(
 
     const handleDrag = (e: TouchEvent) => {
       setDragging(true)
+      // stop any in-progress animations
+      mApi.stop()
 
       if (e.targetTouches[0].clientY < pageTop) {
         setTouchEnd(pageTop)
       } else if (e.targetTouches[0].clientY > window.innerHeight) {
-        setTouchEnd(window.innerHeight)
+        setTouchEnd(window.innerHeight - pageTop)
       } else {
         setTouchEnd(e.targetTouches[0].clientY)
       }
@@ -64,11 +65,16 @@ export default function useMouseDraggable(
 
         mApi.start({
           from: {height: draggedHeight + 'px'},
-          to: {height: finalHeight + 'px'}
+          to: {height: finalHeight + 'px'},
+          onRest: () => {
+            restrictOverscrollBehavior(false)
+          }
         })
         setDragging(false)
+      } else {
+        // if not dragging, ensure overscroll behavior is re-added immediately
+        restrictOverscrollBehavior(false)
       }
-      restrictOverscrollBehavior(false)
       setTouchStart(0)
       setTouchEnd(0)
     }

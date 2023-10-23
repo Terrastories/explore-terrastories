@@ -41,7 +41,7 @@ export default function SidePanel({ community }: PanelProps) {
   const { browserSprings, open } = useMouseDraggable(panelRef, panelResizeableRef, isMobile)
 
   // Panel Mobile Touch Events
-  const { mobileSprings, dragging, touchEnd } = useTouchDraggable(panelRef, panelResizeableRef, isMobile)
+  const { mobileSprings, dragging, touchEnd } = useTouchDraggable(panelResizeableRef, isMobile)
 
 
   // Dynamic Panel Styles
