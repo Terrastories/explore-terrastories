@@ -20,7 +20,7 @@ export default function useMouseDraggable(
 
   const [dragging, setDragging] = useState<boolean>(false)
 
-  const { toggleOverscroll } = useMobile()
+  const { restrictOverscrollBehavior } = useMobile()
 
   useEffect(() => {
     if (!panelResizeableRef.current) return
@@ -29,7 +29,7 @@ export default function useMouseDraggable(
 
     const handleTap = (e: TouchEvent) => {
       setTouchStart(e.targetTouches[0].clientY)
-      toggleOverscroll()
+      restrictOverscrollBehavior(true)
     }
 
     const handleDrag = (e: TouchEvent) => {
@@ -68,7 +68,7 @@ export default function useMouseDraggable(
         })
         setDragging(false)
       }
-      toggleOverscroll()
+      restrictOverscrollBehavior(false)
       setTouchStart(0)
       setTouchEnd(0)
     }
@@ -82,7 +82,7 @@ export default function useMouseDraggable(
       dragTab.removeEventListener('touchmove', handleDrag)
       dragTab.removeEventListener('touchend', handleRelease)
     }
-  }, [panelResizeableRef, dragging, mApi, drawerOpenHeight, isMobile, toggleOverscroll, touchEnd, touchStart])
+  }, [panelResizeableRef, dragging, mApi, drawerOpenHeight, isMobile, restrictOverscrollBehavior, touchEnd, touchStart])
 
   return { mobileSprings, dragging, touchEnd }
 }
