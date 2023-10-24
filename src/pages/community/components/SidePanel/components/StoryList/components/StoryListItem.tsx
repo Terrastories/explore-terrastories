@@ -21,6 +21,7 @@ display: flex;
 justify-content: space-between;
 gap: ${props => (props.$grid ? "0.5rem": "1rem")};
 flex-direction: ${props => (props.$grid ? "column" : "row")};
+margin: 0.25rem;
 
 > svg {
   height: ${props => (props.$grid ? "24px": "36px")};

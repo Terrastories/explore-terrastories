@@ -1,10 +1,13 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import Icon from 'components/Icon'
 
 import { useCommunity } from 'contexts/CommunityContext'
+import { useMapConfig } from 'contexts/MapContext'
 
+import Breadcrumbs from './Breadcrumbs'
 import StoryDetail from './StoryDetail'
-import StoryFilters from './StoryFilters'
-import DetailCard from './DetailCard'
 import StoryList from './StoryList'
 
 import ExploreIntro from './ExploreIntro'
@@ -19,27 +22,43 @@ type PanelProps = {
 }
 
 export default function StoryPanel(props :PanelProps) {
-  const { showIntro, selectedStory, selectedPlace } = useCommunity()
+  const { t } = useTranslation()
+  const { closePlaceChip, showIntro, selectedStory, selectedPlace, setSelectedStory } = useCommunity()
+  const { updateStoryPoints, stashedPoints, setStashedPoints } = useMapConfig()
 
-  const panelDisplay = React.useMemo(() => {
-    const { categories, filters, details } = props
-    if (showIntro && !selectedPlace) {
-      return(<ExploreIntro details={details} />)
-    } else {
-      return(<>
-        {selectedPlace || selectedStory
-          ? <DetailCard />
-          : <StoryFilters
-            categories={categories}
-            filters={filters} />}
-        {selectedStory
-          ? <StoryDetail />
-          : <StoryList />}
-      </>)
+  const hasBreadcrumbs = selectedStory || selectedPlace
+
+  const resetPanel = React.useCallback(() => {
+    setSelectedStory(undefined)
+    if (selectedPlace)
+      closePlaceChip().then((points) => updateStoryPoints(points, !!stashedPoints))
+  }, [selectedPlace, setSelectedStory, closePlaceChip, updateStoryPoints, stashedPoints])
+
+  const handleCloseStoryDetail = React.useCallback(() => {
+    setSelectedStory(undefined)
+    if (stashedPoints) {
+      updateStoryPoints(stashedPoints, !!selectedPlace)
+      setStashedPoints(undefined)
     }
-  }, [props, showIntro, selectedStory, selectedPlace])
+  }, [setSelectedStory, updateStoryPoints, setStashedPoints, stashedPoints, selectedPlace])
 
   return (
-    <>{panelDisplay}</>
+    (showIntro && !selectedPlace)
+      ? <ExploreIntro details={props.details} />
+      : <>
+        <Breadcrumbs>
+          <span role={hasBreadcrumbs ? 'link' : ''} onClick={hasBreadcrumbs ? resetPanel : undefined}>{t('translation:stories')}</span>
+          {selectedPlace &&
+            <span className='iconGroup' role={selectedStory ? 'link' : ''} onClick={selectedStory ? handleCloseStoryDetail : undefined}>
+              <Icon icon='pin' alt='pin' />
+              <span className='clampTitle'>{selectedPlace.name}</span>
+            </span>}
+          {selectedStory &&
+            <span className='clampTitle' title={selectedStory.title}>{selectedStory.title}</span>}
+        </Breadcrumbs>
+        {selectedStory
+          ? <StoryDetail />
+          : <StoryList {...props} />}
+        </>
   )
 }

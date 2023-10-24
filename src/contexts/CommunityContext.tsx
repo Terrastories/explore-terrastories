@@ -42,7 +42,6 @@ const sortOptions:{
 
 interface CommunityCtx {
   closePlaceChip: () => Promise<Array<Feature<Point>>>
-  dismissIntro: () => void
   fetchStories: (useFilterState?: boolean) => Promise<Array<Feature<Point>>>
   fetchPaginatedStories: () => void
   fetchStory: (storyId: string) => Promise<Array<Feature<Point>>>
@@ -80,7 +79,6 @@ const CommunityContext = createContext<CommunityCtx>({
   fetchPaginatedStories: () => { return },
 
   // Panel Helpers
-  dismissIntro: () => { return },
   toggleIntroPanel: () => { return },
   showIntro: true,
   listView: true,
@@ -226,10 +224,6 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     return await fetchStories(true)
   }
 
-  function dismissIntro() {
-    setShowIntro(false)
-  }
-
   function toggleIntroPanel() {
     setShowIntro((prevState) => !prevState)
   }
@@ -284,7 +278,6 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
         fetchPaginatedStories,
 
         // Panel Helpers
-        dismissIntro,
         showIntro,
         toggleIntroPanel,
         listView,

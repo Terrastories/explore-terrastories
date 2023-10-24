@@ -12,11 +12,14 @@
     "sw": "Swahili",
     "zh": "Chinese"
   },
+  "birthplace": "Birthplace",
   "close": "Close",
   "community": "Community",
   "communities": "Communities",
+  "birth_date": "Born on {{date}}",
+  "birth_location": "Born in <1/>{{location}}",
+  "birth_info": "Born on {{date}} in <1/>{{location}}",
   "explore": "Explore",
-  "stories": "stories",
   "errors": {
     "empty": "There are no {{resources}}",
     "generic": "There was an error",
@@ -50,6 +53,8 @@
   "select_placeholder": "Select…",
   "select_category": "Select Category",
   "select_option": "Select Option",
+  "stories": "Stories",
   "speaker": "Speaker",
+  "speakers": "Speakers",
   "switch_communities": "Switch Communities"
 }

@@ -12,13 +12,6 @@ export type ActiveStorageImage = {
   url: string,
 }
 
-export type TypeSpeaker = {
-  id: number,
-  name: string,
-  photoUrl: string,
-  speakerCommunity: string,
-}
-
 export type TypePlace = {
   id: number,
   name: string,
@@ -27,6 +20,15 @@ export type TypePlace = {
   region: string,
   placenameAudio: string,
   photoUrl: string
+}
+
+export type TypeSpeaker = {
+  id: number,
+  name: string,
+  photoUrl: string,
+  speakerCommunity: string,
+  birthdate: Date,
+  birthplace: TypePlace,
 }
 
 export type TypeStory = {
@@ -40,6 +42,7 @@ export type TypeStory = {
   mediaContentTypes?: string[],
   mediaPreviewUrl?: string,
   speakers: TypeSpeaker[],
+  interviewer?: TypeSpeaker,
   places: TypePlace[],
   createdAt: string,
   updatedAt: string

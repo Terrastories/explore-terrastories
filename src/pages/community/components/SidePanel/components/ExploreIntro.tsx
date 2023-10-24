@@ -22,7 +22,7 @@ const ExplorePanel = styled.div`
 
   p {
     overflow-wrap: break-word;
-    white-space: pre-wrap;    
+    white-space: pre-wrap;
   }
 `
 
@@ -75,13 +75,13 @@ export default function ExporeIntro({details}: Props) {
     displayImage
   } = details
 
-  const { dismissIntro } = useCommunity()
+  const { toggleIntroPanel } = useCommunity()
 
   return (
     <ExplorePanel>
       {displayImage && <h1>{name}</h1>}
       <p>{description}</p>
-      <Button onClick={dismissIntro}>
+      <Button onClick={toggleIntroPanel}>
         {t('start_exploring')}
       </Button>
       {sponsorLogos.length > 0 &&

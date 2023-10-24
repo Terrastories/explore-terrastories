@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import PersonIcon from './assets/person.svg'
@@ -9,25 +10,27 @@ height: 50px;
 width: 50px;
 vertical-align: top;
 background-color: #ccc;
+flex-shrink: 0;
 `
 
 const AvatarCard = styled.div`
-display: inline-block;
-max-width: 30%;
-text-align: center;
+display: flex;
+gap: 1rem;
 `
 
 type AvatarProps = {
   name: string,
   photoUrl: string,
-  badge?: string
+  showDetails: boolean,
+  children?: ReactNode,
 }
 
 export default function Avatar(props: AvatarProps) {
   const {
     name,
     photoUrl,
-    badge,
+    showDetails,
+    children,
   } = props
 
   const imgSrc = photoUrl ? photoUrl : PersonIcon
@@ -35,9 +38,10 @@ export default function Avatar(props: AvatarProps) {
   return (
     <AvatarCard>
       <RoundImage src={imgSrc} alt={name} title={name} />
-      <div title={name}>{name}</div>
-      { badge &&
-        <span className={'badge'}>{badge}</span>}
+      {showDetails && <div>
+        <div className='name'>{name}</div>
+        {children}
+      </div>}
     </AvatarCard>
   )
 }

@@ -69,6 +69,7 @@ p {
  */
 .badge {
   display: inline-block;
+  line-height: 20px;
   font-size: .8rem;
   background-color: rgba(102,102,102, 0.1);
   padding: 0.25rem 0.5rem;
@@ -85,6 +86,17 @@ p {
   margin-left: 5px;
 }
 
+.badge.square {
+  border-radius: 0px;
+  background-color: rgb(0 0 0 / 70%);
+  color: #eee;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.badge.square > svg{
+ fill: #eee;
+}
 
 /* ARIA Helpers */
 span[role='link'] {
