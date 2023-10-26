@@ -8,6 +8,8 @@ import Media from 'components/Media'
 import SpeakerList from './components/SpeakerList'
 
 import { useCommunity } from 'contexts/CommunityContext'
+import { useMapConfig } from 'contexts/MapContext'
+import type { GeoJsonProperties, Feature, Point } from 'geojson'
 
 import type { TypeStory } from 'types'
 
@@ -42,6 +44,7 @@ padding: 1rem;
 
 export default function StoryDetail() {
   const { selectedStory } = useCommunity()
+  const { moveCenter } = useMapConfig()
 
   const {
     title,
@@ -52,6 +55,11 @@ export default function StoryDetail() {
     speakers,
     places,
   } = selectedStory as TypeStory
+
+  const centerMapOnPlace = (point?: Feature<Point, GeoJsonProperties>) => {
+    if (!point) return
+    moveCenter(point)
+  }
 
   return (
     <>
@@ -65,7 +73,7 @@ export default function StoryDetail() {
       </Heading>
       <StoryDetailContainer>
         {places && places.map((p) => (
-          <div key={p.id}>
+          <div key={p.id} onClick={() => centerMapOnPlace(p.center)}>
             <CollapsibleContainer labelText={p.name} icon={'pin'}>
               {p.description && <PlaceDetail>{p.description}</PlaceDetail>}
             </CollapsibleContainer>

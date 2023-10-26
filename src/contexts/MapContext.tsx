@@ -18,6 +18,8 @@ interface MapConfig {
   setStashedPoints: (points: Array<Feature<Point, GeoJsonProperties>> | undefined) => void
   updateStoryPoints: (newPoints: Array<Feature<Point, GeoJsonProperties>>, updateBounds?: boolean) => void
   bounds?: MapBounds
+  moveCenter: (point: Feature<Point, GeoJsonProperties>) => void
+  centerPoint?: LngLatLike
 }
 
 const MapContext = createContext<MapConfig>({
@@ -25,7 +27,8 @@ const MapContext = createContext<MapConfig>({
   points: [],
   stashedPoints: undefined,
   setStashedPoints: (p) => { return p },
-  updateStoryPoints: (p) => { return p }
+  updateStoryPoints: (p) => { return p },
+  moveCenter: (p) => { return }
 })
 
 export const MapContextProvider = ({ children, initialPoints }: {children: ReactNode, initialPoints: Array<Feature<Point, GeoJsonProperties>>}) => {
@@ -33,6 +36,8 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
   const [stashedPoints, setStashedPoints] = useState<Array<Feature<Point, GeoJsonProperties>>>()
 
   const [bounds, setBounds] = useState<MapBounds>()
+
+  const [centerPoint, setCenterPoint] = useState<LngLatLike>()
 
   function updateStoryPoints(newPoints: Array<Feature<Point, GeoJsonProperties>>, updateBounds: boolean = false) {
     setPoints(newPoints)
@@ -42,9 +47,14 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
         bounds: bbox(bounds) as LngLatBoundsLike,
         center: center(bounds).geometry.coordinates as LngLatLike
       })
+      setCenterPoint(undefined)
     } else {
       setBounds(undefined)
     }
+  }
+
+  function moveCenter(point: Feature<Point, GeoJsonProperties>) {
+    setCenterPoint(point.geometry.coordinates as LngLatLike)
   }
 
   return (
@@ -54,7 +64,9 @@ export const MapContextProvider = ({ children, initialPoints }: {children: React
         updateStoryPoints,
         stashedPoints,
         setStashedPoints,
-        bounds
+        bounds,
+        centerPoint,
+        moveCenter,
       }}
     >
       {children}

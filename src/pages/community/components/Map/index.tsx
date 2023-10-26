@@ -28,7 +28,7 @@ export default function Map({config}: {config: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
-  const { points, updateStoryPoints, bounds } = useMapConfig()
+  const { points, updateStoryPoints, bounds, centerPoint } = useMapConfig()
   const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
 
   const { isMobile } = useMobile()
@@ -176,6 +176,16 @@ export default function Map({config}: {config: MapData}) {
       map.zoomTo(config.zoom, {duration: 2000.0})
     }
   }, [bounds, config])
+
+    // Map Center Changed
+    React.useEffect(() => {
+      if (!mapRef.current) return
+      const map = mapRef.current
+
+      if (centerPoint) {
+        map.flyTo({center: centerPoint, duration: 3000.0})
+      }
+    }, [centerPoint])
 
   return (
     <div ref={mapContainerRef} className={isMobile ? 'enableMapHeader' : ''} style={{

@@ -20,6 +20,7 @@ export type TypePlace = {
   region: string,
   placenameAudio: string,
   photoUrl: string
+  center?: Feature<Point>,
 }
 
 export type TypeSpeaker = {
