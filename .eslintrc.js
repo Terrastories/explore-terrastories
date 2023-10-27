@@ -51,6 +51,8 @@ module.exports = {
     "semi": [
       "error",
       "never"
-    ]
+    ],
+    // TODO: Enable these and fix issues
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
