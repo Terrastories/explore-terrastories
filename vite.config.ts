@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import checker from 'vite-plugin-checker'
 import svgr from 'vite-plugin-svgr'
 
 // https://vitejs.dev/config/
@@ -17,6 +18,9 @@ export default defineConfig({
     //   such as `import translations/i18n` instead of
     //   needing `import ./translations/i18n`.
     tsconfigPaths(),
+    checker({
+      typescript: true
+    }),
     // Allow SVGs as React components
     svgr()
   ]
