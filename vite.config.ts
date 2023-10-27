@@ -26,6 +26,10 @@ export default defineConfig({
       },
     }),
     // Allow SVGs as React components
-    svgr()
+    svgr({
+      svgrOptions: {
+        titleProp: true
+      }
+    })
   ]
 })
