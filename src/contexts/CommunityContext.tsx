@@ -3,8 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react"
 import { getStories, getStory } from "api/storyApi"
 import { getPlace } from "api/placeApi"
 
-import type { Feature, Point } from "geojson"
-import type { TypeStory, TypePlace, FilterOption, NextPageMeta } from "types"
+import type { Feature, Point, TypeStory, TypePlace, FilterOption, NextPageMeta } from "types"
 
 type FilterState = {
   selectedFilter: string | undefined,
