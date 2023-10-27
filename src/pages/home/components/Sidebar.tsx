@@ -93,7 +93,7 @@ export default function Sidebar() {
           <Input
             placeholder={t("search.placeholder")}
             type="text"
-            defaultValue={searchQuery.get("query")}
+            defaultValue={searchQuery.get("query") || undefined}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           />
         </div>}
@@ -105,7 +105,7 @@ export default function Sidebar() {
           className='fixedSearch'
           placeholder={t("search.placeholder")}
           type="text"
-          defaultValue={searchQuery.get("query")}
+          defaultValue={searchQuery.get("query") || undefined}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />}
     </StyledSidebar>
