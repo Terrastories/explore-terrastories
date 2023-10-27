@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import styled from 'styled-components'
+import type { ReactNode } from "react"
+import styled from "styled-components"
 
 const StyledHeading = styled.div`
 margin-top: 0.5rem;

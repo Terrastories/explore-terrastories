@@ -1,22 +1,22 @@
-import React from 'react'
-import { Await, useLoaderData } from 'react-router-dom'
-import type { LoaderFunctionArgs } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import React from "react"
+import { Await, useLoaderData } from "react-router-dom"
+import type { LoaderFunctionArgs } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import styled from "styled-components"
 
-import { getCommunities } from 'api/communityApi'
+import { getCommunities } from "api/communityApi"
 
-import Loading from 'components/Loading'
+import Loading from "components/Loading"
 
-import Header from './components/Header'
-import Sidebar from './components/Sidebar'
-import CommunityList from './components/CommunityList'
+import Header from "./components/Header"
+import Sidebar from "./components/Sidebar"
+import CommunityList from "./components/CommunityList"
 
-import { TypeCommunity } from 'types'
+import { TypeCommunity } from "types"
 
 export async function homeLoader({request}: LoaderFunctionArgs) {
-  const url = new URL(request.url);
-  const searchTerm = url.searchParams.get("query");
+  const url = new URL(request.url)
+  const searchTerm = url.searchParams.get("query")
 
   return {communities: getCommunities(searchTerm).then((resp) => resp.data)}
 }
@@ -41,7 +41,7 @@ function Home() {
 
   // Translate title (default is English)
   React.useEffect(() => {
-    document.title = t('explore') + ' Terrastories';
+    document.title = t("explore") + " Terrastories"
   }, [t])
 
   return (
@@ -52,15 +52,15 @@ function Home() {
           <Sidebar />
           <Await
             resolve={data.communities}
-            errorElement={<div>{t('errors.generic')}</div>}>
-              {(communities) => (
-                <CommunityList communities={communities} />
-              )}
+            errorElement={<div>{t("errors.generic")}</div>}>
+            {(communities) => (
+              <CommunityList communities={communities} />
+            )}
           </Await>
         </React.Suspense>
       </MainContent>
     </main>
-  );
+  )
 }
 
-export default Home;
+export default Home

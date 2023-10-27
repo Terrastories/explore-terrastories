@@ -1,5 +1,5 @@
-import type { LngLatBoundsLike } from 'mapbox-gl'
-import { Feature, Point } from 'geojson'
+import type { LngLatBoundsLike } from "mapbox-gl"
+import { Feature, Point } from "geojson"
 
 export type TypeMedia = {
   contentType: string,

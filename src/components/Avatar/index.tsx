@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
-import styled from 'styled-components'
+import { ReactNode } from "react"
+import styled from "styled-components"
 
-import PersonIcon from './assets/person.svg'
+import PersonIcon from "./assets/person.svg"
 
 const RoundImage = styled.img`
 border-radius: 50%;

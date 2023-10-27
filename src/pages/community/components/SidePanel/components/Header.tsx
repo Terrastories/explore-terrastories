@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
-import { useCommunity } from 'contexts/CommunityContext'
+import { useCommunity } from "contexts/CommunityContext"
 
-import useMobile from 'hooks/useMobile'
+import useMobile from "hooks/useMobile"
 
-import logo from 'logo.svg'
+import logo from "logo.svg"
 
 const StyledHeader = styled.div`
   width: 100%;
@@ -54,9 +54,9 @@ export default function Header({displayLogo, name}:{displayLogo?: string, name: 
   return(
     <StyledHeader role='header' className={isMobile ? "mobile" : ""}>
       {displayLogo &&
-        <img onClick={() => !showIntro && toggleIntroPanel()} className={!showIntro ? 'headerLink' : ''} src={displayLogo || logo} alt={name} />}
+        <img onClick={() => !showIntro && toggleIntroPanel()} className={!showIntro ? "headerLink" : ""} src={displayLogo || logo} alt={name} />}
       {!displayLogo &&
-        <h1 onClick={() => !showIntro && toggleIntroPanel()} className={!showIntro ? 'headerLink' : ''}>{name}</h1>}
+        <h1 onClick={() => !showIntro && toggleIntroPanel()} className={!showIntro ? "headerLink" : ""}>{name}</h1>}
     </StyledHeader>
   )
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next'
+import React from "react"
+import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
-import styled from 'styled-components';
+import styled from "styled-components"
 
-import logo from 'logo.svg';
-import "./styles.css";
+import logo from "logo.svg"
+import "./styles.css"
 
 const FullPage = styled.div`
   margin: 0;
@@ -13,7 +13,7 @@ const FullPage = styled.div`
   font-family: system-ui, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   background-color: #09697E;
   height: 100vh;
-`;
+`
 
 const PromptContainer = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const PromptContainer = styled.div`
   justify-content: center;
   background-color: #09697E;
   height: 80vh;
-`;
+`
 
 const Prompt = styled.div`
   background-color: #FFFFFF;
@@ -30,7 +30,7 @@ const Prompt = styled.div`
   text-align: center;
   padding: 2em;
   border-radius: 25px;
-`;
+`
 
 export default function NotFound() {
   const { t } = useTranslation()
@@ -40,11 +40,11 @@ export default function NotFound() {
       <PromptContainer>
         <Prompt>
           <img src={logo} className="logo" alt="Terrastories Logo" />
-          <h1>{t('errors.not_found.heading')}</h1>
-          <p>{t('errors.not_found.text')}</p>
-          <p><Link className="button" to="/">{t('go_back')}</Link></p>
+          <h1>{t("errors.not_found.heading")}</h1>
+          <p>{t("errors.not_found.text")}</p>
+          <p><Link className="button" to="/">{t("go_back")}</Link></p>
         </Prompt>
       </PromptContainer>
     </FullPage>
-  );
+  )
 }

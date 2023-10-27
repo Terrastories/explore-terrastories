@@ -1,13 +1,13 @@
-import { useRef, useMemo, useCallback, useEffect, MutableRefObject } from 'react'
-import ReactDOM from 'react-dom/client'
+import { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
+import ReactDOM from "react-dom/client"
 
-import type { Map } from 'mapbox-gl'
-import { Popup as MBPopup } from 'mapbox-gl'
+import type { Map } from "mapbox-gl"
+import { Popup as MBPopup } from "mapbox-gl"
 
-import Popup from '../components/Popup'
-import {MarkerMouseEvent} from '../components/Marker'
+import Popup from "../components/Popup"
+import {MarkerMouseEvent} from "../components/Marker"
 
-import type { TypePlace } from 'types'
+import type { TypePlace } from "types"
 
 const usePopup = (mapRef: MutableRefObject<Map | null>) => {
   const activePointRef = useRef<number | string | null>(null)
@@ -16,7 +16,7 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
       {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
     ),
     []
-  );
+  )
 
   const closePopup = useCallback(() => {
     popup.remove()
@@ -41,9 +41,9 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
     const lngLat = e.markerTarget.getLngLat()
     const el = document.createElement("div")
     const popupNode = ReactDOM.createRoot(el)
-    el.setAttribute('tabindex', '0')
+    el.setAttribute("tabindex", "0")
     // ensures there is no added margins
-    el.style.display = 'inline-grid'
+    el.style.display = "inline-grid"
 
     popupNode.render(
       <Popup {...feature} handleClose={closePopup} />
@@ -57,10 +57,10 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
       activePointRef.current = null
     }
 
-    popup.on('close', resetActiveRef)
+    popup.on("close", resetActiveRef)
 
     return () => {
-      popup.off('close', resetActiveRef)
+      popup.off("close", resetActiveRef)
     }
   }, [popup])
 

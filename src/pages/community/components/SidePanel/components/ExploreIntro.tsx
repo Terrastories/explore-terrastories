@@ -1,9 +1,9 @@
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
+import styled from "styled-components"
+import { useTranslation } from "react-i18next"
 
-import { useCommunity } from 'contexts/CommunityContext'
+import { useCommunity } from "contexts/CommunityContext"
 
-import { TypeCommunityDetails } from 'types'
+import { TypeCommunityDetails } from "types"
 
 const ExplorePanel = styled.div`
   margin-top: 1rem;
@@ -67,7 +67,7 @@ type Props = {
 }
 
 export default function ExporeIntro({details}: Props) {
-  const { t } = useTranslation(['community'])
+  const { t } = useTranslation(["community"])
   const {
     name,
     description,
@@ -82,16 +82,16 @@ export default function ExporeIntro({details}: Props) {
       {displayImage && <h1>{name}</h1>}
       <p>{description}</p>
       <Button onClick={toggleIntroPanel}>
-        {t('start_exploring')}
+        {t("start_exploring")}
       </Button>
       {sponsorLogos.length > 0 &&
         <>
-        <h2>{t('sponsors')}</h2>
-        <SponsorLogos>
-          {sponsorLogos.map((logo) => (
-            <img key={logo.blobId} src={logo.url} alt={'sponsor'} />
-          ))}
-        </SponsorLogos>
+          <h2>{t("sponsors")}</h2>
+          <SponsorLogos>
+            {sponsorLogos.map((logo) => (
+              <img key={logo.blobId} src={logo.url} alt={"sponsor"} />
+            ))}
+          </SponsorLogos>
         </>}
     </ExplorePanel>
   )

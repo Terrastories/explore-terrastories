@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import type { MutableRefObject } from 'react'
-import Supercluster from 'supercluster'
+import { useEffect, useState } from "react"
+import type { MutableRefObject } from "react"
+import Supercluster from "supercluster"
 
-import type { Map } from 'mapbox-gl'
+import type { Map } from "mapbox-gl"
 
-import type { GeoJsonProperties, BBox, Feature, Point } from 'geojson'
+import type { GeoJsonProperties, BBox, Feature, Point } from "geojson"
 
 interface SuperClusterOptions<P, C> {
   mapRef: MutableRefObject<Map | null>,
@@ -26,12 +26,12 @@ export default function useSupercluster<
       setClusters(supercluster.getClusters(map.getBounds().toArray().flat() as BBox, map.getZoom()))
     }
 
-    map.on('load', updatePointsAndClusters)
-    map.on('moveend', updatePointsAndClusters)
+    map.on("load", updatePointsAndClusters)
+    map.on("moveend", updatePointsAndClusters)
 
     return () => {
-      map.off('load', updatePointsAndClusters)
-      map.off('moveend', updatePointsAndClusters)
+      map.off("load", updatePointsAndClusters)
+      map.off("moveend", updatePointsAndClusters)
     }
   }, [supercluster, points, mapRef])
 

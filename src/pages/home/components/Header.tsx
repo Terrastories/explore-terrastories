@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import logo from 'logo.svg'
-import { useTranslation } from 'react-i18next'
+import styled from "styled-components"
+import logo from "logo.svg"
+import { useTranslation } from "react-i18next"
 
-import LanguagePicker from 'components/LanguagePicker'
+import LanguagePicker from "components/LanguagePicker"
 
 const StyledHeader = styled.header`
 position: sticky;
@@ -74,7 +74,7 @@ export default function Header() {
       <Heading>
         <img src={logo} className="logo" alt="Terrastories" title="Terrastories" />
         <span className="bar"></span>
-        <span>{t('explore')} {t('communities')}</span>
+        <span>{t("explore")} {t("communities")}</span>
       </Heading>
       <LanguagePicker />
     </StyledHeader>

@@ -1,14 +1,14 @@
-import React from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import React from "react"
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
-import Home, { homeLoader } from 'pages/home'
-import Community, { communityLoader } from 'pages/community';
+import Home, { homeLoader } from "pages/home"
+import Community, { communityLoader } from "pages/community"
 
-import Layout from 'components/Layout';
-import Loading from 'components/Loading';
-import NotFound from 'components/NotFound';
+import Layout from "components/Layout"
+import Loading from "components/Loading"
+import NotFound from "components/NotFound"
 
-import './App.css';
+import "./App.css"
 
 const router = createBrowserRouter([
   {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <RouterProvider router={router} fallbackElement={<Loading />} />
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { createPortal } from 'react-dom'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import { useState } from "react"
+import { createPortal } from "react-dom"
+import { useTranslation } from "react-i18next"
+import styled from "styled-components"
 
-import Media from 'components/Media'
-import Lightbox from 'components/Lightbox'
-import Icon from 'components/Icon'
+import Media from "components/Media"
+import Lightbox from "components/Lightbox"
+import Icon from "components/Icon"
 
-import speakerIcon from './assets/plyrSpeakerIcon.svg'
+import speakerIcon from "./assets/plyrSpeakerIcon.svg"
 
 type FeatureProps = {
   name?: string,
@@ -106,7 +106,7 @@ export default function Popup(props: PopupProps) {
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  let popupImage = thumbnail || photo
+  const popupImage = thumbnail || photo
 
   return (
     <>
@@ -120,7 +120,7 @@ export default function Popup(props: PopupProps) {
             url={placenameAudio}
             contentType='audio'
             playIconUrl={speakerIcon}
-            audioControls={['play']} />}
+            audioControls={["play"]} />}
       </Heading>
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
@@ -128,8 +128,8 @@ export default function Popup(props: PopupProps) {
         {region && <span className="badge">{region}</span>}
         {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
       </Content>
-      <CloseButton onClick={props.handleClose} aria-labelledby={t('close')}>
-        <Icon icon="close" alt={t('close')} />
+      <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
+        <Icon icon="close" alt={t("close")} />
       </CloseButton>
       {showModal && photo && name && createPortal(
         <Lightbox

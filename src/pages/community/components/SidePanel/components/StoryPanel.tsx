@@ -1,18 +1,18 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
+import React from "react"
+import { useTranslation } from "react-i18next"
 
-import Icon from 'components/Icon'
+import Icon from "components/Icon"
 
-import { useCommunity } from 'contexts/CommunityContext'
-import { useMapConfig } from 'contexts/MapContext'
+import { useCommunity } from "contexts/CommunityContext"
+import { useMapConfig } from "contexts/MapContext"
 
-import Breadcrumbs from './Breadcrumbs'
-import StoryDetail from './StoryDetail'
-import StoryList from './StoryList'
+import Breadcrumbs from "./Breadcrumbs"
+import StoryDetail from "./StoryDetail"
+import StoryList from "./StoryList"
 
-import ExploreIntro from './ExploreIntro'
+import ExploreIntro from "./ExploreIntro"
 
-import { FilterOption, TypeCommunityDetails } from 'types'
+import { FilterOption, TypeCommunityDetails } from "types"
 
 type PanelProps = {
   categories: string[],
@@ -47,9 +47,9 @@ export default function StoryPanel(props :PanelProps) {
       ? <ExploreIntro details={props.details} />
       : <>
         <Breadcrumbs>
-          <span role={hasBreadcrumbs ? 'link' : ''} onClick={hasBreadcrumbs ? resetPanel : undefined}>{t('translation:stories')}</span>
+          <span role={hasBreadcrumbs ? "link" : ""} onClick={hasBreadcrumbs ? resetPanel : undefined}>{t("translation:stories")}</span>
           {selectedPlace &&
-            <span className='iconGroup' role={selectedStory ? 'link' : ''} onClick={selectedStory ? handleCloseStoryDetail : undefined}>
+            <span className='iconGroup' role={selectedStory ? "link" : ""} onClick={selectedStory ? handleCloseStoryDetail : undefined}>
               <Icon icon='pin' alt='pin' />
               <span className='clampTitle'>{selectedPlace.name}</span>
             </span>}
@@ -59,6 +59,6 @@ export default function StoryPanel(props :PanelProps) {
         {selectedStory
           ? <StoryDetail />
           : <StoryList {...props} />}
-        </>
+      </>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
 export default function useMobile() {
   const [width, setWidth] = useState<number>(window.innerWidth)
@@ -10,19 +10,19 @@ export default function useMobile() {
       // to entering fullscreen mode.
       if (document.fullscreenElement !== null) return
 
-      setWidth(window.innerWidth);
+      setWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleWindowSizeChange)
+    window.addEventListener("resize", handleWindowSizeChange)
 
     return () => {
-      window.removeEventListener('resize', handleWindowSizeChange)
+      window.removeEventListener("resize", handleWindowSizeChange)
     }
   }, [])
 
   const restrictOverscrollBehavior = (enabled: boolean) => {
-    document.documentElement.classList.toggle('disableOverflowSwipe', enabled)
-    document.body.classList.toggle('disableOverflowSwipe', enabled)
+    document.documentElement.classList.toggle("disableOverflowSwipe", enabled)
+    document.body.classList.toggle("disableOverflowSwipe", enabled)
   }
 
   return { isMobile, restrictOverscrollBehavior }

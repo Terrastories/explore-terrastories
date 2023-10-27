@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
-import Icon from 'components/Icon'
+import Icon from "components/Icon"
 
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react"
 
 const BreadcrumbContainer = styled.span`
   display: flex;

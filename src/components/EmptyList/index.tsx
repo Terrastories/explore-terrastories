@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
+import React from "react"
+import styled from "styled-components"
+import { useTranslation } from "react-i18next"
 
 const Box = styled.div`
 display: flex;
@@ -19,7 +19,7 @@ export default function EmptyList({message}: EmptyListProps) {
   return (
     <Box>
       {
-        message || t('errors.empty', {resources: 'results'})
+        message || t("errors.empty", {resources: "results"})
       }
     </Box>
   )

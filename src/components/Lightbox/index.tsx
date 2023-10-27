@@ -1,11 +1,11 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import React from "react"
+import { useTranslation } from "react-i18next"
+import styled from "styled-components"
 
-import Loading from 'components/Loading'
-import Icon from 'components/Icon'
+import Loading from "components/Loading"
+import Icon from "components/Icon"
 
-import useModal from 'hooks/useModal'
+import useModal from "hooks/useModal"
 
 const LightboxModal = styled.div`
 display: flex;
@@ -97,10 +97,10 @@ export default function Lightbox(props: LightboxProps) {
   return (
     <LightboxModal ref={modalRef} tabIndex={-1}>
       <div className="content" ref={contentRef}>
-        <button onClick={onClose} aria-labelledby={t('close')}><Icon icon="close" alt={t('close')} /></button>
+        <button onClick={onClose} aria-labelledby={t("close")}><Icon icon="close" alt={t("close")} /></button>
         <React.Suspense fallback={<Loading />}>
           {imgLoading && <div className='imgPlaceholder'><Loading /></div>}
-          <img className={imgLoading ? 'loading' : ''} src={imageSource} alt={name} onLoad={() => setImgLoading(false)} />
+          <img className={imgLoading ? "loading" : ""} src={imageSource} alt={name} onLoad={() => setImgLoading(false)} />
           <div className="caption">
             <h2>{name}</h2>
             {description}

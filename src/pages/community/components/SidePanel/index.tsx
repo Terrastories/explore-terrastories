@@ -1,22 +1,22 @@
-import React from 'react'
-import { createPortal } from 'react-dom'
-import { useTranslation } from 'react-i18next'
-import { animated, SpringValues } from '@react-spring/web'
+import React from "react"
+import { createPortal } from "react-dom"
+import { useTranslation } from "react-i18next"
+import { animated, SpringValues } from "@react-spring/web"
 
-import LanguagePicker from 'components/LanguagePicker'
+import LanguagePicker from "components/LanguagePicker"
 
-import CommunitySwitcherModal from './components/CommunitySwitcherModal'
-import Header from './components/Header'
-import StoryPanel from './components/StoryPanel'
+import CommunitySwitcherModal from "./components/CommunitySwitcherModal"
+import Header from "./components/Header"
+import StoryPanel from "./components/StoryPanel"
 
-import useMouseDraggable from './hooks/useMouseDraggable'
-import useTouchDraggable from './hooks/useTouchDraggable'
+import useMouseDraggable from "./hooks/useMouseDraggable"
+import useTouchDraggable from "./hooks/useTouchDraggable"
 
-import useMobile from 'hooks/useMobile'
+import useMobile from "hooks/useMobile"
 
-import type { TypeCommunity } from 'types'
+import type { TypeCommunity } from "types"
 
-import './styles.css'
+import "./styles.css"
 
 type PanelProps = {
   community: TypeCommunity
@@ -69,8 +69,8 @@ export default function SidePanel({ community }: PanelProps) {
         />
         <div className="panelLinks">
           <div>
-            <a href={`${import.meta.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
-            <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t('switch_communities')}</span>
+            <a href={`${import.meta.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t("login")}</a>
+            <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t("switch_communities")}</span>
           </div>
           <LanguagePicker />
         </div>

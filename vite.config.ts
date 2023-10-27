@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import checker from 'vite-plugin-checker'
-import svgr from 'vite-plugin-svgr'
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import tsconfigPaths from "vite-tsconfig-paths"
+import checker from "vite-plugin-checker"
+import svgr from "vite-plugin-svgr"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,7 +22,7 @@ export default defineConfig({
       typescript: true,
       eslint: {
         // for example, lint .ts and .tsx
-        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+        lintCommand: "eslint './src/**/*.{ts,tsx}'",
       },
     }),
     // Allow SVGs as React components

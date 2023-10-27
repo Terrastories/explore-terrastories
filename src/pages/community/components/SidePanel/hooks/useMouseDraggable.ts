@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import type { RefObject } from 'react'
+import { useEffect, useState } from "react"
+import type { RefObject } from "react"
 
-import { useSpring } from '@react-spring/web'
+import { useSpring } from "@react-spring/web"
 
 export default function useMouseDraggable(
   panelRef: RefObject<HTMLDivElement>,
@@ -33,18 +33,18 @@ export default function useMouseDraggable(
 
     const handleMouseDown = (e: MouseEvent) => {
       y = e.clientY
-      document.addEventListener('mousemove', handleDrag)
-      document.addEventListener('mouseup', handleMouseUp)
+      document.addEventListener("mousemove", handleDrag)
+      document.addEventListener("mouseup", handleMouseUp)
     }
 
     const handleMouseUp = (e: MouseEvent) => {
-      document.removeEventListener('mousemove', handleDrag)
+      document.removeEventListener("mousemove", handleDrag)
     }
 
-    dragTab.addEventListener('mousedown', handleMouseDown)
+    dragTab.addEventListener("mousedown", handleMouseDown)
 
     return () => {
-      dragTab.removeEventListener('mousedown', handleMouseDown)
+      dragTab.removeEventListener("mousedown", handleMouseDown)
     }
   }, [isMobile, panelRef, panelResizeableRef])
 
@@ -68,10 +68,10 @@ export default function useMouseDraggable(
       setOpen(!open)
     }
 
-    dragTab.addEventListener('click', handleClick)
+    dragTab.addEventListener("click", handleClick)
 
     return () => {
-      dragTab.removeEventListener('click', handleClick)
+      dragTab.removeEventListener("click", handleClick)
     }
   }, [isMobile, panelRef, panelResizeableRef, open, setOpen, bApi])
 

@@ -1,11 +1,11 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import {components, DropdownIndicatorProps, SingleValue, ActionMeta} from 'react-select'
+import React from "react"
+import { useTranslation } from "react-i18next"
+import {components, DropdownIndicatorProps, SingleValue, ActionMeta} from "react-select"
 
-import Select from 'components/Select'
-import Icon from 'components/Icon'
+import Select from "components/Select"
+import Icon from "components/Icon"
 
-import { useCommunity } from 'contexts/CommunityContext'
+import { useCommunity } from "contexts/CommunityContext"
 
 interface SortOption {
   label: string
@@ -31,8 +31,8 @@ export default function Sort() {
 
   React.useEffect(() => {
     if (!options) {
-      let opts:SortOption[] = []
-      for(let opt of Object.keys(sortOptions)) {
+      const opts:SortOption[] = []
+      for(const opt of Object.keys(sortOptions)) {
         opts.push({
           label: t(`sorts.${opt}`),
           value: opt
@@ -50,10 +50,10 @@ export default function Sort() {
   }
 
   const defaultSort = (sort: string | undefined) => {
-    const sortOpt = sort ? sort : 'recent'
+    const sortOpt = sort ? sort : "recent"
     return {
       label: t(`sorts.${sortOpt}`),
-        value: sortOpt
+      value: sortOpt
     }
   }
 

@@ -1,20 +1,20 @@
-import React from 'react'
-import { Await, defer, useLoaderData, useAsyncValue } from 'react-router-dom'
-import type { LoaderFunctionArgs } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import React from "react"
+import { Await, defer, useLoaderData, useAsyncValue } from "react-router-dom"
+import type { LoaderFunctionArgs } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
-import NotFound from 'components/NotFound'
+import NotFound from "components/NotFound"
 
-import { getCommunity } from 'api/communityApi'
+import { getCommunity } from "api/communityApi"
 
-import { MapContextProvider, useMapConfig }  from 'contexts/MapContext'
-import { CommunityProvider, useCommunity }  from 'contexts/CommunityContext'
+import { MapContextProvider, useMapConfig }  from "contexts/MapContext"
+import { CommunityProvider, useCommunity }  from "contexts/CommunityContext"
 
-import Loading from 'components/Loading'
-import Map from './components/Map'
-import SidePanel from './components/SidePanel'
+import Loading from "components/Loading"
+import Map from "./components/Map"
+import SidePanel from "./components/SidePanel"
 
-import type { TypeCommunity } from 'types'
+import type { TypeCommunity } from "types"
 
 type UrlParamProps = {
   slug: string
@@ -25,7 +25,7 @@ type CommunityThing = {
 }
 
 export async function communityLoader({request, params}: LoaderFunctionArgs) {
-  let typedParamns = params as UrlParamProps
+  const typedParamns = params as UrlParamProps
 
   return defer({community: getCommunity(typedParamns.slug).then((resp) => resp.data)})
 }
@@ -40,9 +40,9 @@ function Provider() {
   const community = useAsyncValue() as TypeCommunity
 
   const updateBrowserTitle = React.useCallback(() => {
-    let title = t('explore') + ' Terrastories'
+    let title = t("explore") + " Terrastories"
     if (community.name)
-      title += ' | ' + community.name
+      title += " | " + community.name
     document.title =  title
   }, [t, community])
 
@@ -53,9 +53,9 @@ function Provider() {
 
   // Ensure browser title is updated every time langauge is changed
   React.useEffect(() => {
-    i18n.on('languageChanged', updateBrowserTitle)
+    i18n.on("languageChanged", updateBrowserTitle)
     return () => {
-      i18n.off('languageChanged', updateBrowserTitle)
+      i18n.off("languageChanged", updateBrowserTitle)
     }
   }, [i18n, updateBrowserTitle])
 
@@ -81,18 +81,18 @@ export default function Community() {
   const data = useLoaderData() as CommunityThing
 
   return (
-      <React.Suspense fallback={<Loading/>}>
-        <Await
-          resolve={data.community}
-          errorElement={<NotFound />}>
-            {(community) => (
-              <CommunityProvider slug={community.slug}>
-                <MapContextProvider initialPoints={community.points}>
-                  <Provider />
-                </MapContextProvider>
-              </CommunityProvider>
-            )}
-        </Await>
-      </React.Suspense>
+    <React.Suspense fallback={<Loading/>}>
+      <Await
+        resolve={data.community}
+        errorElement={<NotFound />}>
+        {(community) => (
+          <CommunityProvider slug={community.slug}>
+            <MapContextProvider initialPoints={community.points}>
+              <Provider />
+            </MapContextProvider>
+          </CommunityProvider>
+        )}
+      </Await>
+    </React.Suspense>
   )
 }

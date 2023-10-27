@@ -1,5 +1,5 @@
-import mapboxgl, { Map, LngLatLike, LngLatBoundsLike, MapMouseEvent } from 'mapbox-gl'
-import type { GeoJsonProperties } from 'geojson'
+import mapboxgl, { Map, LngLatLike, LngLatBoundsLike, MapMouseEvent } from "mapbox-gl"
+import type { GeoJsonProperties } from "geojson"
 
 type MinimapOptions = {
   id: string,
@@ -97,43 +97,43 @@ class Minimap {
   }
 
   onAdd(parentMap: Map) {
-    this._parentMap = parentMap;
+    this._parentMap = parentMap
 
-    var opts = this.options;
-    var container = this._container = this._createContainer(parentMap);
-    var miniMap = this._miniMap = new mapboxgl.Map({
+    const opts = this.options
+    const container = this._container = this._createContainer(parentMap)
+    const miniMap = this._miniMap = new mapboxgl.Map({
       attributionControl: false,
       container: container,
       style: opts.style,
       zoom: opts.zoom,
       center: opts.center,
-      projection: {name: 'mercator'}
-    });
+      projection: {name: "mercator"}
+    })
 
-    miniMap.getCanvas().removeAttribute('tabindex')
+    miniMap.getCanvas().removeAttribute("tabindex")
     if (opts.maxBounds) miniMap.setMaxBounds(opts.maxBounds)
 
-    miniMap.on("load", this._load.bind(this));
+    miniMap.on("load", this._load.bind(this))
 
     return this._container
   }
 
   _load() {
-    var opts: any = this.options
-    var parentMap: any = this._parentMap
-    var miniMap: any = this._miniMap
-    var interactions = [
+    const opts: any = this.options
+    const parentMap: any = this._parentMap
+    const miniMap: any = this._miniMap
+    const interactions = [
       "dragPan", "scrollZoom", "boxZoom", "dragRotate",
       "keyboard", "doubleClickZoom", "touchZoomRotate"
     ]
 
-    for(let interaction of interactions) {
+    for(const interaction of interactions) {
       if (!opts[interaction]) {
         miniMap[interaction].disable()
       }
     }
 
-    var bounds = miniMap.getBounds()
+    const bounds = miniMap.getBounds()
 
     this._convertBoundsToPoints(bounds)
 
@@ -210,8 +210,8 @@ class Minimap {
 
     this._ticking = false
 
-    var miniMap = this._miniMap
-    var features = miniMap.queryRenderedFeatures(e.point, {
+    const miniMap = this._miniMap
+    const features = miniMap.queryRenderedFeatures(e.point, {
       layers: ["trackingRectFill"]
     })
 
@@ -227,12 +227,12 @@ class Minimap {
       this._previousPoint = this._currentPoint
       this._currentPoint = [e.lngLat.lng, e.lngLat.lat]
 
-      var offset = [
+      const offset = [
         this._previousPoint[0] - this._currentPoint[0],
         this._previousPoint[1] - this._currentPoint[1]
       ]
 
-      var newBounds = this._moveTrackingRect(offset)
+      const newBounds = this._moveTrackingRect(offset)
 
       this._parentMap.fitBounds(newBounds, {
         duration: 80
@@ -248,16 +248,16 @@ class Minimap {
   _moveTrackingRect(offset: number[]) {
     if (!this._trackingRect) return
 
-    var source = this._trackingRect
-    var data = source._data
+    const source = this._trackingRect
+    const data = source._data
 
     if (!data) return
-    var bounds = data.properties.bounds
+    const bounds = data.properties.bounds
 
-    bounds._ne.lat -= offset[1];
-    bounds._ne.lng -= offset[0];
-    bounds._sw.lat -= offset[1];
-    bounds._sw.lng -= offset[0];
+    bounds._ne.lat -= offset[1]
+    bounds._ne.lng -= offset[0]
+    bounds._sw.lat -= offset[1]
+    bounds._sw.lng -= offset[0]
 
     // convert bounds to points for trackingRect
     this._convertBoundsToPoints(bounds)
@@ -274,9 +274,9 @@ class Minimap {
   }
 
   _setTrackingRectBounds(bounds: any) {
-    var source = this._trackingRect
+    const source = this._trackingRect
     if (!source) return
-    var data = source._data
+    const data = source._data
 
     data.properties.bounds = bounds
     this._convertBoundsToPoints(bounds)
@@ -284,9 +284,9 @@ class Minimap {
   }
 
   _convertBoundsToPoints(bounds: any) {
-    var ne = bounds._ne
-    var sw = bounds._sw
-    var trc = this._trackingRectCoordinates
+    const ne = bounds._ne
+    const sw = bounds._sw
+    const trc = this._trackingRectCoordinates
 
     trc[0][0][0] = ne.lng
     trc[0][0][1] = ne.lat
@@ -303,7 +303,7 @@ class Minimap {
   _update() {
     if (this._isDragging) return
     if (!this._parentMap) return
-    var parentBounds = this._parentMap.getBounds()
+    const parentBounds = this._parentMap.getBounds()
 
     this._setTrackingRectBounds(parentBounds)
     this.options.zoomAdjust()
@@ -313,13 +313,13 @@ class Minimap {
     if (!this._parentMap) return
     if (!this._miniMap) return
 
-    var miniMap = this._miniMap
-    var parentMap = this._parentMap
-    var miniZoom = miniMap.getZoom() || 10
-    var parentZoom = parentMap.getZoom() || 10
-    var found = false
+    const miniMap = this._miniMap
+    const parentMap = this._parentMap
+    const miniZoom = miniMap.getZoom() || 10
+    const parentZoom = parentMap.getZoom() || 10
+    let found = false
 
-    for (let zoom of this.options.zoomLevels) {
+    for (const zoom of this.options.zoomLevels) {
       if (found) return
 
       if (parentZoom >= zoom[0]) {
@@ -334,12 +334,12 @@ class Minimap {
   }
 
   _createContainer(parentMap: Map) {
-    var opts = this.options
-    var container = document.createElement("div")
+    const opts = this.options
+    const container = document.createElement("div")
 
     container.className = "mapboxgl-ctrl-minimap mapboxgl-ctrl"
     if (opts.containerClass) container.classList.add(opts.containerClass)
-    container.setAttribute('style', 'width: ' + opts.width + '; height: ' + opts.height + ';')
+    container.setAttribute("style", "width: " + opts.width + "; height: " + opts.height + ";")
     container.addEventListener("contextmenu", this._preventDefault)
 
     parentMap.getContainer().appendChild(container)

@@ -1,6 +1,6 @@
-import type { Map } from 'mapbox-gl'
-import { renderToStaticMarkup } from 'react-dom/server';
-import Logo from './logocombo.svg?react'
+import type { Map } from "mapbox-gl"
+import { renderToStaticMarkup } from "react-dom/server"
+import Logo from "./logocombo.svg?react"
 
 export default class Brand {
   _map: Map | undefined
@@ -15,18 +15,18 @@ export default class Brand {
     Object.assign(this.opts, _opts)
 
     this._map = undefined
-    this._container = document.createElement('div')
+    this._container = document.createElement("div")
   }
 
   onAdd(map: Map) {
     this._map = map
     // so it's properly styled on the map
-    this._container.classList.add('mapboxgl-ctrl')
+    this._container.classList.add("mapboxgl-ctrl")
     // provides the background and outline
-    this._container.classList.add('mapboxgl-ctrl-group')
+    this._container.classList.add("mapboxgl-ctrl-group")
     if (this.opts.containerClass) this._container.classList.add(this.opts.containerClass)
 
-    const svg = renderToStaticMarkup(<Logo />);
+    const svg = renderToStaticMarkup(<Logo />)
 
     this._container.innerHTML = svg
 

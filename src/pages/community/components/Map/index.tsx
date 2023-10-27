@@ -1,28 +1,28 @@
-import React from 'react'
+import React from "react"
 
-import type { Projection } from 'mapbox-gl'
-import mapboxgl from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
+import type { Projection } from "mapbox-gl"
+import mapboxgl from "mapbox-gl"
+import "mapbox-gl/dist/mapbox-gl.css"
 
-import { useMapConfig } from 'contexts/MapContext'
-import { useCommunity } from 'contexts/CommunityContext'
-import useMobile from 'hooks/useMobile'
+import { useMapConfig } from "contexts/MapContext"
+import { useCommunity } from "contexts/CommunityContext"
+import useMobile from "hooks/useMobile"
 
-import Brand from './components/Brand'
-import HomeButton from './components/HomeButton'
-import Marker from './components/Marker'
-import Minimap from './components/Minimap'
+import Brand from "./components/Brand"
+import HomeButton from "./components/HomeButton"
+import Marker from "./components/Marker"
+import Minimap from "./components/Minimap"
 
-import useSupercluster from './hooks/useSupercluster'
-import usePopup from './hooks/usePopup'
+import useSupercluster from "./hooks/useSupercluster"
+import usePopup from "./hooks/usePopup"
 
-import MarkerSVG from './assets/marker.svg?react'
-import ClusterSVG from './assets/cluster.svg?react'
+import MarkerSVG from "./assets/marker.svg?react"
+import ClusterSVG from "./assets/cluster.svg?react"
 
-import { loadTerrainAndFog } from './utils/mapbox'
-import type { MapData } from 'types'
+import { loadTerrainAndFog } from "./utils/mapbox"
+import type { MapData } from "types"
 
-import './styles.css'
+import "./styles.css"
 
 export default function Map({config}: {config: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
@@ -47,15 +47,15 @@ export default function Map({config}: {config: MapData}) {
   // Map Initialization
   React.useEffect(() => {
     if (mapContainerRef.current != null) { // Don't try load the map if there is no container
-      if (mapRef.current) return; // Only initialize the map once!
+      if (mapRef.current) return // Only initialize the map once!
 
       // Set token globally
-      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
+      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || "pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g"
 
       // Initialize Map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: import.meta.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
+        style: import.meta.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e",
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
@@ -65,7 +65,7 @@ export default function Map({config}: {config: MapData}) {
       })
 
       // Add applicable 3D and Globe Layers
-      mapRef.current.once('load', () => {
+      mapRef.current.once("load", () => {
         loadTerrainAndFog({mapRef, ...config})
       })
 
@@ -73,20 +73,20 @@ export default function Map({config}: {config: MapData}) {
       if (!config.useLocalServer && !isMobile) {
         mapRef.current.addControl(new Minimap({
           containerClass: "tsMiniMap",
-          style: import.meta.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e'
-        }), "top-right");
+          style: import.meta.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e"
+        }), "top-right")
       }
 
       // Add Brand Logo
-      mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right");
+      mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right")
 
       // Add Home Control
       const homeButtonControl = new HomeButton({reset: resetMap})
-      mapRef.current.addControl(homeButtonControl, 'top-right')
+      mapRef.current.addControl(homeButtonControl, "top-right")
 
       // Add Navigation Control
-      const nav = new mapboxgl.NavigationControl({});
-      mapRef.current.addControl(nav, 'top-right')
+      const nav = new mapboxgl.NavigationControl({})
+      mapRef.current.addControl(nav, "top-right")
     }
   }, [mapContainerRef, resetMap, mapRef, config, isMobile])
 
@@ -119,8 +119,8 @@ export default function Map({config}: {config: MapData}) {
       clusters.map((cluster) => {
         const map = mapRef.current as mapboxgl.Map
         const [lng, lat] = cluster.geometry.coordinates
-        const el = document.createElement('div')
-        el.classList.add('tsMarker')
+        const el = document.createElement("div")
+        el.classList.add("tsMarker")
         if (cluster.properties.cluster) {
           return(
             <Marker element={el} feature={{...cluster.properties}} onClick={handleClusterExpansion} key={cluster.id} map={map} point={[lng, lat]}>
@@ -140,10 +140,10 @@ export default function Map({config}: {config: MapData}) {
             offset={[10, -11]}
             feature={{id: cluster.id, ...cluster.properties}}
           >
-          <MarkerSVG />
-        </Marker>
+            <MarkerSVG />
+          </Marker>
         )
-    }),
+      }),
     [clusters, openPopup, mapRef, handleClusterExpansion, handlePointClick]
   )
 
@@ -159,10 +159,10 @@ export default function Map({config}: {config: MapData}) {
         closePlaceChip().then((pts) => updateStoryPoints(pts))
       }
     }
-    popup.on('close', resetMapMarkersOnPopupClose)
+    popup.on("close", resetMapMarkersOnPopupClose)
 
     return () => {
-      popup.off('close', resetMapMarkersOnPopupClose)
+      popup.off("close", resetMapMarkersOnPopupClose)
     }
   }, [popup, selectedPlace, closePlaceChip, updateStoryPoints])
 
@@ -177,21 +177,21 @@ export default function Map({config}: {config: MapData}) {
     }
   }, [bounds, config])
 
-    // Map Center Changed
-    React.useEffect(() => {
-      if (!mapRef.current) return
-      const map = mapRef.current
+  // Map Center Changed
+  React.useEffect(() => {
+    if (!mapRef.current) return
+    const map = mapRef.current
 
-      if (centerPoint) {
-        map.flyTo({center: centerPoint, duration: 3000.0})
-      }
-    }, [centerPoint])
+    if (centerPoint) {
+      map.flyTo({center: centerPoint, duration: 3000.0})
+    }
+  }, [centerPoint])
 
   return (
-    <div ref={mapContainerRef} className={isMobile ? 'enableMapHeader' : ''} style={{
-      position: 'fixed',
-      height: '100%',
-      width: '100%',
+    <div ref={mapContainerRef} className={isMobile ? "enableMapHeader" : ""} style={{
+      position: "fixed",
+      height: "100%",
+      width: "100%",
       left: 0,
       top: 0,
     }}>

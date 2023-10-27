@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from "react"
 
 // Hook: useModal()
 // Requires and accepts a close handler (how to close the modal)
@@ -16,25 +16,25 @@ const useModal = (closeHandler: () => void) => {
 
     const modal = modalRef.current
     const focusableContent = modal.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      "button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])"
     )
     const firstFocusableElement = focusableContent[0]
     const lastFocusableElement = focusableContent[focusableContent.length - 1]
 
     function handleClickOutside(event: MouseEvent) {
       if (contentRef.current && !contentRef.current.contains(event.target as HTMLElement)) {
-       closeHandler()
+        closeHandler()
       }
     }
 
     function handleEscClose(event: KeyboardEvent) {
-      if (event.key === 'Escape' || event.which === 27) {
+      if (event.key === "Escape" || event.which === 27) {
         closeHandler()
       }
     }
 
     function handleKeyboardAccessibleEvents(event: KeyboardEvent) {
-      let isTabPressed = event.key === 'Tab' || event.which === 9
+      const isTabPressed = event.key === "Tab" || event.which === 9
 
       if (!isTabPressed) return
 
@@ -51,16 +51,16 @@ const useModal = (closeHandler: () => void) => {
       }
     }
 
-    modal.addEventListener('keydown', handleEscClose)
-    modal.addEventListener('keydown', handleKeyboardAccessibleEvents)
-    modal.addEventListener('mousedown', handleClickOutside)
+    modal.addEventListener("keydown", handleEscClose)
+    modal.addEventListener("keydown", handleKeyboardAccessibleEvents)
+    modal.addEventListener("mousedown", handleClickOutside)
 
     // Focus modal so event listeners work!
     modal.focus()
     return () => {
-      modal.removeEventListener('keydown', handleEscClose)
-      modal.removeEventListener('keydown', handleKeyboardAccessibleEvents)
-      modal.removeEventListener('mousedown', handleClickOutside)
+      modal.removeEventListener("keydown", handleEscClose)
+      modal.removeEventListener("keydown", handleKeyboardAccessibleEvents)
+      modal.removeEventListener("mousedown", handleClickOutside)
     }
   }, [closeHandler])
 

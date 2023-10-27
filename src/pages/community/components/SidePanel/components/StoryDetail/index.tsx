@@ -1,17 +1,17 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
-import CollapsibleContainer from 'components/CollapsibleContainer'
-import Heading from 'components/Heading'
-import Icon from 'components/Icon'
-import Media from 'components/Media'
+import CollapsibleContainer from "components/CollapsibleContainer"
+import Heading from "components/Heading"
+import Icon from "components/Icon"
+import Media from "components/Media"
 
-import SpeakerList from './components/SpeakerList'
+import SpeakerList from "./components/SpeakerList"
 
-import { useCommunity } from 'contexts/CommunityContext'
-import { useMapConfig } from 'contexts/MapContext'
-import type { GeoJsonProperties, Feature, Point } from 'geojson'
+import { useCommunity } from "contexts/CommunityContext"
+import { useMapConfig } from "contexts/MapContext"
+import type { GeoJsonProperties, Feature, Point } from "geojson"
 
-import type { TypeStory } from 'types'
+import type { TypeStory } from "types"
 
 const StoryDetailContainer = styled.div`
 overflow-x: hidden;
@@ -66,15 +66,15 @@ export default function StoryDetail() {
       <Heading title={title}>
         {topic && <span className="badge square">{topic}</span>}
         {language &&
-          <span className={'badge square'}>
-            <Icon icon={'language'} alt={'language'} />
+          <span className={"badge square"}>
+            <Icon icon={"language"} alt={"language"} />
             {language}
           </span>}
       </Heading>
       <StoryDetailContainer>
         {places && places.map((p) => (
           <div key={p.id} onClick={() => centerMapOnPlace(p.center)}>
-            <CollapsibleContainer labelText={p.name} icon={'pin'}>
+            <CollapsibleContainer labelText={p.name} icon={"pin"}>
               {p.description && <PlaceDetail>{p.description}</PlaceDetail>}
             </CollapsibleContainer>
           </div>

@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, startTransition } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
-import styled from 'styled-components'
+import { useState, useEffect, useCallback, startTransition } from "react"
+import { useTranslation } from "react-i18next"
+import { useSearchParams } from "react-router-dom"
+import styled from "styled-components"
 
-import Input from 'components/Input'
+import Input from "components/Input"
 
-import useMobile from 'hooks/useMobile'
+import useMobile from "hooks/useMobile"
 
 const StyledSidebar = styled.div`
 > .box {
@@ -50,25 +50,25 @@ const StyledSidebar = styled.div`
 `
 
 export default function Sidebar() {
-  const { t } = useTranslation(['home'])
+  const { t } = useTranslation(["home"])
 
   const [searchQuery, setSearchQuery] = useSearchParams()
-  const [query, setQuery] = useState(searchQuery.get('query'))
+  const [query, setQuery] = useState(searchQuery.get("query"))
 
   const { isMobile } = useMobile()
 
   // useCallback to avoid rerender loop
   const handleSearch = useCallback((value: string) => {
-    if (searchQuery.get('query') === value) return
-    if (searchQuery.get('query') === null && value === '') return
+    if (searchQuery.get("query") === value) return
+    if (searchQuery.get("query") === null && value === "") return
     // startTransition allows us to update the UI with loading icons
     // while the request is firing; this avoids the *doing nothing feel*
     // and the splatting the results.
     startTransition(() => {
-      if (value === '') {
+      if (value === "") {
         setSearchQuery({})
       } else {
-       setSearchQuery({query: value})
+        setSearchQuery({query: value})
       }
     })
   }, [searchQuery, setSearchQuery])
@@ -88,24 +88,24 @@ export default function Sidebar() {
       {
         !isMobile &&
         <div className='box'>
-          <h4>{t('search.label')}</h4>
-          <p>{t('search.cta')}</p>
+          <h4>{t("search.label")}</h4>
+          <p>{t("search.cta")}</p>
           <Input
-            placeholder={t('search.placeholder')}
+            placeholder={t("search.placeholder")}
             type="text"
-            defaultValue={searchQuery.get('query')}
+            defaultValue={searchQuery.get("query")}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
-            />
+          />
         </div>}
       <div className='box'>
-        <p>{t('sidebar.about')}</p>
+        <p>{t("sidebar.about")}</p>
       </div>
       {isMobile &&
         <Input
           className='fixedSearch'
-          placeholder={t('search.placeholder')}
+          placeholder={t("search.placeholder")}
           type="text"
-          defaultValue={searchQuery.get('query')}
+          defaultValue={searchQuery.get("query")}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />}
     </StyledSidebar>

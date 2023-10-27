@@ -1,7 +1,7 @@
-import http from './axios'
+import http from "./axios"
 
-import type { APIResponse } from './types'
-import type { PaginationMeta } from 'types'
+import type { APIResponse } from "./types"
+import type { PaginationMeta } from "types"
 
 interface PaginatedData {
   hasNextPage: boolean,
@@ -14,14 +14,14 @@ type PaginatedResponse = {
 }
 
 export function getStories(slug: string, urlParams = {}): Promise<PaginatedResponse> {
-  return http.get(`/communities/:slug/stories`, {
+  return http.get("/communities/:slug/stories", {
     params: urlParams,
     embeddedParams: {slug}
   })
 }
 
 export function getStory(slug: string, storyId: string): Promise<APIResponse> {
-  return http.get(`/communities/:slug/stories/:storyId`, {
+  return http.get("/communities/:slug/stories/:storyId", {
     embeddedParams: {slug, storyId}
   })
 }

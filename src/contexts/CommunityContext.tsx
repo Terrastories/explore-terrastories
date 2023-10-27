@@ -1,10 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from "react"
 
-import { getStories, getStory } from 'api/storyApi'
-import { getPlace } from 'api/placeApi'
+import { getStories, getStory } from "api/storyApi"
+import { getPlace } from "api/placeApi"
 
-import type { Feature, Point } from 'geojson'
-import type { TypeStory, TypePlace, FilterOption, PaginationMeta } from 'types'
+import type { Feature, Point } from "geojson"
+import type { TypeStory, TypePlace, FilterOption, PaginationMeta } from "types"
 
 type FilterState = {
   selectedFilter: string | undefined,
@@ -22,21 +22,21 @@ type SortOpts = {
 const sortOptions:{
   [value: string]: SortOpts
 } = {
-  'recent': {
-    sort_by: 'created_at',
-    sort_dir: 'desc',
+  "recent": {
+    sort_by: "created_at",
+    sort_dir: "desc",
   },
-  'alpha': {
-    sort_by: 'title',
-    sort_dir: 'asc',
+  "alpha": {
+    sort_by: "title",
+    sort_dir: "asc",
   },
-  'zeta': {
-    sort_by: 'title',
-    sort_dir: 'desc',
+  "zeta": {
+    sort_by: "title",
+    sort_dir: "desc",
   },
-  'updated': {
-    sort_by: 'updated_at',
-    sort_dir: 'desc',
+  "updated": {
+    sort_by: "updated_at",
+    sort_dir: "desc",
   },
 }
 
@@ -67,7 +67,7 @@ interface CommunityCtx {
 }
 
 const CommunityContext = createContext<CommunityCtx>({
-  slug: '',
+  slug: "",
   loading: false,
   stories: [],
   resetSelections: () => { return },

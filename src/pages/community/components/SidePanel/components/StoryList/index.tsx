@@ -1,19 +1,19 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
+import React from "react"
+import styled from "styled-components"
+import { useTranslation } from "react-i18next"
 
-import EmptyList from 'components/EmptyList'
-import Heading from 'components/Heading'
-import Icon from 'components/Icon'
-import Loading from 'components/Loading'
+import EmptyList from "components/EmptyList"
+import Heading from "components/Heading"
+import Icon from "components/Icon"
+import Loading from "components/Loading"
 
-import Sort from './components/Sort'
-import StoryFilters from './components/StoryFilters'
-import StoryListItem from './components/StoryListItem'
+import Sort from "./components/Sort"
+import StoryFilters from "./components/StoryFilters"
+import StoryListItem from "./components/StoryListItem"
 
-import type { FilterOption } from 'types'
+import type { FilterOption } from "types"
 
-import { useCommunity } from 'contexts/CommunityContext'
+import { useCommunity } from "contexts/CommunityContext"
 
 const IconButton = styled.button`
 margin: 0;
@@ -67,7 +67,7 @@ type PanelProps = {
 }
 
 export default function StoryList({categories, filters}: PanelProps) {
-  const { t } = useTranslation(['community', 'translation'])
+  const { t } = useTranslation(["community", "translation"])
   const observerRef = React.useRef(null)
   const scrollableContainerRef = React.useRef<HTMLDivElement>(null)
 
@@ -101,54 +101,54 @@ export default function StoryList({categories, filters}: PanelProps) {
         if (e.isIntersecting) fetchPaginatedStories()
       },
       {threshold: [0.25]}
-    );
+    )
 
-    observer.observe(el);
+    observer.observe(el)
 
     return () => {
-      observer.unobserve(el);
+      observer.unobserve(el)
     }
   }, [loading, observerRef, fetchPaginatedStories])
 
   return (
     <>
-    {selectedPlace
-      ? <Heading title={selectedPlace.name}>
+      {selectedPlace
+        ? <Heading title={selectedPlace.name}>
           {selectedPlace.region && <span className="badge square">{selectedPlace.region}</span>}
           {selectedPlace.typeOfPlace && <span className="badge square">{selectedPlace.typeOfPlace}</span>}
         </Heading>
-      : <StoryListControl>
+        : <StoryListControl>
           <StoryFilters
             categories={categories}
             filters={filters} />
-          <div className={`controlsGroup`}>
+          <div className={"controlsGroup"}>
             <Sort />
             <IconButton type='button' onClick={toggleListView}>
               { listView
-                ? <Icon icon='grid' alt={t('switch_to_grid')} />
-                : <Icon icon='list' alt={t('switch_to_list')} /> }
+                ? <Icon icon='grid' alt={t("switch_to_grid")} />
+                : <Icon icon='list' alt={t("switch_to_list")} /> }
             </IconButton>
           </div>
         </StoryListControl>}
-    <StoryListContainer ref={scrollableContainerRef} className={listView ? 'list' : 'grid'}>
-      {selectedPlace &&
+      <StoryListContainer ref={scrollableContainerRef} className={listView ? "list" : "grid"}>
+        {selectedPlace &&
         <>
           {selectedPlace.description}
-          <h3>{t('translation:stories')}</h3>
+          <h3>{t("translation:stories")}</h3>
         </>}
 
-      {!loading && !selectedPlace && !hasStories &&
-        <EmptyList message={t('translation:errors.empty', {resources: t('translation:stories')})} />}
-      {stories.map((story) => (
-        <StoryListItem
-          key={story.id}
-          story={story}
-          grid={!listView} />
+        {!loading && !selectedPlace && !hasStories &&
+        <EmptyList message={t("translation:errors.empty", {resources: t("translation:stories")})} />}
+        {stories.map((story) => (
+          <StoryListItem
+            key={story.id}
+            story={story}
+            grid={!listView} />
         ))}
-      {loading ?
-        <Loading /> :
-        <span ref={observerRef} id='paginationObserver'></span>}
-    </StoryListContainer>
+        {loading ?
+          <Loading /> :
+          <span ref={observerRef} id='paginationObserver'></span>}
+      </StoryListContainer>
     </>
   )
 }

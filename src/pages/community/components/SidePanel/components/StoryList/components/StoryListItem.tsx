@@ -1,15 +1,15 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
+import { useMemo } from "react"
+import styled from "styled-components"
+import { useTranslation } from "react-i18next"
 
-import { useCommunity } from 'contexts/CommunityContext'
-import { useMapConfig } from 'contexts/MapContext'
+import { useCommunity } from "contexts/CommunityContext"
+import { useMapConfig } from "contexts/MapContext"
 
-import Icon from 'components/Icon'
+import Icon from "components/Icon"
 
-import logomark from 'logomark.svg'
+import logomark from "logomark.svg"
 
-import type { TypeStory } from 'types'
+import type { TypeStory } from "types"
 
 type Props = {
   story: TypeStory,
@@ -129,7 +129,7 @@ export default function StoryListItem({story, grid}: Props) {
   const { setStashedPoints, updateStoryPoints, points } = useMapConfig()
 
   const handleStoryClick = (e: React.MouseEvent) => {
-    const clickedStory = e.currentTarget.getAttribute('data-story-id')
+    const clickedStory = e.currentTarget.getAttribute("data-story-id")
     if (!clickedStory) return
     handleStorySelection(clickedStory)
   }
@@ -178,7 +178,7 @@ export default function StoryListItem({story, grid}: Props) {
       return(
         <MediaPreview>
           <span className="previewPlaceholder">
-            <img src={logomark} alt={t('no_media')} />
+            <img src={logomark} alt={t("no_media")} />
           </span>
         </MediaPreview>
       )
@@ -193,7 +193,7 @@ export default function StoryListItem({story, grid}: Props) {
         <h2 title={story.title}>{story.title}</h2>
         {story.topic && <span className="badge">{story.topic}</span>}
       </StoryPreview>
-      <Icon icon={'chevron-right'} alt={'see detail'} />
+      <Icon icon={"chevron-right"} alt={"see detail"} />
     </ItemContainer>
   )
 }

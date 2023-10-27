@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import React, {ReactNode} from "react"
+import { useTranslation } from "react-i18next"
+import styled from "styled-components"
 
-import useModal from 'hooks/useModal'
+import useModal from "hooks/useModal"
 
-import Icon from 'components/Icon'
+import Icon from "components/Icon"
 
 const ContentModal = styled.div`
 display: flex;
@@ -62,7 +62,7 @@ export default function Modal(props: ModalProps) {
     <ContentModal ref={modalRef} tabIndex={-1}>
       <div className="content" ref={contentRef}>
         {children}
-        <button onClick={onClose} id='closeButton' aria-labelledby={t('close')}><Icon icon="close" alt={t('close')} /></button>
+        <button onClick={onClose} id='closeButton' aria-labelledby={t("close")}><Icon icon="close" alt={t("close")} /></button>
       </div>
     </ContentModal>
   )

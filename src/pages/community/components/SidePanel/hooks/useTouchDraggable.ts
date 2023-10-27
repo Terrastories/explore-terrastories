@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import type { RefObject } from 'react'
+import { useEffect, useState } from "react"
+import type { RefObject } from "react"
 
-import { useSpring } from '@react-spring/web'
+import { useSpring } from "@react-spring/web"
 
-import useMobile from 'hooks/useMobile'
+import useMobile from "hooks/useMobile"
 
 export default function useMouseDraggable(
   panelResizeableRef: RefObject<HTMLDivElement>,
@@ -15,7 +15,7 @@ export default function useMouseDraggable(
   const [touchStart, setTouchStart] = useState<number>(0)
   const [touchEnd, setTouchEnd] = useState<number>(0)
 
-  const [mobileSprings, mApi] = useSpring(() => ({from: {height: isMobile ? `${drawerOpenHeight}px` : '100%'}}))
+  const [mobileSprings, mApi] = useSpring(() => ({from: {height: isMobile ? `${drawerOpenHeight}px` : "100%"}}))
 
   const [dragging, setDragging] = useState<boolean>(false)
 
@@ -64,8 +64,8 @@ export default function useMouseDraggable(
         }
 
         mApi.start({
-          from: {height: draggedHeight + 'px'},
-          to: {height: finalHeight + 'px'},
+          from: {height: draggedHeight + "px"},
+          to: {height: finalHeight + "px"},
           onRest: () => {
             restrictOverscrollBehavior(false)
           }
@@ -79,14 +79,14 @@ export default function useMouseDraggable(
       setTouchEnd(0)
     }
 
-    dragTab.addEventListener('touchstart', handleTap)
-    dragTab.addEventListener('touchmove', handleDrag)
-    dragTab.addEventListener('touchend', handleRelease)
+    dragTab.addEventListener("touchstart", handleTap)
+    dragTab.addEventListener("touchmove", handleDrag)
+    dragTab.addEventListener("touchend", handleRelease)
 
     return () => {
-      dragTab.removeEventListener('touchstart', handleTap)
-      dragTab.removeEventListener('touchmove', handleDrag)
-      dragTab.removeEventListener('touchend', handleRelease)
+      dragTab.removeEventListener("touchstart", handleTap)
+      dragTab.removeEventListener("touchmove", handleDrag)
+      dragTab.removeEventListener("touchend", handleRelease)
     }
   }, [panelResizeableRef, dragging, mApi, drawerOpenHeight, isMobile, restrictOverscrollBehavior, touchEnd, touchStart])
 

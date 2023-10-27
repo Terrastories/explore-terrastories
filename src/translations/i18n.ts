@@ -1,16 +1,16 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from "i18next"
+import { initReactI18next } from "react-i18next"
 
-import LanguageDetector from 'i18next-browser-languagedetector'
+import LanguageDetector from "i18next-browser-languagedetector"
 
 // Used for backend typing
-import en from './locales/en/translation.json'
+import en from "./locales/en/translation.json"
 
 i18n
   // custom webpack bundling backend
   // (removes requirement that locales must be in /public)
   .use({
-    type: 'backend',
+    type: "backend",
     read<Namespace extends keyof typeof en>(
       language: string,
       namespace: Namespace,
@@ -21,11 +21,11 @@ i18n
     ) {
       import(`./locales/${language}/${namespace}.json`)
         .then((resources) => {
-          callback(null, resources);
+          callback(null, resources)
         })
         .catch((error) => {
-          callback(error, null);
-        });
+          callback(error, null)
+        })
     }
   })
   // detect user language
@@ -37,10 +37,10 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: {
-      mat: ['nl', 'en'],
-      default: ['en']
+      mat: ["nl", "en"],
+      default: ["en"]
     },
-    load: 'languageOnly',
+    load: "languageOnly",
     lowerCaseLng: true,
     cleanCode: true,
     returnNull: false,
@@ -49,4 +49,4 @@ i18n
     },
   })
 
-  export default i18n;
+export default i18n
