@@ -1,4 +1,4 @@
-import { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
+import React, { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
 import ReactDOM from "react-dom/client"
 
 import type { Map } from "mapbox-gl"

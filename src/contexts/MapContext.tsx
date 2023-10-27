@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react"
+import React, { createContext, useContext, useState, ReactNode } from "react"
 
 import type { LngLatLike, LngLatBoundsLike } from "mapbox-gl"
 import type { GeoJsonProperties, Feature, Point } from "geojson"

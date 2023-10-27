@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import React, { ReactNode } from "react"
 import styled from "styled-components"
 
 const StyledHeading = styled.div`
