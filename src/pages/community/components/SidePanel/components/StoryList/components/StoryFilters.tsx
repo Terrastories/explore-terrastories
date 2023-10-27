@@ -83,7 +83,7 @@ export default function StoryFilters(props: Props) {
         }
       })
       break
-    case "clear":
+    case "clear": {
       dispatch({type: "clear"})
       handleFilter(undefined)
       const skipFetch = selectedOptions && selectedOptions.length === 0
@@ -92,7 +92,7 @@ export default function StoryFilters(props: Props) {
         setUpdateStoryList(true)
       }
       break
-    }
+    }}
   }
 
   const handleOptionChange = (options: PropsValue<FilterOption>, actionMeta: ActionMeta<FilterOption>)  => {
