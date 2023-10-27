@@ -19,7 +19,11 @@ export default defineConfig({
     //   needing `import ./translations/i18n`.
     tsconfigPaths(),
     checker({
-      typescript: true
+      typescript: true,
+      eslint: {
+        // for example, lint .ts and .tsx
+        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+      },
     }),
     // Allow SVGs as React components
     svgr()
