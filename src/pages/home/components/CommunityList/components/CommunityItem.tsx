@@ -36,10 +36,10 @@ export default function CommunityItem(props: TypeCommunity) {
 
     if (staticMapContainerRef.current != null) { // don't try to render to a non-existent container
       if (staticMapRef.current) return // only render map once
-      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
+      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
       staticMapRef.current = new mapboxgl.Map({
         container: staticMapContainerRef.current,
-        style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
+        style: import.meta.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
         zoom: mapConfig.zoom,
         bearing: mapConfig.bearing,
         pitch: mapConfig.pitch,

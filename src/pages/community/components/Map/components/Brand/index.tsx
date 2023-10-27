@@ -1,6 +1,6 @@
 import type { Map } from 'mapbox-gl'
 import { renderToStaticMarkup } from 'react-dom/server';
-import { ReactComponent as Logo } from './logocombo.svg'
+import Logo from './logocombo.svg?react'
 
 export default class Brand {
   _map: Map | undefined

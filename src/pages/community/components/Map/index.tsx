@@ -16,8 +16,8 @@ import Minimap from './components/Minimap'
 import useSupercluster from './hooks/useSupercluster'
 import usePopup from './hooks/usePopup'
 
-import { ReactComponent as MarkerSVG } from './assets/marker.svg'
-import { ReactComponent as ClusterSVG } from './assets/cluster.svg'
+import MarkerSVG from './assets/marker.svg?react'
+import ClusterSVG from './assets/cluster.svg?react'
 
 import { loadTerrainAndFog } from './utils/mapbox'
 import type { MapData } from 'types'
@@ -50,12 +50,12 @@ export default function Map({config}: {config: MapData}) {
       if (mapRef.current) return; // Only initialize the map once!
 
       // Set token globally
-      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
+      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g'
 
       // Initialize Map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
+        style: import.meta.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e',
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
@@ -73,7 +73,7 @@ export default function Map({config}: {config: MapData}) {
       if (!config.useLocalServer && !isMobile) {
         mapRef.current.addControl(new Minimap({
           containerClass: "tsMiniMap",
-          style: process.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e'
+          style: import.meta.env.REACT_APP_MAPBOX_STYLE || 'mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e'
         }), "top-right");
       }
 

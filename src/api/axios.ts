@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE
 axios.defaults.headers['Content-Type'] = 'application/json'
 axios.defaults.headers['Axios'] = 'application/json'
 

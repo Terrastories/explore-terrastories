@@ -69,7 +69,7 @@ export default function SidePanel({ community }: PanelProps) {
         />
         <div className="panelLinks">
           <div>
-            <a href={`${process.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
+            <a href={`${import.meta.env.REACT_APP_PRIVATE_BASE}/users/sign_in`}>{t('login')}</a>
             <span role="link" onClick={() => {setShowCommunitySwitcherModal(true)}}>{t('switch_communities')}</span>
           </div>
           <LanguagePicker />
