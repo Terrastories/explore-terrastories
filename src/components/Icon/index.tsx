@@ -13,29 +13,29 @@ import ChevronRightIcon from "./assets/chevronRight.svg?react"
 export default function Icon({icon, alt}:{icon: string, alt: string}) {
   switch (icon) {
   case "language":
-    return <LanguageWorldIcon/>
+    return <LanguageWorldIcon title={alt}/>
   case "pin":
-    return <PinIcon/>
+    return <PinIcon title={alt}/>
   case "grid":
-    return <GridIcon/>
+    return <GridIcon title={alt}/>
   case "list":
-    return <ListIcon/>
+    return <ListIcon title={alt}/>
   case "sort":
-    return <SortIcon/>
+    return <SortIcon title={alt}/>
   case "close":
-    return <CloseIcon/>
+    return <CloseIcon title={alt}/>
   case "audio":
-    return <AudioIcon/>
+    return <AudioIcon title={alt}/>
   case "image":
-    return <ImageIcon />
+    return <ImageIcon title={alt}/>
   case "video":
-    return <VideoIcon />
+    return <VideoIcon title={alt}/>
   case "application":
-    return <DocumentIcon />
+    return <DocumentIcon title={alt}/>
   case "pdf":
-    return <DocumentIcon />
+    return <DocumentIcon title={alt}/>
   case "chevron-right":
-    return <ChevronRightIcon />
+    return <ChevronRightIcon title={alt}/>
   default:
     throw new Error(`Icon does not exist: ${icon}`)
   }
