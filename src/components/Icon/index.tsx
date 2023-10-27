@@ -1,3 +1,4 @@
+import React from "react"
 import LanguageWorldIcon from "./assets/language.svg?react"
 import PinIcon from "./assets/pin.svg?react"
 import GridIcon from "./assets/gridView.svg?react"

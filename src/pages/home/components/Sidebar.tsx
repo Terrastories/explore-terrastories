@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, startTransition } from "react"
+import React, { useState, useEffect, useCallback, startTransition } from "react"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 import styled from "styled-components"

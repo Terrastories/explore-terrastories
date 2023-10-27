@@ -1,3 +1,4 @@
+import React from "react"
 import ReactSelect from "react-select"
 import type { GroupBase, Props, StylesConfig } from "react-select"
 

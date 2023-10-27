@@ -1,3 +1,4 @@
+import React from "react"
 import type { Map } from "mapbox-gl"
 import { renderToStaticMarkup } from "react-dom/server"
 import Logo from "./logocombo.svg?react"
