@@ -90,11 +90,6 @@ export interface FilterOption {
   category: string
 }
 
-export type BoundingBoxFrame = {
-  bounds?: any,
-  maxZoom?: number
-}
-
 export type NextPageMeta = {
   limit?: number,
   offset?: number | null,
