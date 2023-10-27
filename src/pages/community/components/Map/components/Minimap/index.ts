@@ -82,7 +82,7 @@ class Minimap {
     touchZoomRotate: false
   }
 
-  constructor(_options?: Object){
+  constructor(_options?: object){
     this.options = this.defaultOptions
     Object.assign(this.options, _options)
 

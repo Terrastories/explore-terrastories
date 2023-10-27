@@ -11,7 +11,7 @@ export default class Brand {
     containerClass?: string
   }
 
-  constructor(_opts?: Object) {
+  constructor(_opts?: object) {
     this.opts = {}
     Object.assign(this.opts, _opts)
 
