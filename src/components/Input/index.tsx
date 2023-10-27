@@ -9,7 +9,7 @@ border: 1px solid #efefef;
 margin: 0.25rem 0;
 `
 
-export default function Input(props: any) {
+export default function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <StyledInput {...props} />
   )

@@ -10,7 +10,7 @@ type FilterState = {
   selectedOptions: FilterOption[] | undefined,
 }
 type SelectedFilters = {
-  [key: string]: any
+  [key: string]: string | string[],
 }
 
 type SortOpts = {

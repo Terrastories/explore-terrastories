@@ -1,10 +1,11 @@
 import React from "react"
 import ReactSelect from "react-select"
-import type { GroupBase, Props, StylesConfig } from "react-select"
+import type { SelectInstance, GroupBase, Props, StylesConfig } from "react-select"
+import type { FilterOption } from "types"
 
 type ExtendedProps = {
   useTinySelect?: boolean,
-  forwardRef?: React.Ref<any>
+  forwardRef?: React.Ref<SelectInstance<FilterOption>>
 }
 
 export default function Select<
