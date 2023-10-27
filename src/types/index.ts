@@ -1,5 +1,5 @@
 import type { LngLatBoundsLike } from "mapbox-gl"
-import { Feature, Point } from "geojson"
+import { Feature, Point, GeoJsonProperties } from "geojson"
 
 export type TypeMedia = {
   contentType: string,
@@ -19,6 +19,7 @@ export type TypePlace = {
   typeOfPlace: string,
   region: string,
   placenameAudio: string,
+  points: Feature<Point, GeoJsonProperties>[],
   photoUrl: string
   center?: Feature<Point>,
 }
@@ -38,7 +39,7 @@ export type TypeStory = {
   desc?: string,
   topic?: string,
   language?: string,
-  points: Array<Feature<Point, any>>,
+  points: Feature<Point, GeoJsonProperties>[],
   media: TypeMedia[],
   mediaContentTypes?: string[],
   mediaPreviewUrl?: string,
@@ -79,7 +80,7 @@ export type TypeCommunity = {
   storiesCount: number,
   categories: string[],
   filters: FilterOption[],
-  points: Array<Feature<Point, any>>,
+  points: Array<Feature<Point, GeoJsonProperties>>,
   mapConfig: MapData
 }
 
@@ -94,10 +95,12 @@ export type BoundingBoxFrame = {
   maxZoom?: number
 }
 
-export type PaginationMeta = {
+export type NextPageMeta = {
   limit?: number,
   offset?: number | null,
   sort_by?: string,
   sort_dir?: string,
   [key: string]: any,
 }
+
+export type { Feature, Point, GeoJsonProperties }

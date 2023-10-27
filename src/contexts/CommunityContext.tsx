@@ -4,7 +4,7 @@ import { getStories, getStory } from "api/storyApi"
 import { getPlace } from "api/placeApi"
 
 import type { Feature, Point } from "geojson"
-import type { TypeStory, TypePlace, FilterOption, PaginationMeta } from "types"
+import type { TypeStory, TypePlace, FilterOption, NextPageMeta } from "types"
 
 type FilterState = {
   selectedFilter: string | undefined,
@@ -109,7 +109,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   const [showIntro, setShowIntro] = useState<boolean>(true)
 
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta>()
+  const [nextPageMeta, setNextPageMeta] = useState<NextPageMeta>()
 
   const [stories, setStories] = useState<TypeStory[]>([])
   const [selectedStory, setSelectedStory] = useState<TypeStory>()
@@ -132,7 +132,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
       selectedFilter: undefined,
       selectedOptions: undefined
     })
-    setPaginationMeta({})
+    setNextPageMeta({})
     setHasNextPage(true)
   }
 
@@ -146,7 +146,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     if (!useFilterState && selectedPlace) {
       queryParams = {
         ...queryParams,
-        ...paginationMeta,
+        ...nextPageMeta,
       }
     }
     if (useFilterState && selectedFilter && selectedOptions) {
@@ -163,8 +163,8 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     const resp = await getStories(slug, {...queryParams})
     setStories(resp.data.stories)
 
-    setHasNextPage(resp.data.hasNextPage)
-    setPaginationMeta(resp.data.nextPageMeta)
+    setHasNextPage(resp.meta.hasNextPage)
+    setNextPageMeta(resp.meta.nextPageMeta)
 
     setLoading(false)
     return resp.data.points
@@ -177,14 +177,15 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     setLoading(true)
     const queryParams = buildQueryParams(selectedPlace ? false : true)
 
-    const resp = await getStories(slug, {...queryParams, ...paginationMeta})
+    const resp = await getStories(slug, {...queryParams, ...nextPageMeta})
 
     // Per docs: copy to mutate, and apply
     const storyArray = [...stories]
     setStories([...storyArray, ...resp.data.stories])
 
-    setHasNextPage(resp.data.hasNextPage)
-    setPaginationMeta(resp.data.nextPageMeta)
+
+    setHasNextPage(resp.meta.hasNextPage)
+    setNextPageMeta(resp.meta.nextPageMeta)
 
     setLoading(false)
   }
@@ -206,7 +207,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
     // correctly pull down stories.
     setStories([])
 
-    setPaginationMeta({places: [placeId]})
+    setNextPageMeta({places: [placeId]})
     setHasNextPage(true)
 
     setSelectedPlace(resp.data)
@@ -218,7 +219,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
   async function closePlaceChip() {
     setStories([])
     setHasNextPage(true)
-    setPaginationMeta(undefined)
+    setNextPageMeta(undefined)
     setSelectedPlace(undefined)
 
     return await fetchStories(true)
@@ -234,7 +235,7 @@ export const CommunityProvider = ({ slug, children }: { slug: string, children: 
       setStories([])
       setLoading(true)
       setSelectedSort(sort)
-      setPaginationMeta((prevState) => ({
+      setNextPageMeta((prevState) => ({
         ...prevState,
         ...sortOptions[sort],
         offset: 0
