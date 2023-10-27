@@ -15,7 +15,7 @@ export default function Select<
   const { useTinySelect } = props
 
   const miniStyles:StylesConfig<Option, IsMulti, Group> = {
-    control: (base, state) => ({
+    control: (base) => ({
       ...base,
       minHeight: "24px",
       height: "24px",
@@ -23,35 +23,35 @@ export default function Select<
       border: "none",
       borderRadius: "4px",
     }),
-    container: (base, state) => ({
+    container: (base) => ({
       ...base,
       display: "inline-block",
     }),
-    indicatorSeparator: (base, state) => ({
+    indicatorSeparator: () => ({
       display: "none",
     }),
-    indicatorsContainer: (base, state) => ({
+    indicatorsContainer: (base) => ({
       ...base,
       maxHeight: "24px",
     }),
-    dropdownIndicator: (base, state) => ({
+    dropdownIndicator: (base) => ({
       ...base,
       padding: "0",
     }),
-    valueContainer: (base, state) => ({
+    valueContainer: (base) => ({
       ...base,
       padding: "0", // unset padding
       paddingLeft: "4px", // set just left
     }),
-    menu: (base, state) => ({
+    menu: (base) => ({
       ...base,
       width: "max-content",
     }),
-    menuList: (base, state) => ({
+    menuList: (base) => ({
       ...base,
       padding: "0",
     }),
-    option: (base, state) => ({
+    option: (base) => ({
       ...base,
       padding: "4px 8px",
     })

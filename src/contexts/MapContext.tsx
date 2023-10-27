@@ -28,7 +28,7 @@ const MapContext = createContext<MapConfig>({
   stashedPoints: undefined,
   setStashedPoints: (p) => { return p },
   updateStoryPoints: (p) => { return p },
-  moveCenter: (p) => { return }
+  moveCenter: () => { return }
 })
 
 export const MapContextProvider = ({ children, initialPoints }: {children: ReactNode, initialPoints: Array<Feature<Point, GeoJsonProperties>>}) => {
