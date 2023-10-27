@@ -10,9 +10,7 @@ import SpeakerList from "./components/SpeakerList"
 
 import { useCommunity } from "contexts/CommunityContext"
 import { useMapConfig } from "contexts/MapContext"
-import type { GeoJsonProperties, Feature, Point } from "geojson"
-
-import type { TypeStory } from "types"
+import type { TypeStory, GeoJsonProperties, Feature, Point } from "types"
 
 const StoryDetailContainer = styled.div`
 overflow-x: hidden;
