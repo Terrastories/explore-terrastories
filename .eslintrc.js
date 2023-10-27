@@ -3,6 +3,9 @@ module.exports = {
     "browser": true,
     "es2021": true
   },
+  "settings": {
+    "version": "detect"
+  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
