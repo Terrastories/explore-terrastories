@@ -74,8 +74,8 @@ const CommunityContext = createContext<CommunityCtx>({
 
   // API Wrappers
   fetchStories: () => { return Promise.resolve([]) },
-  fetchStory: (p) => { return Promise.resolve([]) },
-  fetchPlace: (p) => { return Promise.resolve([]) },
+  fetchStory: () => { return Promise.resolve([]) },
+  fetchPlace: () => { return Promise.resolve([]) },
   fetchPaginatedStories: () => { return },
 
   // Panel Helpers
@@ -98,8 +98,8 @@ const CommunityContext = createContext<CommunityCtx>({
   sortOptions: sortOptions,
 
   // Filter Helpers
-  handleFilter: (c) => { return },
-  handleFilterOption: (o) => { return },
+  handleFilter: () => { return },
+  handleFilterOption: () => { return },
   selectedFilter: undefined,
   selectedOptions: undefined,
 })

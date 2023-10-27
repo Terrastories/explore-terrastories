@@ -35,7 +35,7 @@ export default function LanguagePicker() {
         options={options()}
         menuPlacement='auto'
         isSearchable={false}
-        onChange={(opt: SingleValue<LanguageOption>, a: unknown) => {
+        onChange={(opt: SingleValue<LanguageOption>) => {
           if (opt) i18n.changeLanguage(opt.value)
         }}
       />

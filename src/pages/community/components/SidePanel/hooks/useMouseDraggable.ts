@@ -37,7 +37,7 @@ export default function useMouseDraggable(
       document.addEventListener("mouseup", handleMouseUp)
     }
 
-    const handleMouseUp = (e: MouseEvent) => {
+    const handleMouseUp = () => {
       document.removeEventListener("mousemove", handleDrag)
     }
 
@@ -60,7 +60,7 @@ export default function useMouseDraggable(
     const panelElement = panelRef.current
     const dragTab = panelResizeableRef.current
 
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = () => {
       bApi.start({
         from: {x: open ? 0 : -panelElement.offsetWidth},
         to: {x: open ? -panelElement.offsetWidth : 0}

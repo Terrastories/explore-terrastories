@@ -24,7 +24,7 @@ type CommunityThing = {
   community: Promise<TypeCommunity>
 }
 
-export async function communityLoader({request, params}: LoaderFunctionArgs) {
+export async function communityLoader({params}: LoaderFunctionArgs) {
   const typedParamns = params as UrlParamProps
 
   return defer({community: getCommunity(typedParamns.slug).then((resp) => resp.data)})

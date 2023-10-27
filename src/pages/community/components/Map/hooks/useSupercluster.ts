@@ -15,7 +15,7 @@ interface SuperClusterOptions<P, C> {
 export default function useSupercluster<
   P extends GeoJsonProperties = Supercluster.AnyProps,
   C extends GeoJsonProperties = Supercluster.AnyProps,
->({mapRef, points, options}: SuperClusterOptions<P, C>) {
+>({mapRef, points}: SuperClusterOptions<P, C>) {
   const supercluster = new Supercluster().load(points)
   const [clusters, setClusters] = useState<Array<Supercluster.ClusterFeature<any> | Supercluster.PointFeature<any>>>([])
 

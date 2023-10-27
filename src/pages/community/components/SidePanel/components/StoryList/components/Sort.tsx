@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import {components, DropdownIndicatorProps, SingleValue, ActionMeta} from "react-select"
+import {components, DropdownIndicatorProps, SingleValue} from "react-select"
 
 import Select from "components/Select"
 import Icon from "components/Icon"
@@ -42,7 +42,7 @@ export default function Sort() {
     }
   }, [options, sortOptions, t])
 
-  const handleSortChange = (option: SingleValue<SortOption>, actionMeta: ActionMeta<SortOption>) => {
+  const handleSortChange = (option: SingleValue<SortOption>) => {
     if (option) {
       sortStories(option.value)
       setUpdateStoryList(true)
