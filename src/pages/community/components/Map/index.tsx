@@ -1,8 +1,9 @@
 import React from "react"
 
-import type { Projection } from "mapbox-gl"
-import mapboxgl from "mapbox-gl"
-import "mapbox-gl/dist/mapbox-gl.css"
+import maplibregl from "maplibre-gl"
+import "maplibre-gl/dist/maplibre-gl.css"
+
+import { getMapLibreStyle } from "utils/protomaps"
 
 import { useMapConfig } from "contexts/MapContext"
 import { useCommunity } from "contexts/CommunityContext"
@@ -19,14 +20,13 @@ import usePopup from "./hooks/usePopup"
 import MarkerSVG from "./assets/marker.svg?react"
 import ClusterSVG from "./assets/cluster.svg?react"
 
-import { loadTerrainAndFog } from "./utils/mapbox"
 import type { MapData } from "types"
 
 import "./styles.css"
 
 export default function Map({config}: {config: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
-  const mapRef = React.useRef<mapboxgl.Map | null>(null)
+  const mapRef = React.useRef<maplibregl.Map | null>(null)
 
   const { points, updateStoryPoints, bounds, centerPoint } = useMapConfig()
   const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
@@ -49,31 +49,24 @@ export default function Map({config}: {config: MapData}) {
     if (mapContainerRef.current != null) { // Don't try load the map if there is no container
       if (mapRef.current) return // Only initialize the map once!
 
-      // Set token globally
-      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || "pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g"
-
       // Initialize Map
-      mapRef.current = new mapboxgl.Map({
+      mapRef.current = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: import.meta.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e",
+        style: getMapLibreStyle("contrast"),
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
         center: config.center,
         maxBounds: config.maxBounds,
-        projection: {name: config.mapProjection} as Projection
-      })
-
-      // Add applicable 3D and Globe Layers
-      mapRef.current.once("load", () => {
-        loadTerrainAndFog({mapRef, ...config})
+        maplibreLogo: true,
+        logoPosition: "bottom-right",
       })
 
       // Add MiniMap
-      if (!config.useLocalServer && !isMobile) {
+      if (!isMobile) {
         mapRef.current.addControl(new Minimap({
           containerClass: "tsMiniMap",
-          style: import.meta.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e"
+          style: getMapLibreStyle()
         }), "top-right")
       }
 
@@ -85,7 +78,7 @@ export default function Map({config}: {config: MapData}) {
       mapRef.current.addControl(homeButtonControl, "top-right")
 
       // Add Navigation Control
-      const nav = new mapboxgl.NavigationControl({})
+      const nav = new maplibregl.NavigationControl({})
       mapRef.current.addControl(nav, "top-right")
     }
   }, [mapContainerRef, resetMap, mapRef, config, isMobile])
@@ -117,7 +110,7 @@ export default function Map({config}: {config: MapData}) {
   const markers = React.useMemo(
     () =>
       clusters.map((cluster) => {
-        const map = mapRef.current as mapboxgl.Map
+        const map = mapRef.current as maplibregl.Map
         const [lng, lat] = cluster.geometry.coordinates
         const el = document.createElement("div")
         el.classList.add("tsMarker")
@@ -173,7 +166,8 @@ export default function Map({config}: {config: MapData}) {
     if (bounds) {
       map.fitBounds(bounds.bounds, {center: bounds.center, padding: 50, duration: 2000.0, maxZoom: 12})
     } else {
-      map.zoomTo(config.zoom, {duration: 2000.0})
+      if (config.zoom !== map.getZoom())
+        map.zoomTo(config.zoom, {duration: 2000.0})
     }
   }, [bounds, config])
 
@@ -190,7 +184,7 @@ export default function Map({config}: {config: MapData}) {
   return (
     <div ref={mapContainerRef} className={isMobile ? "enableMapHeader" : ""} style={{
       position: "fixed",
-      height: "100%",
+      height: isMobile ? "calc(100% - 90px)" : "100%",
       width: "100%",
       left: 0,
       top: 0,

@@ -1,4 +1,4 @@
-import type { LngLatBoundsLike } from "mapbox-gl"
+import type { LngLatBoundsLike } from "maplibre-gl"
 import { Feature, Point, GeoJsonProperties } from "geojson"
 
 export type TypeMedia = {
@@ -55,7 +55,6 @@ export type MapData = {
   mapboxAccessToken?: string,
   mapboxStyle?: string,
   mapbox3dEnabled: boolean,
-  mapProjection: string,
   center: [number, number],
   maxBounds: LngLatBoundsLike | undefined,
   zoom: number,

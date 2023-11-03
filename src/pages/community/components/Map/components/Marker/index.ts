@@ -1,20 +1,20 @@
 import React, { useMemo, useEffect } from "react"
 
 import {createPortal} from "react-dom"
-import mapboxgl, {Map as MapboxMap, Marker as MapboxMarker, MapboxEvent } from "mapbox-gl"
+import maplibregl, {Map as MapLibreMap, Marker as MapLibreMarker, MapLibreEvent } from "maplibre-gl"
 
-import type { Alignment, PointLike, Anchor } from "mapbox-gl"
+import type { Alignment, PointLike, PositionAnchor } from "maplibre-gl"
 
-export interface MarkerMouseEvent extends MapboxEvent<MouseEvent> {
+export interface MarkerMouseEvent extends MapLibreEvent<MouseEvent> {
   originalEvent: MouseEvent
   properties: object
-  markerTarget: MapboxMarker
+  markerTarget: MapLibreMarker
 }
 
 type MarkerProps = {
   element?: HTMLElement,
   offset?: PointLike,
-  anchor?: Anchor,
+  anchor?: PositionAnchor,
   color?: string,
   scale?: number,
   draggable?: boolean,
@@ -23,12 +23,12 @@ type MarkerProps = {
   rotationAlignment?: Alignment,
   pitchAlignment?: Alignment,
   occludedOpacity?: number,
-  popup?: mapboxgl.Popup,
+  popup?: maplibregl.Popup,
 
   onClick?: (e: MarkerMouseEvent) => void,
   onMouseEnter?: (e: MarkerMouseEvent) => void,
 
-  map: MapboxMap,
+  map: MapLibreMap,
   point: [number, number],
   feature: object,
   children?: React.ReactNode
@@ -43,10 +43,10 @@ function Marker(props: MarkerProps) {
   const thisRef = React.useRef({props})
   thisRef.current.props = props
 
-  const marker: MapboxMarker = useMemo(() => {
+  const marker: MapLibreMarker = useMemo(() => {
     const hasChildren = React.Children.count(props.children)
 
-    const mk = new mapboxgl.Marker(
+    const mk = new maplibregl.Marker(
       {
         element: (hasChildren ? document.createElement("div") : undefined),
         anchor: "center",

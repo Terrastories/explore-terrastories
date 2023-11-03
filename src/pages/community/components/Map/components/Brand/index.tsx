@@ -1,5 +1,5 @@
 import React from "react"
-import type { Map } from "mapbox-gl"
+import type { Map } from "maplibre-gl"
 import { renderToStaticMarkup } from "react-dom/server"
 import Logo from "./logocombo.svg?react"
 
@@ -22,9 +22,9 @@ export default class Brand {
   onAdd(map: Map) {
     this._map = map
     // so it's properly styled on the map
-    this._container.classList.add("mapboxgl-ctrl")
+    this._container.classList.add("maplibregl-ctrl")
     // provides the background and outline
-    this._container.classList.add("mapboxgl-ctrl-group")
+    this._container.classList.add("maplibregl-ctrl-group")
     if (this.opts.containerClass) this._container.classList.add(this.opts.containerClass)
 
     const svg = renderToStaticMarkup(<Logo />)

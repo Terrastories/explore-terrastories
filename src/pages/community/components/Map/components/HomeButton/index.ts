@@ -1,4 +1,4 @@
-import type { Map } from "mapbox-gl"
+import type { Map } from "maplibre-gl"
 import homeIcon from "./home-icon.svg"
 
 export default class HomeButton {
@@ -14,13 +14,13 @@ export default class HomeButton {
 
   onAdd(map: Map) {
     this._map = map
-    this._container.classList.add("mapboxgl-ctrl")
-    this._container.classList.add("mapboxgl-ctrl-group")
+    this._container.classList.add("maplibregl-ctrl")
+    this._container.classList.add("maplibregl-ctrl-group")
     const button = document.createElement("button")
     button.setAttribute("aria-label", "Map Home")
     button.setAttribute("type", "button")
     const icon = document.createElement("span")
-    icon.classList.add("mapboxgl-ctrl-icon")
+    icon.classList.add("maplibregl-ctrl-icon")
     icon.setAttribute("style", `background-image: url('${homeIcon}'); background-size: contain;`)
     button.append(icon)
     this._container.append(button)

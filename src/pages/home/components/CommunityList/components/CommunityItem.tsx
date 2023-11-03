@@ -2,8 +2,9 @@ import React from "react"
 import styled from "styled-components"
 
 import { Link } from "react-router-dom"
-import mapboxgl from "mapbox-gl"
-import type { Projection } from "mapbox-gl"
+import maplibregl from "maplibre-gl"
+
+import { getMapLibreStyle } from "utils/protomaps"
 
 import { TypeCommunity } from "types"
 
@@ -22,7 +23,7 @@ div {
 
 export default function CommunityItem(props: TypeCommunity) {
   const staticMapContainerRef = React.useRef<HTMLDivElement>(null)
-  const staticMapRef = React.useRef<mapboxgl.Map | null>(null)
+  const staticMapRef = React.useRef<maplibregl.Map | null>(null)
   const {
     name,
     staticMapUrl,
@@ -36,16 +37,15 @@ export default function CommunityItem(props: TypeCommunity) {
 
     if (staticMapContainerRef.current != null) { // don't try to render to a non-existent container
       if (staticMapRef.current) return // only render map once
-      mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN || "pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g"
-      staticMapRef.current = new mapboxgl.Map({
+
+      staticMapRef.current = new maplibregl.Map({
         container: staticMapContainerRef.current,
-        style: import.meta.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/terrastories/clfmoky3y000q01jqkp2oz56e",
+        style: getMapLibreStyle(),
         zoom: mapConfig.zoom,
         bearing: mapConfig.bearing,
         pitch: mapConfig.pitch,
         center: mapConfig.center,
         maxBounds: mapConfig.maxBounds,
-        projection: {name: mapConfig.mapProjection} as Projection,
         interactive: false // ensure map is static
       })
     }

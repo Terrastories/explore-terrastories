@@ -1,8 +1,8 @@
 import React, { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
 import ReactDOM from "react-dom/client"
 
-import type { Map } from "mapbox-gl"
-import { Popup as MBPopup } from "mapbox-gl"
+import type { Map } from "maplibre-gl"
+import { Popup as MLPopup } from "maplibre-gl"
 
 import Popup from "../components/Popup"
 import {MarkerMouseEvent} from "../components/Marker"
@@ -12,7 +12,7 @@ import type { TypePlace } from "types"
 const usePopup = (mapRef: MutableRefObject<Map | null>) => {
   const activePointRef = useRef<number | string | null>(null)
   const popup = useMemo(
-    () => new MBPopup(
+    () => new MLPopup(
       {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
     ),
     []

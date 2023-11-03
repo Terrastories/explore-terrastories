@@ -11,7 +11,7 @@
   max-height: 300px;
 }
 
-.tsPopup .mapboxgl-popup-content {
+.tsPopup .maplibregl-popup-content {
   padding: 0;
 }
 
@@ -19,7 +19,7 @@
   width: 100%;
 }
 
-.tsPopup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+.tsPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip {
   border-bottom-color: #33aa8b;
 }
 
@@ -27,7 +27,7 @@
   display: block;
 }
 
-.tsBrand.mapboxgl-ctrl-group:not(:empty) {
+.tsBrand.maplibregl-ctrl-group:not(:empty) {
   box-shadow: 0 0 0 2px #136a7e;
 }
 

@@ -1,11 +1,11 @@
-import mapboxgl, { Map, LngLatLike, LngLatBoundsLike, MapMouseEvent } from "mapbox-gl"
+import maplibregl, { StyleSpecification, Map, LngLatLike, LngLatBoundsLike, MapMouseEvent } from "maplibre-gl"
 import type { GeoJsonProperties } from "geojson"
 
 type MinimapOptions = {
   id: string,
   width: string,
   height: string,
-  style: string,
+  style: StyleSpecification,
   center: LngLatLike,
   zoom: number,
   zoomAdjust: (() => void),
@@ -43,10 +43,14 @@ class Minimap {
 
   options: MinimapOptions
   defaultOptions: MinimapOptions = {
-    id: "mapboxgl-minimap",
+    id: "maplibregl-minimap",
     width: "320px",
     height: "180px",
-    style: "mapbox://styles/mapbox/light-v10",
+    style: {
+      version: 8,
+      sources: {},
+      layers: []
+    },
     center: [0, 0],
     zoom: 6,
 
@@ -101,13 +105,12 @@ class Minimap {
 
     const opts = this.options
     const container = this._container = this._createContainer(parentMap)
-    const miniMap = this._miniMap = new mapboxgl.Map({
+    const miniMap = this._miniMap = new maplibregl.Map({
       attributionControl: false,
       container: container,
       style: opts.style,
       zoom: opts.zoom,
-      center: opts.center,
-      projection: {name: "mercator"}
+      center: opts.center
     })
 
     miniMap.getCanvas().removeAttribute("tabindex")
@@ -337,7 +340,7 @@ class Minimap {
     const opts = this.options
     const container = document.createElement("div")
 
-    container.className = "mapboxgl-ctrl-minimap mapboxgl-ctrl"
+    container.className = "maplibregl-ctrl-minimap maplibregl-ctrl"
     if (opts.containerClass) container.classList.add(opts.containerClass)
     container.setAttribute("style", "width: " + opts.width + "; height: " + opts.height + ";")
     container.addEventListener("contextmenu", this._preventDefault)

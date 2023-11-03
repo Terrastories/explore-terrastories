@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import type { MutableRefObject } from "react"
 import Supercluster from "supercluster"
 
-import type { Map } from "mapbox-gl"
+import type { Map } from "maplibre-gl"
 
 import type { GeoJsonProperties, BBox, Feature, Point } from "geojson"
 

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react"
 
-import type { LngLatLike, LngLatBoundsLike } from "mapbox-gl"
+import type { LngLatLike, LngLatBoundsLike } from "maplibre-gl"
 import type { GeoJsonProperties, Feature, Point } from "types"
 
 import bbox from "@turf/bbox"
