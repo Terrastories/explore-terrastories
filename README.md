@@ -24,5 +24,6 @@ To start the application in development mode, run `npm run start`. Open [http://
 
 If you are setting up for a production environment,run `npm run build` to build the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
+The build is minified and the filenames include the hashes.
+
 Your app is ready to be deployed! Run `npm run serve`.
