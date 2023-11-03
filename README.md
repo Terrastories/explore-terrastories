@@ -1,8 +1,8 @@
 # Explore Terrastories
 
-Explore Terrastories is React application that allows public exploration of unrestricted stories that communities have opted into sharing. Explore Terrastories queries the API of the main [Terrastories application](https://github.com/terrastories/terrastories).
+Explore Terrastories is a web application that allows public exploration of unrestricted stories that communities have opted into sharing. Explore Terrastories queries the API of the main [Terrastories application](https://github.com/terrastories/terrastories).
 
-Explore Terrastories is built with Create React App and uses TypeScript for strong typing,  Axios for API queries, and Mapbox for map rendering.
+Explore Terrastories is built with React+Vite and uses TypeScript for strong typing, Axios for API requests, and [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) with [Protomaps](https://github.com/protomaps) for map rendering.
 
 For more information on how to use Explore Terrastories, please visit the Terrastories Support Materials at **[https://docs.terrastories.app/](https://docs.terrastories.app/)**.
 
