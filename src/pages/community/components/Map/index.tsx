@@ -21,6 +21,7 @@ import MarkerSVG from "./assets/marker.svg?react"
 import ClusterSVG from "./assets/cluster.svg?react"
 
 import type { MapData } from "types"
+import type { MapEventType } from "maplibre-gl"
 
 import "./styles.css"
 
@@ -52,7 +53,7 @@ export default function Map({config}: {config: MapData}) {
       // Initialize Map
       mapRef.current = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: getMapLibreStyle("contrast"),
+        style: getMapLibreStyle("contrast", config.mapbox3dEnabled),
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
@@ -78,10 +79,44 @@ export default function Map({config}: {config: MapData}) {
       mapRef.current.addControl(homeButtonControl, "top-right")
 
       // Add Navigation Control
-      const nav = new maplibregl.NavigationControl({})
+      const nav = new maplibregl.NavigationControl({visualizePitch: true})
       mapRef.current.addControl(nav, "top-right")
+
+      // Add Terrain Control
+      if (config.mapbox3dEnabled) {
+        const terrain = new maplibregl.TerrainControl({
+          source: "terrain",
+          exaggeration: 1
+        })
+        mapRef.current.addControl(terrain)
+      }
     }
   }, [mapContainerRef, resetMap, mapRef, config, isMobile])
+
+
+  // Add Terrain Layer Handler
+  React.useEffect(() => {
+    // Don't do anything if Map doesn't exist yet
+    if (!mapRef.current) return
+    const map = mapRef.current
+
+    const handleTerrainVisibility = (e: MapEventType) => {
+      if (map.getLayer("hills")) {
+        const hillshading = map.getLayoutProperty("hills", "visibility")
+
+        if (e.terrain && hillshading === "none") {
+          map.setLayoutProperty("hills", "visibility", "visible")
+        } else {
+          map.setLayoutProperty("hills", "visibility", "none")
+        }
+      }
+    }
+    map.on("terrain", handleTerrainVisibility)
+
+    return () => {
+      map.off("terrain", handleTerrainVisibility)
+    }
+  }, [])
 
   // Initialize Popup
   const { popup, openPopup, closePopup } = usePopup(mapRef)
