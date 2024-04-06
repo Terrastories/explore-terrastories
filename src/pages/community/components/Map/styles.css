@@ -2,11 +2,6 @@
   margin-top: 50px;
 }
 
-.tsMiniMap {
-  display: none;
-  border: 3px solid #136a7e;
-}
-
 .tsPopup {
   max-height: 300px;
 }
@@ -62,11 +57,5 @@
 
   .tsPopup {
     will-change: unset;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .tsMiniMap {
-    display: block;
   }
 }

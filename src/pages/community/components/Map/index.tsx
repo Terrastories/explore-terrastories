@@ -12,7 +12,7 @@ import useMobile from "hooks/useMobile"
 import Brand from "./components/Brand"
 import HomeButton from "./components/HomeButton"
 import Marker from "./components/Marker"
-import Minimap from "./components/Minimap"
+import Minimap from "mapgl-minimap"
 
 import useSupercluster from "./hooks/useSupercluster"
 import usePopup from "./hooks/usePopup"
@@ -65,9 +65,10 @@ export default function Map({config}: {config: MapData}) {
 
       // Add MiniMap
       if (!isMobile) {
-        mapRef.current.addControl(new Minimap({
+        mapRef.current.addControl(new Minimap(maplibregl, {
           containerClass: "tsMiniMap",
-          style: getMapLibreStyle()
+          style: getMapLibreStyle(),
+          toggleDisplay: true,
         }), "top-right")
       }
 
