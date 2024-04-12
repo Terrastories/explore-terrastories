@@ -40,17 +40,19 @@ export default function CommunityItem(props: TypeCommunity) {
 
       staticMapRef.current = new maplibregl.Map({
         container: staticMapContainerRef.current,
-        style: getMapLibreStyle(),
+        style: getMapLibreStyle(mapConfig.pmBasemapStyle),
         zoom: mapConfig.zoom,
         bearing: mapConfig.bearing,
         pitch: mapConfig.pitch,
         center: mapConfig.center,
         maxBounds: mapConfig.maxBounds,
+        attributionControl: false,
         interactive: false // ensure map is static
       })
     }
 
   }, [staticMapUrl, staticMapRef, mapConfig])
+
   return (
     <Link to={`community/${props.slug}`} className="communityItem">
       {staticMapUrl && <img src={staticMapUrl} alt={name} className='staticMapBox' />}

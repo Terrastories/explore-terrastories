@@ -55,6 +55,8 @@ export type MapData = {
   mapboxAccessToken?: string,
   mapboxStyle?: string,
   mapbox3dEnabled: boolean,
+  pmApiKey: string,
+  pmBasemapStyle: string,
   center: [number, number],
   maxBounds: LngLatBoundsLike | undefined,
   zoom: number,

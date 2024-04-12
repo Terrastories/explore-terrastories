@@ -53,7 +53,7 @@ export default function Map({config}: {config: MapData}) {
       // Initialize Map
       mapRef.current = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: getMapLibreStyle("contrast", config.mapbox3dEnabled),
+        style: getMapLibreStyle(config.pmBasemapStyle || "contrast", config.mapbox3dEnabled),
         zoom: config.zoom,
         bearing: config.bearing,
         pitch: config.pitch,
