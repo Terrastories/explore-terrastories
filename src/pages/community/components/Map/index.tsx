@@ -4,6 +4,7 @@ import maplibregl from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 
 import { getMapLibreStyle } from "utils/protomaps"
+import { normalizeMapConfig, resolveMapStyle } from "utils/mapConfig"
 
 import { useMapConfig } from "contexts/MapContext"
 import { useCommunity } from "contexts/CommunityContext"
@@ -25,43 +26,60 @@ import type { MapEventType } from "maplibre-gl"
 
 import "./styles.css"
 
-export default function Map({config}: {config: MapData}) {
+export default function Map({config}: {config?: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<maplibregl.Map | null>(null)
+  const terrainControlRef = React.useRef<maplibregl.TerrainControl | null>(null)
 
   const { points, updateStoryPoints, bounds, centerPoint } = useMapConfig()
   const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
 
   const { isMobile } = useMobile()
 
+  const normalizedConfig = React.useMemo(() => normalizeMapConfig(config), [config])
+  const resolvedStyle = React.useMemo(() => resolveMapStyle(normalizedConfig), [normalizedConfig])
+
   const resetMap = React.useCallback((trigger = "") => {
     if (mapRef.current) {
       mapRef.current.flyTo({
-        center: config.center,
-        zoom: config.zoom,
-        pitch: config.pitch,
-        bearing: config.bearing
+        center: normalizedConfig.center,
+        zoom: normalizedConfig.zoom,
+        pitch: normalizedConfig.pitch,
+        bearing: normalizedConfig.bearing
       }, {trigger: trigger})
     }
-  }, [config])
+  }, [normalizedConfig])
 
   // Map Initialization
   React.useEffect(() => {
     if (mapContainerRef.current != null) { // Don't try load the map if there is no container
       if (mapRef.current) return // Only initialize the map once!
 
+      if (resolvedStyle.accessToken) {
+        (maplibregl as unknown as {accessToken?: string}).accessToken = resolvedStyle.accessToken
+      } else {
+        delete (maplibregl as unknown as {accessToken?: string}).accessToken
+      }
+
       // Initialize Map
+      terrainControlRef.current = null
+
       mapRef.current = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: getMapLibreStyle(config.pmBasemapStyle || "contrast", config.mapbox3dEnabled),
-        zoom: config.zoom,
-        bearing: config.bearing,
-        pitch: config.pitch,
-        center: config.center,
-        maxBounds: config.maxBounds,
+        style: resolvedStyle.style,
+        zoom: normalizedConfig.zoom,
+        bearing: normalizedConfig.bearing,
+        pitch: normalizedConfig.pitch,
+        center: normalizedConfig.center,
+        maxBounds: normalizedConfig.maxBounds,
         maplibreLogo: true,
         logoPosition: "bottom-right",
       })
+
+      const setProjection = (mapRef.current as unknown as {setProjection?: (projection: string) => void}).setProjection
+      if (normalizedConfig.mapProjection && setProjection) {
+        setProjection(normalizedConfig.mapProjection)
+      }
 
       // Add MiniMap
       if (!isMobile) {
@@ -84,15 +102,44 @@ export default function Map({config}: {config: MapData}) {
       mapRef.current.addControl(nav, "top-right")
 
       // Add Terrain Control
-      if (config.mapbox3dEnabled) {
-        const terrain = new maplibregl.TerrainControl({
-          source: "terrain",
-          exaggeration: 1
-        })
-        mapRef.current.addControl(terrain)
-      }
     }
-  }, [mapContainerRef, resetMap, mapRef, config, isMobile])
+  }, [mapContainerRef, resetMap, mapRef, resolvedStyle, normalizedConfig, isMobile])
+
+  React.useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+
+    const shouldEnableTerrain = normalizedConfig.mapbox3dEnabled && !resolvedStyle.usesExternalStyle
+    if (!shouldEnableTerrain) {
+      if (terrainControlRef.current) {
+        map.removeControl(terrainControlRef.current)
+        terrainControlRef.current = null
+      }
+      return
+    }
+
+    const addTerrainControlIfAvailable = () => {
+      if (terrainControlRef.current) return
+      if (!map.getSource("terrain")) return
+
+      terrainControlRef.current = new maplibregl.TerrainControl({
+        source: "terrain",
+        exaggeration: 1
+      })
+
+      map.addControl(terrainControlRef.current)
+    }
+
+    if (map.isStyleLoaded()) {
+      addTerrainControlIfAvailable()
+    }
+
+    map.on("styledata", addTerrainControlIfAvailable)
+
+    return () => {
+      map.off("styledata", addTerrainControlIfAvailable)
+    }
+  }, [normalizedConfig.mapbox3dEnabled, resolvedStyle.usesExternalStyle])
 
 
   // Add Terrain Layer Handler
@@ -202,10 +249,10 @@ export default function Map({config}: {config: MapData}) {
     if (bounds) {
       map.fitBounds(bounds.bounds, {center: bounds.center, padding: 50, duration: 2000.0, maxZoom: 12})
     } else {
-      if (config.zoom !== map.getZoom())
-        map.zoomTo(config.zoom, {duration: 2000.0})
+      if (normalizedConfig.zoom !== map.getZoom())
+        map.zoomTo(normalizedConfig.zoom, {duration: 2000.0})
     }
-  }, [bounds, config])
+  }, [bounds, normalizedConfig])
 
   // Map Center Changed
   React.useEffect(() => {
