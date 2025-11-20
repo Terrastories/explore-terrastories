@@ -52,12 +52,9 @@ export type TypeStory = {
 
 export type MapData = {
   useLocalServer: boolean,
-  mapboxAccessToken?: string | null,
-  mapboxStyle?: string | null,
-  mapboxStyleUrl?: string | null,
-  mapboxStyleAccessToken?: string | null,
+  mapboxAccessToken?: string,
+  mapboxStyle?: string,
   mapbox3dEnabled: boolean,
-  mapProjection?: string | null,
   pmApiKey: string,
   pmBasemapStyle: string,
   center: [number, number],
@@ -85,7 +82,7 @@ export type TypeCommunity = {
   categories: string[],
   filters: FilterOption[],
   points: Array<Feature<Point, GeoJsonProperties>>,
-  mapConfig?: MapData
+  mapConfig: MapData
 }
 
 export interface FilterOption {
