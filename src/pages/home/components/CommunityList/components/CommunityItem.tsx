@@ -4,7 +4,10 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 import maplibregl from "maplibre-gl"
 
-import { getMapLibreStyle } from "utils/protomaps"
+import { normalizeMapConfig, resolveMapStyle } from "utils/mapConfig"
+import { createMapboxTransformRequest } from "utils/mapbox"
+
+import { useStyleResource } from "hooks/useStyleResource"
 
 import { TypeCommunity } from "types"
 
@@ -31,27 +34,42 @@ export default function CommunityItem(props: TypeCommunity) {
     mapConfig
   } = props
 
+  const normalizedMapConfig = React.useMemo(() => normalizeMapConfig(mapConfig), [mapConfig])
+  const resolvedStyle = React.useMemo(() => resolveMapStyle(normalizedMapConfig), [normalizedMapConfig])
+  const { style: preparedStyle, usesExternalStyle, isReady: isStyleReady } = useStyleResource(resolvedStyle, normalizedMapConfig)
+
+  const transformRequest = React.useMemo(() => {
+    if (!resolvedStyle.isMapboxStyle || !resolvedStyle.accessToken) return undefined
+    if (!usesExternalStyle) return undefined
+    return createMapboxTransformRequest(resolvedStyle.accessToken)
+  }, [resolvedStyle, usesExternalStyle])
   React.useEffect(() => {
     // if a static map is available, use that instead
     if (staticMapUrl) return
 
-    if (staticMapContainerRef.current != null) { // don't try to render to a non-existent container
+    if (staticMapContainerRef.current != null && isStyleReady && preparedStyle) { // don't try to render to a non-existent container
       if (staticMapRef.current) return // only render map once
 
       staticMapRef.current = new maplibregl.Map({
         container: staticMapContainerRef.current,
-        style: getMapLibreStyle(mapConfig.pmBasemapStyle),
-        zoom: mapConfig.zoom,
-        bearing: mapConfig.bearing,
-        pitch: mapConfig.pitch,
-        center: mapConfig.center,
-        maxBounds: mapConfig.maxBounds,
+        style: preparedStyle,
+        zoom: normalizedMapConfig.zoom,
+        bearing: normalizedMapConfig.bearing,
+        pitch: normalizedMapConfig.pitch,
+        center: normalizedMapConfig.center,
+        maxBounds: normalizedMapConfig.maxBounds,
         attributionControl: false,
-        interactive: false // ensure map is static
+        interactive: false,
+        transformRequest,
       })
+
+      const setProjection = (staticMapRef.current as unknown as {setProjection?: (projection: string) => void}).setProjection
+      if (normalizedMapConfig.mapProjection && setProjection) {
+        setProjection(normalizedMapConfig.mapProjection)
+      }
     }
 
-  }, [staticMapUrl, staticMapRef, mapConfig])
+  }, [staticMapUrl, staticMapRef, normalizedMapConfig, isStyleReady, preparedStyle, transformRequest])
 
   return (
     <Link to={`community/${props.slug}`} className="communityItem">
