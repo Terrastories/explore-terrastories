@@ -9,6 +9,15 @@ export default defineConfig({
   server: {
     // Match CRA so we don't have to change other configuration
     port: 1080,
+    // Proxy API requests to avoid CORS issues in development
+    proxy: {
+      '/api': {
+        target: 'https://our.terrastories.app',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path
+      }
+    }
   },
   plugins: [
     // Use React
