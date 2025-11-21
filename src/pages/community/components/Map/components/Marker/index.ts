@@ -1,14 +1,14 @@
 import React, { useMemo, useEffect } from "react"
 
 import {createPortal} from "react-dom"
-import maplibregl, {Map as MapLibreMap, Marker as MapLibreMarker, MapLibreEvent } from "maplibre-gl"
-
 import type { Alignment, PointLike, PositionAnchor } from "maplibre-gl"
 
-export interface MarkerMouseEvent extends MapLibreEvent<MouseEvent> {
+export interface MarkerMouseEvent {
+  type: string
+  target: any
   originalEvent: MouseEvent
   properties: object
-  markerTarget: MapLibreMarker
+  markerTarget: any
 }
 
 type MarkerProps = {
@@ -23,12 +23,13 @@ type MarkerProps = {
   rotationAlignment?: Alignment,
   pitchAlignment?: Alignment,
   occludedOpacity?: number,
-  popup?: maplibregl.Popup,
+  popup?: any,
 
   onClick?: (e: MarkerMouseEvent) => void,
   onMouseEnter?: (e: MarkerMouseEvent) => void,
 
-  map: MapLibreMap,
+  map: any,
+  mapLib: any,
   point: [number, number],
   feature: object,
   children?: React.ReactNode
@@ -43,14 +44,41 @@ function Marker(props: MarkerProps) {
   const thisRef = React.useRef({props})
   thisRef.current.props = props
 
-  const marker: MapLibreMarker = useMemo(() => {
+  const marker: any = useMemo(() => {
     const hasChildren = React.Children.count(props.children)
 
-    const mk = new maplibregl.Marker(
+    const MarkerClass = props.mapLib?.Marker ?? props.mapLib?.default?.Marker ?? props.mapLib
+
+    // Only pass marker-specific options to avoid leaking map/mapLib/feature/children.
+    const {
+      element,
+      offset,
+      anchor,
+      color,
+      scale,
+      draggable,
+      clickTolerance,
+      rotation,
+      rotationAlignment,
+      pitchAlignment,
+      occludedOpacity,
+      popup,
+    } = props
+
+    const mk = new MarkerClass(
       {
-        element: (hasChildren ? document.createElement("div") : undefined),
-        anchor: "center",
-        ...props,
+        element: element ?? (hasChildren ? document.createElement("div") : undefined),
+        anchor: anchor ?? "center",
+        offset,
+        color,
+        scale,
+        draggable,
+        clickTolerance,
+        rotation,
+        rotationAlignment,
+        pitchAlignment,
+        occludedOpacity,
+        popup,
       }
     ).setLngLat(props.point)
 

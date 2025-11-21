@@ -1,11 +1,10 @@
 import React from "react"
 
-import maplibregl from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 
 import { getMapLibreStyle } from "utils/protomaps"
 import { normalizeMapConfig, resolveMapStyle } from "utils/mapConfig"
-import { createMapboxTransformRequest } from "utils/mapbox"
+import { createMapboxTransformRequest, normalizeMapboxStyleUrl, appendAccessToken } from "utils/mapbox"
 
 import { useMapConfig } from "contexts/MapContext"
 import { useCommunity } from "contexts/CommunityContext"
@@ -24,14 +23,15 @@ import MarkerSVG from "./assets/marker.svg?react"
 import ClusterSVG from "./assets/cluster.svg?react"
 
 import type { MapData } from "types"
-import type { MapEventType } from "maplibre-gl"
 
 import "./styles.css"
 
 export default function Map({config}: {config?: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
-  const mapRef = React.useRef<maplibregl.Map | null>(null)
-  const terrainControlRef = React.useRef<maplibregl.TerrainControl | null>(null)
+  const mapRef = React.useRef<any>(null)
+  const terrainControlRef = React.useRef<any>(null)
+  const mapLibRef = React.useRef<any>(null)
+  const [mapReady, setMapReady] = React.useState(false)
 
   const { points, updateStoryPoints, bounds, centerPoint } = useMapConfig()
   const { selectedPlace, fetchPlace, closePlaceChip } = useCommunity()
@@ -48,6 +48,19 @@ export default function Map({config}: {config?: MapData}) {
     return createMapboxTransformRequest(resolvedStyle.accessToken)
   }, [resolvedStyle, usesExternalStyle])
 
+  const loadMapLibrary = React.useCallback(async (useMapbox: boolean) => {
+    if (useMapbox) {
+      const module = await import("mapbox-gl")
+      const mapboxgl = (module as any).default ?? module
+      await import("mapbox-gl/dist/mapbox-gl.css")
+      return { lib: mapboxgl, kind: "mapbox" as const }
+    }
+
+    const module = await import("maplibre-gl")
+    const maplibre = (module as any).default ?? module
+    return { lib: maplibre, kind: "maplibre" as const }
+  }, [])
+
   const resetMap = React.useCallback((trigger = "") => {
     if (mapRef.current) {
       mapRef.current.flyTo({
@@ -60,13 +73,21 @@ export default function Map({config}: {config?: MapData}) {
   }, [normalizedConfig])
   // Map Initialization
   React.useEffect(() => {
-    if (mapContainerRef.current != null && isStyleReady && preparedStyle) { // Don't try load the map if there is no container or style is not ready
-      if (mapRef.current) return // Only initialize the map once!
+    if (mapContainerRef.current == null || !isStyleReady || !preparedStyle) return
+    if (mapRef.current) return // Only initialize the map once!
 
-      // Initialize Map
-      terrainControlRef.current = null
+    let cancelled = false
+    terrainControlRef.current = null
 
-      mapRef.current = new maplibregl.Map({
+    ;(async () => {
+      const { lib, kind } = await loadMapLibrary(resolvedStyle.isMapboxStyle)
+      if (cancelled) return
+
+      if (kind === "mapbox" && resolvedStyle.accessToken) {
+        (lib as any).accessToken = resolvedStyle.accessToken
+      }
+
+      const mapOptions: any = {
         container: mapContainerRef.current,
         style: preparedStyle,
         zoom: normalizedConfig.zoom,
@@ -74,39 +95,62 @@ export default function Map({config}: {config?: MapData}) {
         pitch: normalizedConfig.pitch,
         center: normalizedConfig.center,
         maxBounds: normalizedConfig.maxBounds,
-        maplibreLogo: true,
         logoPosition: "bottom-right",
-        transformRequest,
-      })
-
-      const setProjection = (mapRef.current as unknown as {setProjection?: (projection: string) => void}).setProjection
-      if (normalizedConfig.mapProjection && setProjection) {
-        setProjection(normalizedConfig.mapProjection)
+        validateStyle: false,
       }
 
-      // Add MiniMap
-      if (!isMobile) {
-        mapRef.current.addControl(new Minimap(maplibregl, {
+      const styleForMap = kind === "mapbox" && resolvedStyle.isMapboxStyle && typeof resolvedStyle.style === "string"
+        ? appendAccessToken(normalizeMapboxStyleUrl(resolvedStyle.style), resolvedStyle.accessToken ?? "")
+        : preparedStyle
+
+      if (kind === "maplibre") {
+        mapOptions.maplibreLogo = true
+        mapOptions.transformRequest = transformRequest
+      } else if (kind === "mapbox" && resolvedStyle.accessToken) {
+        mapOptions.accessToken = resolvedStyle.accessToken
+      }
+      mapOptions.style = styleForMap
+
+      const mapCtor = (lib as any).Map ?? lib
+      const mapInstance = new mapCtor(mapOptions)
+      mapRef.current = mapInstance
+      mapLibRef.current = lib
+      setMapReady(true)
+
+      const setProjection = (mapInstance as {setProjection?: (projection: string) => void}).setProjection
+      if (kind === "maplibre" && normalizedConfig.mapProjection && setProjection) {
+        mapInstance.once ? mapInstance.once("style.load", () => setProjection(normalizedConfig.mapProjection!)) : setProjection(normalizedConfig.mapProjection)
+      }
+
+      // Add MiniMap using the same library instance
+      if (!isMobile && kind === "maplibre") {
+        mapInstance.addControl(new Minimap(lib as any, {
           containerClass: "tsMiniMap",
           style: getMapLibreStyle(),
           toggleDisplay: true,
         }), "top-right")
       }
 
-      // Add Brand Logo
-      mapRef.current.addControl(new Brand({containerClass: "tsBrand"}), "top-right")
-
-      // Add Home Control
+      mapInstance.addControl(new Brand({containerClass: "tsBrand"}), "top-right")
       const homeButtonControl = new HomeButton({reset: resetMap})
-      mapRef.current.addControl(homeButtonControl, "top-right")
+      mapInstance.addControl(homeButtonControl, "top-right")
+      const NavControl = (lib as any).NavigationControl ?? (lib as any).default?.NavigationControl
+      if (NavControl) {
+        const nav = new NavControl({visualizePitch: true})
+        mapInstance.addControl(nav, "top-right")
+      }
+    })()
 
-      // Add Navigation Control
-      const nav = new maplibregl.NavigationControl({visualizePitch: true})
-      mapRef.current.addControl(nav, "top-right")
-
-      // Add Terrain Control
+    return () => {
+      cancelled = true
+      if (mapRef.current) {
+        mapRef.current.remove()
+        mapRef.current = null
+      }
+      mapLibRef.current = null
+      setMapReady(false)
     }
-  }, [mapContainerRef, resetMap, mapRef, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest])
+  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle])
 
   React.useEffect(() => {
     const map = mapRef.current
@@ -125,7 +169,10 @@ export default function Map({config}: {config?: MapData}) {
       if (terrainControlRef.current) return
       if (!map.getSource("terrain")) return
 
-      terrainControlRef.current = new maplibregl.TerrainControl({
+      const TerrainControl = mapLibRef.current?.TerrainControl
+      if (!TerrainControl) return
+
+      terrainControlRef.current = new TerrainControl({
         source: "terrain",
         exaggeration: 1
       })
@@ -149,7 +196,7 @@ export default function Map({config}: {config?: MapData}) {
     if (!mapRef.current) return
     const map = mapRef.current
 
-    const handleTerrainVisibility = (e: MapEventType) => {
+    const handleTerrainVisibility = (e: any) => {
       if (map.getLayer("hills")) {
         const hillshading = map.getLayoutProperty("hills", "visibility")
 
@@ -193,14 +240,14 @@ export default function Map({config}: {config?: MapData}) {
   // Create Markers from Clusters
   const markers = React.useMemo(
     () =>
-      clusters.map((cluster) => {
-        const map = mapRef.current as maplibregl.Map
+      (mapReady && mapRef.current && mapLibRef.current ? clusters : []).map((cluster) => {
+        const map = mapRef.current as any
         const [lng, lat] = cluster.geometry.coordinates
         const el = document.createElement("div")
         el.classList.add("tsMarker")
         if (cluster.properties.cluster) {
           return(
-            <Marker element={el} feature={{...cluster.properties}} onClick={handleClusterExpansion} key={cluster.id} map={map} point={[lng, lat]}>
+            <Marker element={el} feature={{...cluster.properties}} onClick={handleClusterExpansion} key={cluster.id} map={map} mapLib={mapLibRef.current} point={[lng, lat]}>
               <ClusterSVG />
               <span>{cluster.properties.point_count_abbreviated}</span>
             </Marker>
@@ -213,6 +260,7 @@ export default function Map({config}: {config?: MapData}) {
             onClick={handlePointClick}
             key={cluster.id}
             map={map}
+            mapLib={mapLibRef.current}
             point={[lng, lat]}
             offset={[10, -11]}
             feature={{id: cluster.id, ...cluster.properties}}
