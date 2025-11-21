@@ -7,6 +7,7 @@ import Community, { communityLoader } from "pages/community"
 import Layout from "components/Layout"
 import Loading from "components/Loading"
 import NotFound from "components/NotFound"
+import ErrorBoundary from "components/ErrorBoundary"
 
 import "./App.css"
 
@@ -37,7 +38,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} fallbackElement={<Loading />} />
+    <ErrorBoundary>
+      <RouterProvider router={router} fallbackElement={<Loading />} />
+    </ErrorBoundary>
   )
 }
 
