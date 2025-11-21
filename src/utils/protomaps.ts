@@ -1,5 +1,5 @@
 import type { StyleSpecification, SourceSpecification } from "maplibre-gl"
-import { layers, namedTheme } from "protomaps-themes-base"
+import layers from "protomaps-themes-base"
 
 export function getMapLibreStyle(theme:string = "light", enable3D:boolean = false): StyleSpecification {
   const style = {
@@ -16,11 +16,12 @@ export function getMapLibreStyle(theme:string = "light", enable3D:boolean = fals
     } as SourceSpecification
   }
 
-  // Map old theme names to new theme names, or default to "light"
-  const validThemes = ["light", "dark", "white", "grayscale", "black"]
+  // Use v3 API: layers(source, key)
+  // Valid themes: "light", "dark", "white", "grayscale", "black", "contrast"
+  const validThemes = ["light", "dark", "white", "grayscale", "black", "contrast"]
   const normalizedTheme = validThemes.includes(theme) ? theme : "light"
 
-  let styleLayers = layers("protomaps", namedTheme(normalizedTheme)) as any
+  let styleLayers = layers("protomaps", normalizedTheme)
 
   if (enable3D) {
     sources = {
