@@ -1,5 +1,5 @@
 import type { StyleSpecification, SourceSpecification } from "maplibre-gl"
-import layers from "protomaps-themes-base"
+import { layers, namedTheme } from "protomaps-themes-base"
 
 export function getMapLibreStyle(theme:string = "light", enable3D:boolean = false): StyleSpecification {
   const style = {
@@ -15,7 +15,12 @@ export function getMapLibreStyle(theme:string = "light", enable3D:boolean = fals
       attribution: "<a href='https://protomaps.com'>Protomaps</a> © <a href='https://openstreetmap.org'>OpenStreetMap</a>"
     } as SourceSpecification
   }
-  let styleLayers = layers("protomaps", theme)
+
+  // Map old theme names to new theme names, or default to "light"
+  const validThemes = ["light", "dark", "white", "grayscale", "black"]
+  const normalizedTheme = validThemes.includes(theme) ? theme : "light"
+
+  let styleLayers = layers("protomaps", namedTheme(normalizedTheme)) as any
 
   if (enable3D) {
     sources = {
