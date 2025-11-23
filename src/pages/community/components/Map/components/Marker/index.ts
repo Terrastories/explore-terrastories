@@ -31,23 +31,24 @@ type MarkerProps = {
   map: any,
   mapLib: any,
   point: [number, number],
-  feature: object,
+  feature?: object,
   children?: React.ReactNode
 }
 
-const defaultProps: Partial<MarkerProps> = {
-  feature: {}
-}
-
-function Marker(props: MarkerProps) {
-  const { map } = props
-  const thisRef = React.useRef({props})
-  thisRef.current.props = props
+function Marker({
+  feature = {},
+  ...props
+}: MarkerProps) {
+  // Reconstruct props object for compatibility with existing code
+  const allProps = { ...props, feature }
+  const { map } = allProps
+  const thisRef = React.useRef({props: allProps})
+  thisRef.current.props = allProps
 
   const marker: any = useMemo(() => {
-    const hasChildren = React.Children.count(props.children)
+    const hasChildren = React.Children.count(allProps.children)
 
-    const MarkerClass = props.mapLib?.Marker ?? props.mapLib?.default?.Marker ?? props.mapLib
+    const MarkerClass = allProps.mapLib?.Marker ?? allProps.mapLib?.default?.Marker ?? allProps.mapLib
 
     // Only pass marker-specific options to avoid leaking map/mapLib/feature/children.
     const {
@@ -63,7 +64,7 @@ function Marker(props: MarkerProps) {
       pitchAlignment,
       occludedOpacity,
       popup,
-    } = props
+    } = allProps
 
     const mk = new MarkerClass(
       {
@@ -80,14 +81,14 @@ function Marker(props: MarkerProps) {
         occludedOpacity,
         popup,
       }
-    ).setLngLat(props.point)
+    ).setLngLat(allProps.point)
 
     mk.getElement().addEventListener("click", (e: MouseEvent) => {
       thisRef.current.props.onClick?.({
         type: "click",
         target: map,
         originalEvent: e,
-        properties: props.feature,
+        properties: allProps.feature,
         markerTarget: mk
       })
     })
@@ -97,13 +98,13 @@ function Marker(props: MarkerProps) {
         type: "mouseenter",
         target: map,
         originalEvent: e,
-        properties: props.feature,
+        properties: allProps.feature,
         markerTarget: mk
       })
     })
 
     return mk
-  }, [map, props])
+  }, [map, allProps])
 
   useEffect(() => {
     marker.addTo(map)
@@ -111,17 +112,15 @@ function Marker(props: MarkerProps) {
     return () => { marker.remove() }
   }, [map, marker])
 
-  if (props.offset && (marker.getOffset() === props.offset)) {
-    marker.setOffset(props.offset)
+  if (allProps.offset && (marker.getOffset() === allProps.offset)) {
+    marker.setOffset(allProps.offset)
   }
 
-  if (marker.getPopup() !== props.popup) {
-    marker.setPopup(props.popup)
+  if (marker.getPopup() !== allProps.popup) {
+    marker.setPopup(allProps.popup)
   }
 
-  return createPortal(props.children, marker.getElement())
+  return createPortal(allProps.children, marker.getElement())
 }
-
-Marker.defaultProps = defaultProps
 
 export default React.memo(Marker)

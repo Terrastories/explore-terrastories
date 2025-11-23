@@ -1,29 +1,41 @@
-import React, { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
+import React, { useRef, useCallback, useEffect, MutableRefObject } from "react"
 import ReactDOM from "react-dom/client"
-
-import type { Map } from "maplibre-gl"
-import { Popup as MLPopup } from "maplibre-gl"
 
 import Popup from "../components/Popup"
 import {MarkerMouseEvent} from "../components/Marker"
 
 import type { TypePlace } from "types"
 
-const usePopup = (mapRef: MutableRefObject<Map | null>) => {
+const usePopup = (mapRef: MutableRefObject<any>) => {
   const activePointRef = useRef<number | string | null>(null)
-  const popup = useMemo(
-    () => new MLPopup(
-      {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
-    ),
-    []
-  )
+  const popupRef = useRef<any>(null)
+  const [popupReady, setPopupReady] = React.useState(false)
+
+  // Dynamically load the Popup class from maplibre-gl and create instance
+  React.useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      const module = await import("maplibre-gl")
+      const lib = (module as any).default ?? module
+      if (cancelled) return
+      const PopupCtor = (lib as any).Popup ?? lib.Popup
+      // Create the popup instance directly and store in ref
+      popupRef.current = new PopupCtor(
+        {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
+      )
+      setPopupReady(true)
+    })()
+    return () => { cancelled = true }
+  }, [])
+
+  const popup = popupReady ? popupRef.current : null
 
   const closePopup = useCallback(() => {
-    popup.remove()
+    if (popup) popup.remove()
   }, [popup])
 
   const openPopup = useCallback((e: MarkerMouseEvent) => {
-    if (!mapRef.current) return
+    if (!mapRef.current || !popup) return
     const map = mapRef.current
     const feature = e.properties as TypePlace
 
@@ -53,6 +65,8 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
   }, [popup, mapRef, closePopup])
 
   useEffect(() => {
+    if (!popup) return
+
     function resetActiveRef() {
       activePointRef.current = null
     }

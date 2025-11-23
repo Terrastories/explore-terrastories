@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components"
 
 import { Link } from "react-router-dom"
-import maplibregl from "maplibre-gl"
 
 import { normalizeMapConfig, resolveMapStyle } from "utils/mapConfig"
 import { createMapboxTransformRequest } from "utils/mapbox"
@@ -26,7 +25,7 @@ div {
 
 export default function CommunityItem(props: TypeCommunity) {
   const staticMapContainerRef = React.useRef<HTMLDivElement>(null)
-  const staticMapRef = React.useRef<maplibregl.Map | null>(null)
+  const staticMapRef = React.useRef<any>(null)
   const {
     name,
     staticMapUrl,
@@ -43,14 +42,24 @@ export default function CommunityItem(props: TypeCommunity) {
     if (!usesExternalStyle) return undefined
     return createMapboxTransformRequest(resolvedStyle.accessToken)
   }, [resolvedStyle, usesExternalStyle])
+
   React.useEffect(() => {
     // if a static map is available, use that instead
     if (staticMapUrl) return
+    if (staticMapContainerRef.current == null || !isStyleReady || !preparedStyle) return
+    if (staticMapRef.current) return // only render map once
 
-    if (staticMapContainerRef.current != null && isStyleReady && preparedStyle) { // don't try to render to a non-existent container
-      if (staticMapRef.current) return // only render map once
+    let cancelled = false
 
-      staticMapRef.current = new maplibregl.Map({
+    ;(async () => {
+      await import("maplibre-gl/dist/maplibre-gl.css")
+      const module = await import("maplibre-gl")
+      const lib = (module as any).default ?? module
+      if (cancelled) return
+
+      // Try to get Map constructor from different possible locations
+      const mapCtor = lib.Map || (lib as any).Map || lib
+      staticMapRef.current = new mapCtor({
         container: staticMapContainerRef.current,
         style: preparedStyle,
         zoom: normalizedMapConfig.zoom,
@@ -67,8 +76,11 @@ export default function CommunityItem(props: TypeCommunity) {
       if (normalizedMapConfig.mapProjection && setProjection) {
         setProjection(normalizedMapConfig.mapProjection)
       }
-    }
+    })()
 
+    return () => {
+      cancelled = true
+    }
   }, [staticMapUrl, staticMapRef, normalizedMapConfig, isStyleReady, preparedStyle, transformRequest])
 
   return (

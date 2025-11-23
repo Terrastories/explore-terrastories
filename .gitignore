@@ -25,3 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 dist/
 bun.lock
+
+# Playwright
+/playwright-report/
+/test-results/
+/e2e/

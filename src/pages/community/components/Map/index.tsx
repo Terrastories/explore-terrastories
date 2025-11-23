@@ -119,7 +119,11 @@ export default function Map({config}: {config?: MapData}) {
 
       const setProjection = (mapInstance as {setProjection?: (projection: string) => void}).setProjection
       if (kind === "maplibre" && normalizedConfig.mapProjection && setProjection) {
-        mapInstance.once ? mapInstance.once("style.load", () => setProjection(normalizedConfig.mapProjection!)) : setProjection(normalizedConfig.mapProjection)
+        if (mapInstance.once) {
+          mapInstance.once("style.load", () => setProjection(normalizedConfig.mapProjection!))
+        } else {
+          setProjection(normalizedConfig.mapProjection)
+        }
       }
 
       // Add MiniMap using the same library instance
@@ -274,11 +278,13 @@ export default function Map({config}: {config?: MapData}) {
 
   // Close popup if selectedPlace is changed to undefined and popup is open.
   React.useEffect(() => {
-    if (selectedPlace === undefined && popup.isOpen()) closePopup()
+    if (selectedPlace === undefined && popup && popup.isOpen()) closePopup()
   }, [selectedPlace, popup, closePopup])
 
   // Closing a popup when selectedPlace is active should reset the map.
   React.useEffect(() => {
+    if (!popup) return
+
     function resetMapMarkersOnPopupClose() {
       if (selectedPlace !== undefined) {
         closePlaceChip().then((pts) => updateStoryPoints(pts))
