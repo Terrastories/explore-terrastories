@@ -26,7 +26,6 @@ yarn-error.log*
 dist/
 bun.lock
 
-# Playwright
+# Playwright generated artifacts
 /playwright-report/
 /test-results/
-/e2e/
