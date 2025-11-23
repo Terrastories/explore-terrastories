@@ -85,39 +85,46 @@ const sourceHasUrl = (source: SourceSpecification): source is SourceSpecificatio
 
 export const prepareMapboxStyle = async (styleUrl: string, token: string): Promise<StyleSpecification> => {
   const normalizedStyleUrl = appendAccessToken(normalizeMapboxStyleUrl(styleUrl), token)
-  const response = await fetch(normalizedStyleUrl)
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000)
 
-  if (!response.ok) {
-    throw new Error(`Failed to load Mapbox style: ${response.status} ${response.statusText}`)
-  }
+  try {
+    const response = await fetch(normalizedStyleUrl, { signal: controller.signal })
 
-  const styleSpec = await response.json() as StyleSpecification
+    if (!response.ok) {
+      throw new Error(`Failed to load Mapbox style: ${response.status} ${response.statusText}`)
+    }
 
-  if (typeof styleSpec.sprite === "string") {
-    const spriteUrl = normalizeMapboxSpriteUrl(styleSpec.sprite)
-    styleSpec.sprite = appendAccessToken(spriteUrl, token)
-  }
+    const styleSpec = await response.json() as StyleSpecification
 
-  if (typeof styleSpec.glyphs === "string") {
-    const glyphsUrl = normalizeMapboxGlyphsUrl(styleSpec.glyphs)
-    styleSpec.glyphs = appendAccessToken(glyphsUrl, token)
-  }
+    if (typeof styleSpec.sprite === "string") {
+      const spriteUrl = normalizeMapboxSpriteUrl(styleSpec.sprite)
+      styleSpec.sprite = appendAccessToken(spriteUrl, token)
+    }
 
-  if (styleSpec.sources) {
-    Object.values(styleSpec.sources).forEach((source) => {
-      if (source && sourceHasUrl(source)) {
-        if (source.url.startsWith(MAPBOX_PROTOCOL) || source.url.includes("api.mapbox.com")) {
-          const normalizedSource = source.url.startsWith(MAPBOX_PROTOCOL)
-            ? normalizeMapboxSourceUrl(source.url)
-            : source.url
+    if (typeof styleSpec.glyphs === "string") {
+      const glyphsUrl = normalizeMapboxGlyphsUrl(styleSpec.glyphs)
+      styleSpec.glyphs = appendAccessToken(glyphsUrl, token)
+    }
 
-          source.url = appendAccessToken(normalizedSource, token)
+    if (styleSpec.sources) {
+      Object.values(styleSpec.sources).forEach((source) => {
+        if (source && sourceHasUrl(source)) {
+          if (source.url.startsWith(MAPBOX_PROTOCOL) || source.url.includes("api.mapbox.com")) {
+            const normalizedSource = source.url.startsWith(MAPBOX_PROTOCOL)
+              ? normalizeMapboxSourceUrl(source.url)
+              : source.url
+
+            source.url = appendAccessToken(normalizedSource, token)
+          }
         }
-      }
-    })
-  }
+      })
+    }
 
-  return styleSpec
+    return styleSpec
+  } finally {
+    clearTimeout(timeoutId)
+  }
 }
 
 export const getFallbackStyle = (pmBasemapStyle: string, mapbox3dEnabled: boolean) => {

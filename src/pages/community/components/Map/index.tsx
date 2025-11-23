@@ -99,14 +99,14 @@ export default function Map({config}: {config?: MapData}) {
         validateStyle: false,
       }
 
-      const styleForMap = kind === "mapbox" && resolvedStyle.isMapboxStyle && typeof resolvedStyle.style === "string"
-        ? appendAccessToken(normalizeMapboxStyleUrl(resolvedStyle.style), resolvedStyle.accessToken ?? "")
+      const styleForMap = kind === "mapbox" && usesExternalStyle && resolvedStyle.accessToken && typeof resolvedStyle.style === "string"
+        ? appendAccessToken(normalizeMapboxStyleUrl(resolvedStyle.style), resolvedStyle.accessToken)
         : preparedStyle
 
       if (kind === "maplibre") {
         mapOptions.maplibreLogo = true
         mapOptions.transformRequest = transformRequest
-      } else if (kind === "mapbox" && resolvedStyle.accessToken) {
+      } else if (kind === "mapbox" && usesExternalStyle && resolvedStyle.accessToken) {
         mapOptions.accessToken = resolvedStyle.accessToken
       }
       mapOptions.style = styleForMap
