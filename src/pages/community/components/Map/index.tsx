@@ -218,8 +218,8 @@ export default function Map({config}: {config?: MapData}) {
     }
   }, [])
 
-  // Initialize Popup
-  const { popup, openPopup, closePopup } = usePopup(mapRef)
+  // Initialize Popup with the correct library instance
+  const { popup, openPopup, closePopup } = usePopup(mapRef, mapLibRef)
 
   // Cluster and Point Handlers
   const { supercluster, clusters } = useSupercluster({mapRef, points})

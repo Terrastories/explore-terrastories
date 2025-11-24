@@ -6,27 +6,34 @@ import {MarkerMouseEvent} from "../components/Marker"
 
 import type { TypePlace } from "types"
 
-const usePopup = (mapRef: MutableRefObject<any>) => {
+const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any>) => {
   const activePointRef = useRef<number | string | null>(null)
   const popupRef = useRef<any>(null)
   const [popupReady, setPopupReady] = React.useState(false)
 
-  // Dynamically load the Popup class from maplibre-gl and create instance
+  // Create popup instance using the same library that created the map
   React.useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      const module = await import("maplibre-gl")
-      const lib = (module as any).default ?? module
-      if (cancelled) return
-      const PopupCtor = (lib as any).Popup ?? lib.Popup
-      // Create the popup instance directly and store in ref
-      popupRef.current = new PopupCtor(
-        {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
-      )
-      setPopupReady(true)
-    })()
-    return () => { cancelled = true }
-  }, [])
+    if (!mapLibRef.current) {
+      return
+    }
+
+    const lib = mapLibRef.current
+    const PopupCtor = (lib as any).Popup ?? lib.Popup
+
+    // Create the popup instance directly and store in ref
+    popupRef.current = new PopupCtor(
+      {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
+    )
+    setPopupReady(true)
+
+    return () => {
+      if (popupRef.current) {
+        popupRef.current.remove()
+        popupRef.current = null
+      }
+      setPopupReady(false)
+    }
+  }, [mapLibRef])
 
   const popup = popupReady ? popupRef.current : null
 
