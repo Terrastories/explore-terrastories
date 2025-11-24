@@ -46,8 +46,15 @@ export const useStyleResource = (resolvedStyle: ResolvedMapStyle, normalizedConf
         setResource({ style: styleSpec, usesExternalStyle: true })
       })
       .catch((error) => {
-        console.error("Failed to load Mapbox style. Falling back to Protomaps.", error)
         if (cancelled) return
+        console.error(
+          "Failed to load Mapbox style after retries. Falling back to Protomaps.",
+          {
+            styleUrl: resolvedStyle.style,
+            errorName: error?.name,
+            errorMessage: error?.message,
+          }
+        )
         setResource({ style: fallbackStyle(), usesExternalStyle: false })
       })
 

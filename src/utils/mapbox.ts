@@ -83,48 +83,104 @@ const sourceHasUrl = (source: SourceSpecification): source is SourceSpecificatio
   return typeof (source as { url?: unknown }).url === "string"
 }
 
-export const prepareMapboxStyle = async (styleUrl: string, token: string): Promise<StyleSpecification> => {
-  const normalizedStyleUrl = appendAccessToken(normalizeMapboxStyleUrl(styleUrl), token)
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 10000)
+const isRetryableError = (error: unknown): boolean => {
+  // Network errors and timeouts are retryable
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase()
+    // AbortError happens on timeout
+    if (error.name === "AbortError") return true
+    // Network errors
+    if (message.includes("network") || message.includes("fetch")) return true
+    // Temporary server errors (5xx) would come from response.status checks
+  }
+  return false
+}
 
-  try {
-    const response = await fetch(normalizedStyleUrl, { signal: controller.signal })
+const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 
-    if (!response.ok) {
-      throw new Error(`Failed to load Mapbox style: ${response.status} ${response.statusText}`)
-    }
+export const prepareMapboxStyle = async (
+  styleUrl: string,
+  token: string,
+  { maxRetries = 2, timeoutMs = 10000 } = {}
+): Promise<StyleSpecification> => {
+  let lastError: Error | null = null
 
-    const styleSpec = await response.json() as StyleSpecification
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    let controller: AbortController | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
 
-    if (typeof styleSpec.sprite === "string") {
-      const spriteUrl = normalizeMapboxSpriteUrl(styleSpec.sprite)
-      styleSpec.sprite = appendAccessToken(spriteUrl, token)
-    }
+    try {
+      const normalizedStyleUrl = appendAccessToken(normalizeMapboxStyleUrl(styleUrl), token)
+      controller = new AbortController()
+      timeoutId = setTimeout(() => controller!.abort(), timeoutMs)
 
-    if (typeof styleSpec.glyphs === "string") {
-      const glyphsUrl = normalizeMapboxGlyphsUrl(styleSpec.glyphs)
-      styleSpec.glyphs = appendAccessToken(glyphsUrl, token)
-    }
+      const response = await fetch(normalizedStyleUrl, { signal: controller.signal })
 
-    if (styleSpec.sources) {
-      Object.values(styleSpec.sources).forEach((source) => {
-        if (source && sourceHasUrl(source)) {
-          if (source.url.startsWith(MAPBOX_PROTOCOL) || source.url.includes("api.mapbox.com")) {
-            const normalizedSource = source.url.startsWith(MAPBOX_PROTOCOL)
-              ? normalizeMapboxSourceUrl(source.url)
-              : source.url
+      if (!response.ok) {
+        const error = new Error(`Failed to load Mapbox style: ${response.status} ${response.statusText}`)
+        lastError = error
 
-            source.url = appendAccessToken(normalizedSource, token)
+        // Retry on 5xx errors or 429 (rate limit)
+        if (response.status >= 500 || response.status === 429) {
+          if (attempt < maxRetries) {
+            const delayMs = Math.pow(2, attempt) * 200 // Exponential backoff: 200ms, 400ms, 800ms
+            await sleep(delayMs)
+            continue
           }
         }
-      })
-    }
 
-    return styleSpec
-  } finally {
-    clearTimeout(timeoutId)
+        throw error
+      }
+
+      const styleSpec = await response.json() as StyleSpecification
+
+      if (typeof styleSpec.sprite === "string") {
+        const spriteUrl = normalizeMapboxSpriteUrl(styleSpec.sprite)
+        styleSpec.sprite = appendAccessToken(spriteUrl, token)
+      }
+
+      if (typeof styleSpec.glyphs === "string") {
+        const glyphsUrl = normalizeMapboxGlyphsUrl(styleSpec.glyphs)
+        styleSpec.glyphs = appendAccessToken(glyphsUrl, token)
+      }
+
+      if (styleSpec.sources) {
+        Object.values(styleSpec.sources).forEach((source) => {
+          if (source && sourceHasUrl(source)) {
+            if (source.url.startsWith(MAPBOX_PROTOCOL) || source.url.includes("api.mapbox.com")) {
+              const normalizedSource = source.url.startsWith(MAPBOX_PROTOCOL)
+                ? normalizeMapboxSourceUrl(source.url)
+                : source.url
+
+              source.url = appendAccessToken(normalizedSource, token)
+            }
+          }
+        })
+      }
+
+      return styleSpec
+    } catch (error) {
+      lastError = error as Error
+
+      // Only retry if error is retryable and we have attempts left
+      if (isRetryableError(error) && attempt < maxRetries) {
+        const delayMs = Math.pow(2, attempt) * 200 // Exponential backoff
+        await sleep(delayMs)
+        continue
+      }
+
+      // If we've exhausted retries or error is not retryable, throw
+      throw error
+    } finally {
+      // Always clean up timeout, even during retries
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId)
+      }
+    }
   }
+
+  // This shouldn't be reached, but just in case
+  throw lastError || new Error("Failed to load Mapbox style after retries")
 }
 
 export const getFallbackStyle = (pmBasemapStyle: string, mapbox3dEnabled: boolean) => {

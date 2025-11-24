@@ -75,7 +75,10 @@ describe("prepareMapboxStyle", () => {
 
     const prepared = await prepareMapboxStyle("mapbox://styles/demo/style", "pk.test-token")
 
-    expect(fetchMock).toHaveBeenCalledWith("https://api.mapbox.com/styles/v1/demo/style?access_token=pk.test-token")
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.mapbox.com/styles/v1/demo/style?access_token=pk.test-token",
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
+    )
     expect(prepared.sprite).toBe("https://api.mapbox.com/styles/v1/demo/style/sprite?access_token=pk.test-token")
     expect(prepared.glyphs).toBe("https://api.mapbox.com/fonts/v1/demo/{fontstack}/{range}.pbf?access_token=pk.test-token")
     const baseSource = prepared.sources.base as { url?: string }
