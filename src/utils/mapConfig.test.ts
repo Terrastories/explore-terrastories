@@ -34,6 +34,21 @@ describe("resolveMapStyle", () => {
     expect(result.isMapboxStyle).toBe(true)
   })
 
+  it("uses base mapbox token for style URL when style-specific token is absent", () => {
+    const normalized = normalizeMapConfig({
+      ...DEFAULT_MAP_CONFIG,
+      mapboxStyleUrl: "mapbox://styles/example/community",
+      mapboxAccessToken: "pk.base-token"
+    })
+
+    const result = resolveMapStyle(normalized)
+
+    expect(result.style).toBe("mapbox://styles/example/community")
+    expect(result.accessToken).toBe("pk.base-token")
+    expect(result.usesExternalStyle).toBe(true)
+    expect(result.isMapboxStyle).toBe(true)
+  })
+
   it("defaults to protomaps style when no mapbox styles are configured", () => {
     const normalized = normalizeMapConfig(DEFAULT_MAP_CONFIG)
     const result = resolveMapStyle(normalized)

@@ -59,8 +59,17 @@ export type ResolvedMapStyle = {
 export const resolveMapStyle = (config: NormalizedMapConfig): ResolvedMapStyle => {
   if (config.mapboxStyleUrl && config.mapboxStyleAccessToken) {
     return {
-      style: config.mapboxStyleUrl ?? config.mapboxStyle ?? getMapLibreStyle(config.pmBasemapStyle, config.mapbox3dEnabled),
+      style: config.mapboxStyleUrl,
       accessToken: config.mapboxStyleAccessToken,
+      usesExternalStyle: true,
+      isMapboxStyle: true,
+    }
+  }
+
+  if (config.mapboxStyleUrl && config.mapboxAccessToken) {
+    return {
+      style: config.mapboxStyleUrl,
+      accessToken: config.mapboxAccessToken,
       usesExternalStyle: true,
       isMapboxStyle: true,
     }
