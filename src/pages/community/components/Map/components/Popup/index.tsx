@@ -26,7 +26,7 @@ type PopupProps = FeatureProps & {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 240px;
+  width: clamp(220px, 70vw, 260px);
   max-width: 280px;
   background: white;
   color: #1e1e1e;
@@ -38,6 +38,7 @@ const Wrapper = styled.div`
 const Heading = styled.div`
 display: flex;
 align-items: center;
+gap: 0.35rem;
 padding: 0.6rem 0.65rem;
 background-color: #33aa8b;
 color: white;
@@ -58,11 +59,16 @@ h1 {
   text-overflow: ellipsis;
 }
 
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .plyr {
   display: inline-block;
   min-width: 18px;
   vertical-align: middle;
-  padding-left: 2px;
 }
 
 svg.icon--pressed {
@@ -94,9 +100,6 @@ cursor: pointer;
 `
 
 const CloseButton = styled.button`
-position: absolute;
-top: 4px;
-right: 4px;
 border: none;
 color: white;
 background: rgba(0,0,0,0.15);
@@ -111,6 +114,8 @@ width: 20px;
 
 svg {
   fill: #d7d7d7;
+  height: 16px;
+  width: 16px;
 }
 `
 
@@ -146,13 +151,18 @@ export default function Popup(props: PopupProps) {
         <h1>
           {name}
         </h1>
-        {placenameAudio &&
-          <Media
-            blob={`${name}-audio`}
-            url={placenameAudio}
-            contentType='audio'
-            playIconUrl={speakerIcon}
-            audioControls={["play"]} />}
+        <div className="actions">
+          {placenameAudio &&
+            <Media
+              blob={`${name}-audio`}
+              url={placenameAudio}
+              contentType='audio'
+              playIconUrl={speakerIcon}
+              audioControls={["play"]} />}
+          <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
+            <Icon icon="close" alt={t("close")} />
+          </CloseButton>
+        </div>
       </Heading>
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
@@ -163,9 +173,6 @@ export default function Popup(props: PopupProps) {
           {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
         </BadgeRow>
       </Content>
-      <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
-        <Icon icon="close" alt={t("close")} />
-      </CloseButton>
       {showModal && photo && name && createPortal(
         <Lightbox
           imageSource={photo}
