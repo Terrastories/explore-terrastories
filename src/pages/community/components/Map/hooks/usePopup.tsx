@@ -12,6 +12,7 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
   const [popupReady, setPopupReady] = React.useState(false)
 
   // Create popup instance using the same library that created the map
+  // Dependencies must include mapLibRef.current to detect when async map initialization completes
   React.useEffect(() => {
     const mapLib = mapLibRef.current
     if (!mapLib) {
@@ -33,6 +34,7 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
       }
       setPopupReady(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapLibRef.current])
 
   const popup = popupReady ? popupRef.current : null
