@@ -39,7 +39,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ErrorBoundary>
-      <RouterProvider router={router} fallbackElement={<Loading />} />
+      <RouterProvider router={router} fallbackElement={<Loading fullscreen />} />
     </ErrorBoundary>
   )
 }

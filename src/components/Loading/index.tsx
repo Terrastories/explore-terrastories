@@ -1,12 +1,12 @@
 import React from "react"
 import styled from "styled-components"
 
-const RingWrapper = styled.div`
+const RingWrapper = styled.div<{ $fullscreen?: boolean; }>`
 display: grid;
 place-items: center;
 width: 100%;
-height: 100%;
-min-height: 80px;
+height: ${({ $fullscreen }) => $fullscreen ? "100vh" : "100%"};
+min-height: ${({ $fullscreen }) => $fullscreen ? "100vh" : "80px"};
 
 @keyframes rotate {
   0% {
@@ -48,9 +48,11 @@ div:nth-child(3) {
 }
 `
 
-export default function Loading({size}: {size?: number}) {
+type LoadingProps = { size?: number; fullscreen?: boolean }
+
+export default function Loading({size, fullscreen}: LoadingProps) {
   return (
-    <RingWrapper>
+    <RingWrapper $fullscreen={fullscreen}>
       <Ring $size={size}>
         <div></div>
         <div></div>
