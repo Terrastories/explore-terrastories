@@ -36,11 +36,10 @@ const Wrapper = styled.div`
 `
 
 const Heading = styled.div`
-display: grid;
-grid-template-columns: 1fr auto;
-align-items: start;
-column-gap: 8px;
-padding: 0.6rem 0.65rem 0.5rem;
+position: relative;
+display: flex;
+align-items: center;
+padding: 0.55rem 0.65rem 0.55rem 0.75rem;
 background-color: #33aa8b;
 color: white;
 
@@ -58,14 +57,16 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 56px; /* room for actions */
 }
 
 .actions {
-  display: inline-flex;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 6px;
-  padding-top: 2px;
 }
 
 .plyr {
@@ -106,6 +107,7 @@ width: 26px;
 border-radius: 6px;
 display: grid;
 place-items: center;
+box-shadow: 0 1px 4px rgba(0,0,0,0.18);
 
 &:hover {
   background: rgba(0,0,0,0.28);
@@ -151,6 +153,9 @@ export default function Popup(props: PopupProps) {
           {name}
         </h1>
         <div className="actions">
+          <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
+            <Icon icon="close" alt={t("close")} />
+          </CloseButton>
           {placenameAudio &&
             <Media
               blob={`${name}-audio`}
@@ -158,9 +163,6 @@ export default function Popup(props: PopupProps) {
               contentType='audio'
               playIconUrl={speakerIcon}
               audioControls={["play"]} />}
-          <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
-            <Icon icon="close" alt={t("close")} />
-          </CloseButton>
         </div>
       </Heading>
       {popupImage &&
