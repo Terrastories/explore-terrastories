@@ -142,7 +142,7 @@ export default function Map({config}: {config?: MapData}) {
         }), "top-right")
       }
 
-      mapInstance.addControl(new Brand({containerClass: "tsBrand"}), "top-right")
+      mapInstance.addControl(new Brand({containerClass: "tsBrand"}), "top-left")
       const homeButtonControl = new HomeButton({reset: resetMap})
       mapInstance.addControl(homeButtonControl, "top-right")
       const NavControl = (lib as any).NavigationControl ?? (lib as any).default?.NavigationControl
