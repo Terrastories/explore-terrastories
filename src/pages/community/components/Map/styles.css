@@ -28,7 +28,8 @@
   padding: 8px 10px;
 }
 
-.tsBrand.maplibregl-ctrl-group:not(:empty) {
+.tsBrand.maplibregl-ctrl-group:not(:empty),
+.tsBrand.mapboxgl-ctrl-group:not(:empty) {
   box-shadow: 0 0 0 2px #136a7e;
   border-radius: 6px;
 }

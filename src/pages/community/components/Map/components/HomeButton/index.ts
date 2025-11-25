@@ -15,7 +15,9 @@ export default class HomeButton {
   onAdd(map: Map) {
     this._map = map
     this._container.classList.add("maplibregl-ctrl")
+    this._container.classList.add("mapboxgl-ctrl")
     this._container.classList.add("maplibregl-ctrl-group")
+    this._container.classList.add("mapboxgl-ctrl-group")
     this._container.classList.add("tsHome")
     this._container.style.width = "30px"
     this._container.style.height = "30px"
