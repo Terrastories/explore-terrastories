@@ -76,6 +76,15 @@ display: grid;
 gap: 6px;
 `
 
+const Description = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  color: #2f2f2f;
+`
+
 const StyledImage = styled.img`
 max-height: 200px;
 width: 100%;
@@ -148,7 +157,7 @@ export default function Popup(props: PopupProps) {
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
       <Content>
-        {description && <div>{description}</div>}
+        {description && <Description title={description}>{description}</Description>}
         <BadgeRow>
           {region && <span className="badge">{region}</span>}
           {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
