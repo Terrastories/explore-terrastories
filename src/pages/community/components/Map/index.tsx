@@ -154,7 +154,7 @@ export default function Map({config}: {config?: MapData}) {
       mapLibRef.current = null
       setMapReady(false)
     }
-  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle])
+  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle])
 
   React.useEffect(() => {
     const map = mapRef.current
@@ -273,7 +273,7 @@ export default function Map({config}: {config?: MapData}) {
           </Marker>
         )
       }),
-    [clusters, openPopup, mapRef, handleClusterExpansion, handlePointClick]
+    [clusters, openPopup, mapRef, handleClusterExpansion, handlePointClick, mapReady, mapLibRef]
   )
 
   // Close popup if selectedPlace is changed to undefined and popup is open.

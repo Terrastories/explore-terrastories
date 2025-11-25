@@ -40,7 +40,7 @@ function Marker({
   ...props
 }: MarkerProps) {
   // Reconstruct props object for compatibility with existing code
-  const allProps = { ...props, feature }
+  const allProps = useMemo(() => ({ ...props, feature }), [props, feature])
   const { map } = allProps
   const thisRef = React.useRef({props: allProps})
   thisRef.current.props = allProps
