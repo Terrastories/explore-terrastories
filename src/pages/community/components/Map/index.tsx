@@ -114,15 +114,19 @@ export default function Map({config}: {config?: MapData}) {
       }
 
       const styleForMap = (() => {
+        // If useStyleResource has already prepared a style (including a fallback
+        // Protomaps style when Mapbox fetch retries failed), use it directly.
+        if (preparedStyle) return preparedStyle
+
         if (kind === "mapbox" && canUseRawMapboxStyle) {
           const rawStyleUrl = appendAccessToken(
             normalizeMapboxStyleUrl(resolvedStyle.style as string),
             resolvedStyle.accessToken as string
           )
 
-          // Prefer the prepared style when it represents the external Mapbox style;
-          // otherwise fall back to letting Mapbox GL fetch the style itself.
-          return usesExternalStyle && preparedStyle ? preparedStyle : rawStyleUrl
+          // No prepared style available (e.g., loader still in-flight); let Mapbox GL
+          // fetch the raw style URL itself.
+          return rawStyleUrl
         }
 
         return preparedStyle
