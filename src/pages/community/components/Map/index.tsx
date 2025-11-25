@@ -48,6 +48,13 @@ export default function Map({config}: {config?: MapData}) {
     return createMapboxTransformRequest(resolvedStyle.accessToken)
   }, [resolvedStyle, usesExternalStyle])
 
+  // Mapbox GL v3 requires a token even for non-Mapbox styles. Avoid selecting it when the
+  // credentials are missing (e.g., when useStyleResource fell back to Protomaps).
+  const shouldUseMapboxLib = React.useMemo(
+    () => resolvedStyle.isMapboxStyle && Boolean(resolvedStyle.accessToken),
+    [resolvedStyle]
+  )
+
   const loadMapLibrary = React.useCallback(async (useMapbox: boolean) => {
     if (useMapbox) {
       const module = await import("mapbox-gl")
@@ -80,7 +87,7 @@ export default function Map({config}: {config?: MapData}) {
     terrainControlRef.current = null
 
     ;(async () => {
-      const { lib, kind } = await loadMapLibrary(resolvedStyle.isMapboxStyle)
+      const { lib, kind } = await loadMapLibrary(shouldUseMapboxLib)
       if (cancelled) return
 
       if (kind === "mapbox" && resolvedStyle.accessToken) {
@@ -154,7 +161,7 @@ export default function Map({config}: {config?: MapData}) {
       mapLibRef.current = null
       setMapReady(false)
     }
-  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle])
+  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle, shouldUseMapboxLib])
 
   React.useEffect(() => {
     const map = mapRef.current
