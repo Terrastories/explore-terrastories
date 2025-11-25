@@ -39,7 +39,8 @@ const Heading = styled.div`
 position: relative;
 display: flex;
 align-items: center;
-padding: 0.55rem 0.65rem 0.55rem 0.75rem;
+min-height: 64px;
+padding: 0.65rem 0.75rem 0.8rem 0.75rem;
 background-color: #33aa8b;
 color: white;
 
@@ -57,13 +58,13 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 56px; /* room for actions */
+  padding-right: 64px; /* room for actions */
 }
 
 .actions {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   display: flex;
   flex-direction: column;
   gap: 6px;
