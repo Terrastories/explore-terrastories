@@ -3,15 +3,13 @@
 }
 
 .tsPopup {
-  max-height: 340px;
+  max-height: 320px;
 }
 
 .tsPopup .maplibregl-popup-content,
 .tsPopup .mapboxgl-popup-content {
   padding: 0;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  border-radius: 8px;
 }
 
 .tsPopup img {

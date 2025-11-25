@@ -24,23 +24,21 @@ type PopupProps = FeatureProps & {
   handleClose: () => void
 }
 
-const PopupCard = styled.div`
+const Wrapper = styled.div`
   position: relative;
-  width: 260px;
-  max-width: 260px;
+  width: 240px;
+  max-width: 280px;
   background: white;
   color: #1e1e1e;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   font-size: 14px;
 `
 
-const Heading = styled.header`
+const Heading = styled.div`
 display: flex;
 align-items: center;
-gap: 0.5rem;
-padding: 0.65rem 0.75rem;
+padding: 0.6rem 0.65rem;
 background-color: #33aa8b;
 color: white;
 
@@ -52,10 +50,12 @@ color: white;
 --plyr-audio-control-color-hover: #a6a6a6;
 
 h1 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 0;
-  flex: 1;
-  line-height: 1.3;
+  padding: 0.25rem 0.4rem 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .plyr {
@@ -71,9 +71,9 @@ svg.icon--pressed {
 `
 
 const Content = styled.div`
-padding: 0.75rem 0.85rem 0.9rem;
+padding: 8px;
 display: grid;
-gap: 0.5rem;
+gap: 6px;
 `
 
 const StyledImage = styled.img`
@@ -86,8 +86,8 @@ cursor: pointer;
 
 const CloseButton = styled.button`
 position: absolute;
-top: 6px;
-right: 6px;
+top: 4px;
+right: 4px;
 border: none;
 color: white;
 background: rgba(0,0,0,0.15);
@@ -132,7 +132,7 @@ export default function Popup(props: PopupProps) {
   const popupImage = thumbnail || photo
 
   return (
-    <PopupCard>
+    <Wrapper>
       <Heading>
         <h1>
           {name}
@@ -165,6 +165,6 @@ export default function Popup(props: PopupProps) {
           onClose={() => setShowModal(false)} />,
         document.body
       )}
-    </PopupCard>
+    </Wrapper>
   )
 }
