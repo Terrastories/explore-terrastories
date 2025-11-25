@@ -31,6 +31,7 @@ export default function Map({config}: {config?: MapData}) {
   const mapRef = React.useRef<any>(null)
   const terrainControlRef = React.useRef<any>(null)
   const mapLibRef = React.useRef<any>(null)
+  const mapKindRef = React.useRef<"mapbox" | "maplibre" | null>(null)
   const [mapReady, setMapReady] = React.useState(false)
 
   const { points, updateStoryPoints, bounds, centerPoint } = useMapConfig()
@@ -59,8 +60,17 @@ export default function Map({config}: {config?: MapData}) {
     return shouldUseMapboxLib && typeof resolvedStyle.style === "string" && Boolean(resolvedStyle.accessToken)
   }, [shouldUseMapboxLib, resolvedStyle])
 
-  // Mapbox GL can fetch the style directly; allow init even if the pre-fetcher failed.
-  const isMapStyleReady = isStyleReady || canUseRawMapboxStyle
+  // Choose which rendering library we want for the current style outcome.
+  const desiredMapKind = React.useMemo<"mapbox" | "maplibre">(
+    () => (shouldUseMapboxLib && usesExternalStyle ? "mapbox" : "maplibre"),
+    [shouldUseMapboxLib, usesExternalStyle]
+  )
+
+  // Only allow initialization when we have a usable style for the chosen library.
+  const hasUsableStyle = React.useMemo(() => {
+    if (preparedStyle != null) return true
+    return desiredMapKind === "mapbox" && canUseRawMapboxStyle
+  }, [preparedStyle, desiredMapKind, canUseRawMapboxStyle])
 
   const loadMapLibrary = React.useCallback(async (useMapbox: boolean) => {
     if (useMapbox) {
@@ -87,14 +97,14 @@ export default function Map({config}: {config?: MapData}) {
   }, [normalizedConfig])
   // Map Initialization
   React.useEffect(() => {
-    if (mapContainerRef.current == null || !isMapStyleReady) return
-    if (mapRef.current) return // Only initialize the map once!
+    if (mapContainerRef.current == null || !hasUsableStyle) return
+    if (mapRef.current && mapKindRef.current === desiredMapKind) return // Already initialized with the right library.
 
     let cancelled = false
     terrainControlRef.current = null
 
     ;(async () => {
-      const { lib, kind } = await loadMapLibrary(shouldUseMapboxLib)
+      const { lib, kind } = await loadMapLibrary(desiredMapKind === "mapbox")
       if (cancelled) return
 
       if (kind === "mapbox" && resolvedStyle.accessToken) {
@@ -144,6 +154,7 @@ export default function Map({config}: {config?: MapData}) {
       const mapInstance = new mapCtor(mapOptions)
       mapRef.current = mapInstance
       mapLibRef.current = lib
+      mapKindRef.current = kind
       setMapReady(true)
 
       const setProjection = (mapInstance as {setProjection?: (projection: string) => void}).setProjection
@@ -192,9 +203,36 @@ export default function Map({config}: {config?: MapData}) {
         mapRef.current = null
       }
       mapLibRef.current = null
+      mapKindRef.current = null
       setMapReady(false)
     }
-  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isMapStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle, shouldUseMapboxLib, canUseRawMapboxStyle])
+  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, hasUsableStyle, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle, shouldUseMapboxLib, canUseRawMapboxStyle, desiredMapKind])
+
+  // If the prepared style arrives later (e.g., after Mapbox fetch fails) or the
+  // desired rendering library changes, rebuild the map or swap styles so the
+  // fallback Protomaps style is actually applied.
+  React.useEffect(() => {
+    if (!mapRef.current) return
+
+    const currentKind = mapKindRef.current
+    const targetKind = desiredMapKind
+
+    // Switch libraries if the style outcome requires it (e.g., Mapbox error -> Protomaps fallback).
+    if (currentKind && currentKind !== targetKind) {
+      mapRef.current.remove()
+      mapRef.current = null
+      mapLibRef.current = null
+      terrainControlRef.current = null
+      mapKindRef.current = null
+      setMapReady(false)
+      return
+    }
+
+    // If we now have a prepared style for the existing map, apply it so the map updates.
+    if (preparedStyle && mapRef.current?.setStyle) {
+      mapRef.current.setStyle(preparedStyle)
+    }
+  }, [preparedStyle, desiredMapKind])
 
   React.useEffect(() => {
     const map = mapRef.current
