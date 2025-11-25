@@ -24,15 +24,25 @@ type PopupProps = FeatureProps & {
   handleClose: () => void
 }
 
-const Heading = styled.div`
-width: 240px; // popup width
+const PopupCard = styled.div`
+  position: relative;
+  width: 260px;
+  max-width: 260px;
+  background: white;
+  color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+`
 
-padding-top: 0.6rem;
-background-color: #33aa8b;
-color: white;
-
+const Heading = styled.header`
 display: flex;
 align-items: center;
+gap: 0.5rem;
+padding: 0.65rem 0.75rem;
+background-color: #33aa8b;
+color: white;
 
 --plyr-color-main: #d97629;
 --plyr-control-spacing: 0;
@@ -42,12 +52,10 @@ align-items: center;
 --plyr-audio-control-color-hover: #a6a6a6;
 
 h1 {
-  font-size: 20px;
+  font-size: 18px;
   margin: 0;
-  padding: 0.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 1;
+  line-height: 1.3;
 }
 
 .plyr {
@@ -63,19 +71,23 @@ svg.icon--pressed {
 `
 
 const Content = styled.div`
-padding: 5px;
+padding: 0.75rem 0.85rem 0.9rem;
+display: grid;
+gap: 0.5rem;
 `
 
 const StyledImage = styled.img`
 max-height: 200px;
+width: 100%;
+display: block;
 object-fit: cover;
 cursor: pointer;
 `
 
 const CloseButton = styled.button`
 position: absolute;
-top: 0;
-right: 0;
+top: 6px;
+right: 6px;
 border: none;
 color: white;
 background: rgba(0,0,0,0.15);
@@ -91,6 +103,16 @@ width: 20px;
 svg {
   fill: #d7d7d7;
 }
+`
+
+const BadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  .badge {
+    margin: 0;
+  }
 `
 
 export default function Popup(props: PopupProps) {
@@ -110,7 +132,7 @@ export default function Popup(props: PopupProps) {
   const popupImage = thumbnail || photo
 
   return (
-    <>
+    <PopupCard>
       <Heading>
         <h1>
           {name}
@@ -126,8 +148,11 @@ export default function Popup(props: PopupProps) {
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
       <Content>
-        {region && <span className="badge">{region}</span>}
-        {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
+        {description && <div>{description}</div>}
+        <BadgeRow>
+          {region && <span className="badge">{region}</span>}
+          {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
+        </BadgeRow>
       </Content>
       <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
         <Icon icon="close" alt={t("close")} />
@@ -140,6 +165,6 @@ export default function Popup(props: PopupProps) {
           onClose={() => setShowModal(false)} />,
         document.body
       )}
-    </>
+    </PopupCard>
   )
 }

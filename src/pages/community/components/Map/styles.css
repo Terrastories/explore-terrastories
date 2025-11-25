@@ -3,18 +3,24 @@
 }
 
 .tsPopup {
-  max-height: 300px;
+  max-height: 340px;
 }
 
-.tsPopup .maplibregl-popup-content {
+.tsPopup .maplibregl-popup-content,
+.tsPopup .mapboxgl-popup-content {
   padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 
 .tsPopup img {
   width: 100%;
+  display: block;
 }
 
-.tsPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+.tsPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.tsPopup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
   border-bottom-color: #33aa8b;
 }
 
