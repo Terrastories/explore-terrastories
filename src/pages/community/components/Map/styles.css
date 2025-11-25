@@ -42,14 +42,22 @@
 }
 
 .tsHome.maplibregl-ctrl-group {
-  padding: 4px;
-  border-radius: 6px;
+  padding: 0;
+  border-radius: 4px;
 }
 
 .tsHome button {
-  width: 28px;
-  height: 28px;
-  padding: 4px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+
+.tsHome .maplibregl-ctrl-icon {
+  width: 18px;
+  height: 18px;
+  background-size: 18px 18px !important;
 }
 
 .tsMarker {
