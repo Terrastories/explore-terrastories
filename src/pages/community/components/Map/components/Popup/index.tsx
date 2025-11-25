@@ -36,10 +36,11 @@ const Wrapper = styled.div`
 `
 
 const Heading = styled.div`
-display: flex;
-align-items: center;
-gap: 0.35rem;
-padding: 0.6rem 0.65rem;
+display: grid;
+grid-template-columns: 1fr auto;
+align-items: start;
+column-gap: 8px;
+padding: 0.6rem 0.65rem 0.5rem;
 background-color: #33aa8b;
 color: white;
 
@@ -61,14 +62,18 @@ h1 {
 
 .actions {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   gap: 6px;
+  padding-top: 2px;
 }
 
 .plyr {
   display: inline-block;
   min-width: 18px;
   vertical-align: middle;
+  width: 26px;
+  height: 26px;
 }
 
 svg.icon--pressed {
@@ -82,15 +87,6 @@ display: grid;
 gap: 6px;
 `
 
-const Description = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.4;
-  color: #2f2f2f;
-`
-
 const StyledImage = styled.img`
 max-height: 200px;
 width: 100%;
@@ -102,14 +98,17 @@ cursor: pointer;
 const CloseButton = styled.button`
 border: none;
 color: white;
-background: rgba(0,0,0,0.15);
+background: rgba(0,0,0,0.18);
 cursor: pointer;
 padding: 0;
-height: 20px;
-width: 20px;
+height: 26px;
+width: 26px;
+border-radius: 6px;
+display: grid;
+place-items: center;
 
 &:hover {
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.28);
 }
 
 svg {
@@ -167,7 +166,6 @@ export default function Popup(props: PopupProps) {
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
       <Content>
-        {description && <Description title={description}>{description}</Description>}
         <BadgeRow>
           {region && <span className="badge">{region}</span>}
           {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
