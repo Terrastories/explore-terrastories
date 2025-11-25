@@ -193,7 +193,7 @@ export default function Map({config}: {config?: MapData}) {
     return () => {
       map.off("styledata", addTerrainControlIfAvailable)
     }
-  }, [normalizedConfig.mapbox3dEnabled, usesExternalStyle])
+  }, [normalizedConfig.mapbox3dEnabled, usesExternalStyle, mapReady])
   // Add Terrain Layer Handler
   React.useEffect(() => {
     // Don't do anything if Map doesn't exist yet
