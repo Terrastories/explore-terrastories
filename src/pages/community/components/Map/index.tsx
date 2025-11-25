@@ -55,6 +55,13 @@ export default function Map({config}: {config?: MapData}) {
     [resolvedStyle]
   )
 
+  const canUseRawMapboxStyle = React.useMemo(() => {
+    return shouldUseMapboxLib && typeof resolvedStyle.style === "string" && Boolean(resolvedStyle.accessToken)
+  }, [shouldUseMapboxLib, resolvedStyle])
+
+  // Mapbox GL can fetch the style directly; allow init even if the pre-fetcher failed.
+  const isMapStyleReady = isStyleReady || canUseRawMapboxStyle
+
   const loadMapLibrary = React.useCallback(async (useMapbox: boolean) => {
     if (useMapbox) {
       const module = await import("mapbox-gl")
@@ -80,7 +87,7 @@ export default function Map({config}: {config?: MapData}) {
   }, [normalizedConfig])
   // Map Initialization
   React.useEffect(() => {
-    if (mapContainerRef.current == null || !isStyleReady || !preparedStyle) return
+    if (mapContainerRef.current == null || !isMapStyleReady) return
     if (mapRef.current) return // Only initialize the map once!
 
     let cancelled = false
@@ -106,14 +113,25 @@ export default function Map({config}: {config?: MapData}) {
         validateStyle: false,
       }
 
-      const styleForMap = kind === "mapbox" && usesExternalStyle && resolvedStyle.accessToken && typeof resolvedStyle.style === "string"
-        ? appendAccessToken(normalizeMapboxStyleUrl(resolvedStyle.style), resolvedStyle.accessToken)
-        : preparedStyle
+      const styleForMap = (() => {
+        if (kind === "mapbox" && canUseRawMapboxStyle) {
+          const rawStyleUrl = appendAccessToken(
+            normalizeMapboxStyleUrl(resolvedStyle.style as string),
+            resolvedStyle.accessToken as string
+          )
+
+          // Prefer the prepared style when it represents the external Mapbox style;
+          // otherwise fall back to letting Mapbox GL fetch the style itself.
+          return usesExternalStyle && preparedStyle ? preparedStyle : rawStyleUrl
+        }
+
+        return preparedStyle
+      })()
 
       if (kind === "maplibre") {
         mapOptions.maplibreLogo = true
         mapOptions.transformRequest = transformRequest
-      } else if (kind === "mapbox" && usesExternalStyle && resolvedStyle.accessToken) {
+      } else if (kind === "mapbox" && resolvedStyle.accessToken) {
         mapOptions.accessToken = resolvedStyle.accessToken
       }
       mapOptions.style = styleForMap
@@ -172,7 +190,7 @@ export default function Map({config}: {config?: MapData}) {
       mapLibRef.current = null
       setMapReady(false)
     }
-  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle, shouldUseMapboxLib])
+  }, [mapContainerRef, resetMap, normalizedConfig, isMobile, isMapStyleReady, preparedStyle, transformRequest, loadMapLibrary, resolvedStyle.isMapboxStyle, resolvedStyle.accessToken, resolvedStyle.style, usesExternalStyle, shouldUseMapboxLib, canUseRawMapboxStyle])
 
   React.useEffect(() => {
     const map = mapRef.current
