@@ -17,6 +17,10 @@ export default class HomeButton {
     this._container.classList.add("maplibregl-ctrl")
     this._container.classList.add("maplibregl-ctrl-group")
     this._container.classList.add("tsHome")
+    this._container.style.width = "30px"
+    this._container.style.height = "30px"
+    this._container.style.padding = "0"
+    this._container.style.margin = "0"
     const button = document.createElement("button")
     button.setAttribute("aria-label", "Map Home")
     button.setAttribute("type", "button")

@@ -44,11 +44,14 @@
 .tsHome.maplibregl-ctrl-group {
   padding: 0;
   border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  margin: 0;
 }
 
 .tsHome button {
-  width: 30px;
-  height: 30px;
+  width: 100%;
+  height: 100%;
   padding: 0;
   display: grid;
   place-items: center;
