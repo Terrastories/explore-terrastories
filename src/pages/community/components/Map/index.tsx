@@ -12,9 +12,9 @@ import useMobile from "hooks/useMobile"
 import { useStyleResource } from "hooks/useStyleResource"
 
 import Brand from "./components/Brand"
-import HomeButton from "./components/HomeButton"
 import Marker from "./components/Marker"
 import Minimap from "mapgl-minimap"
+import homeIcon from "./components/HomeButton/home-icon.svg"
 
 import useSupercluster from "./hooks/useSupercluster"
 import usePopup from "./hooks/usePopup"
@@ -142,13 +142,24 @@ export default function Map({config}: {config?: MapData}) {
         }), "top-right")
       }
 
-      mapInstance.addControl(new Brand({containerClass: "tsBrand"}), "top-left")
-      const homeButtonControl = new HomeButton({reset: resetMap})
-      mapInstance.addControl(homeButtonControl, "top-right")
+      mapInstance.addControl(new Brand({containerClass: "tsBrand"}), "top-right")
       const NavControl = (lib as any).NavigationControl ?? (lib as any).default?.NavigationControl
       if (NavControl) {
         const nav = new NavControl({visualizePitch: true})
         mapInstance.addControl(nav, "top-right")
+
+        // Inject a home button at the top of the nav control stack
+        const navContainer: HTMLElement | undefined = (nav as any)._container
+        if (navContainer) {
+          const homeBtn = document.createElement("button")
+          homeBtn.type = "button"
+          homeBtn.className = "maplibregl-ctrl-icon ts-home-btn"
+          homeBtn.setAttribute("aria-label", "Map Home")
+          homeBtn.style.backgroundImage = `url(${homeIcon})`
+          homeBtn.style.backgroundSize = "18px 18px"
+          homeBtn.addEventListener("click", () => resetMap())
+          navContainer.insertBefore(homeBtn, navContainer.firstChild)
+        }
       }
     })()
 
