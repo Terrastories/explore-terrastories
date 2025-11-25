@@ -294,7 +294,7 @@ export default function Map({config}: {config?: MapData}) {
     return () => {
       map.off("terrain", handleTerrainVisibility)
     }
-  }, [])
+  }, [mapReady])
 
   // Initialize Popup with the correct library instance
   const { popup, openPopup, closePopup } = usePopup(mapRef, mapLibRef)
