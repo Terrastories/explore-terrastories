@@ -25,18 +25,31 @@
 
 .tsBrand {
   display: block;
+  padding: 8px 10px;
 }
 
 .tsBrand.maplibregl-ctrl-group:not(:empty) {
   box-shadow: 0 0 0 2px #136a7e;
+  border-radius: 6px;
 }
 
 .tsBrand svg {
   width: 100%;
   object-fit: contain;
-  max-height: 30px;
+  max-height: 36px;
   vertical-align: middle;
-  padding: 5px;
+  display: block;
+}
+
+.tsHome.maplibregl-ctrl-group {
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.tsHome button {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
 }
 
 .tsMarker {
