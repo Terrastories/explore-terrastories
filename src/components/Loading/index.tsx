@@ -2,9 +2,11 @@ import React from "react"
 import styled from "styled-components"
 
 const RingWrapper = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
+display: grid;
+place-items: center;
+width: 100%;
+height: 100%;
+min-height: 80px;
 
 @keyframes rotate {
   0% {
