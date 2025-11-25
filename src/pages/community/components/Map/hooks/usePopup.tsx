@@ -13,12 +13,12 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
 
   // Create popup instance using the same library that created the map
   React.useEffect(() => {
-    if (!mapLibRef.current) {
+    const mapLib = mapLibRef.current
+    if (!mapLib) {
       return
     }
 
-    const lib = mapLibRef.current
-    const PopupCtor = (lib as any).Popup ?? lib.Popup
+    const PopupCtor = (mapLib as any).Popup ?? mapLib.Popup
 
     // Create the popup instance directly and store in ref
     popupRef.current = new PopupCtor(
@@ -33,7 +33,7 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
       }
       setPopupReady(false)
     }
-  }, [mapLibRef])
+  }, [mapLibRef.current])
 
   const popup = popupReady ? popupRef.current : null
 
