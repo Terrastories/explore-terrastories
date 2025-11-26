@@ -42,7 +42,7 @@ export default function Map({config}: {config?: MapData}) {
 
   const normalizedConfig = React.useMemo(() => normalizeMapConfig(config), [config])
   const resolvedStyle = React.useMemo(() => resolveMapStyle(normalizedConfig), [normalizedConfig])
-  const { style: preparedStyle, usesExternalStyle, isReady: isStyleReady } = useStyleResource(resolvedStyle, normalizedConfig)
+  const { style: preparedStyle, usesExternalStyle } = useStyleResource(resolvedStyle, normalizedConfig)
 
   const transformRequest = React.useMemo(() => {
     if (!resolvedStyle.isMapboxStyle || !resolvedStyle.accessToken) return undefined
