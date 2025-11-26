@@ -4,6 +4,21 @@ import type { StyleSpecification } from "maplibre-gl"
 import type { NormalizedMapConfig, ResolvedMapStyle } from "utils/mapConfig"
 import { getFallbackStyle, prepareMapboxStyle } from "utils/mapbox"
 
+const stylePromiseCache = new Map<string, Promise<StyleSpecification>>()
+
+const getCacheKey = (resolved: ResolvedMapStyle) => {
+  const styleKey = typeof resolved.style === "string"
+    ? resolved.style
+    : JSON.stringify(resolved.style)
+
+  return [
+    resolved.isMapboxStyle ? "mb" : "other",
+    resolved.usesExternalStyle ? "ext" : "int",
+    resolved.accessToken ?? "",
+    styleKey ?? ""
+  ].join("|")
+}
+
 export type StyleResource = {
   style: string | StyleSpecification | null,
   usesExternalStyle: boolean,
@@ -40,12 +55,22 @@ export const useStyleResource = (resolvedStyle: ResolvedMapStyle, normalizedConf
 
     setResource({ style: null, usesExternalStyle: resolvedStyle.usesExternalStyle })
 
-    prepareMapboxStyle(resolvedStyle.style, resolvedStyle.accessToken)
+    const cacheKey = getCacheKey(resolvedStyle)
+
+    if (!stylePromiseCache.has(cacheKey)) {
+      stylePromiseCache.set(
+        cacheKey,
+        prepareMapboxStyle(resolvedStyle.style, resolvedStyle.accessToken)
+      )
+    }
+
+    stylePromiseCache.get(cacheKey)!
       .then((styleSpec) => {
         if (cancelled) return
         setResource({ style: styleSpec, usesExternalStyle: true })
       })
       .catch((error) => {
+        stylePromiseCache.delete(cacheKey)
         if (cancelled) return
         console.error(
           "Failed to load Mapbox style after retries. Falling back to Protomaps.",

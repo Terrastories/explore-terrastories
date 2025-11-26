@@ -9,6 +9,7 @@ import type { TypePlace } from "types"
 const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any>) => {
   const activePointRef = useRef<number | string | null>(null)
   const popupRef = useRef<any>(null)
+  const popupRootRef = useRef<ReturnType<typeof ReactDOM.createRoot> | null>(null)
   const [popupReady, setPopupReady] = React.useState(false)
 
   // Create popup instance using the same library that created the map
@@ -28,6 +29,10 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
     setPopupReady(true)
 
     return () => {
+      if (popupRootRef.current) {
+        popupRootRef.current.unmount()
+        popupRootRef.current = null
+      }
       if (popupRef.current) {
         popupRef.current.remove()
         popupRef.current = null
@@ -40,7 +45,12 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
   const popup = popupReady ? popupRef.current : null
 
   const closePopup = useCallback(() => {
+    if (popupRootRef.current) {
+      popupRootRef.current.unmount()
+      popupRootRef.current = null
+    }
     if (popup) popup.remove()
+    activePointRef.current = null
   }, [popup])
 
   const openPopup = useCallback((e: MarkerMouseEvent) => {
@@ -61,7 +71,12 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
 
     const lngLat = e.markerTarget.getLngLat()
     const el = document.createElement("div")
+    // Ensure any previous popup content is torn down before creating a new root
+    if (popupRootRef.current) {
+      popupRootRef.current.unmount()
+    }
     const popupNode = ReactDOM.createRoot(el)
+    popupRootRef.current = popupNode
     el.setAttribute("tabindex", "0")
     // ensures there is no added margins
     el.style.display = "inline-grid"
@@ -78,6 +93,10 @@ const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any
 
     function resetActiveRef() {
       activePointRef.current = null
+      if (popupRootRef.current) {
+        popupRootRef.current.unmount()
+        popupRootRef.current = null
+      }
     }
 
     popup.on("close", resetActiveRef)
