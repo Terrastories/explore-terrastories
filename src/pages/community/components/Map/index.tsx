@@ -392,7 +392,7 @@ export default function Map({config}: {config?: MapData}) {
 
   // Map Bounds Changed
   React.useEffect(() => {
-    if (!mapRef.current) return
+    if (!mapReady || !mapRef.current) return
     const map = mapRef.current
     if (bounds) {
       map.fitBounds(bounds.bounds, {center: bounds.center, padding: 50, duration: 2000.0, maxZoom: 12})
@@ -400,17 +400,17 @@ export default function Map({config}: {config?: MapData}) {
       if (normalizedConfig.zoom !== map.getZoom())
         map.zoomTo(normalizedConfig.zoom, {duration: 2000.0})
     }
-  }, [bounds, normalizedConfig])
+  }, [bounds, normalizedConfig, mapReady])
 
   // Map Center Changed
   React.useEffect(() => {
-    if (!mapRef.current) return
+    if (!mapReady || !mapRef.current) return
     const map = mapRef.current
 
     if (centerPoint) {
       map.flyTo({center: centerPoint, duration: 3000.0})
     }
-  }, [centerPoint])
+  }, [centerPoint, mapReady])
 
   return (
     <div ref={mapContainerRef} className={isMobile ? "enableMapHeader" : ""} style={{
