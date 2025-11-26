@@ -112,7 +112,7 @@ function Marker({
     return () => { marker.remove() }
   }, [map, marker])
 
-  if (allProps.offset && (marker.getOffset() === allProps.offset)) {
+  if (allProps.offset && (marker.getOffset() !== allProps.offset)) {
     marker.setOffset(allProps.offset)
   }
 
