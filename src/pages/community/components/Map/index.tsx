@@ -249,18 +249,31 @@ export default function Map({config}: {config?: MapData}) {
       return
     }
 
+    const findRasterDemSourceId = () => {
+      const terrainFromStyle = map.getTerrain?.()?.source
+      if (terrainFromStyle) return terrainFromStyle as string
+
+      const style = map.getStyle?.()
+      const sources = style?.sources
+      if (!sources) return null
+
+      const entry = Object.entries(sources).find(([, source]) => (source as any)?.type === "raster-dem")
+      return entry ? entry[0] : null
+    }
+
     const addTerrainControlIfAvailable = () => {
       if (terrainControlRef.current) return
-      if (!map.getSource("terrain")) return
+      const terrainSourceId = terrainSourceIdRef.current ?? findRasterDemSourceId()
+      if (!terrainSourceId) return
 
       const TerrainControl = mapLibRef.current?.TerrainControl
       if (!TerrainControl) return
 
       terrainControlRef.current = new TerrainControl({
-        source: "terrain",
+        source: terrainSourceId,
         exaggeration: 1
       })
-
+      terrainSourceIdRef.current = terrainSourceId
       map.addControl(terrainControlRef.current)
     }
 
