@@ -30,6 +30,7 @@ export default function Map({config}: {config?: MapData}) {
   const mapContainerRef = React.useRef<HTMLDivElement>(null)
   const mapRef = React.useRef<any>(null)
   const terrainControlRef = React.useRef<any>(null)
+  const terrainSourceIdRef = React.useRef<string | null>(null)
   const mapLibRef = React.useRef<any>(null)
   const mapKindRef = React.useRef<"mapbox" | "maplibre" | null>(null)
   const [mapReady, setMapReady] = React.useState(false)
@@ -102,6 +103,7 @@ export default function Map({config}: {config?: MapData}) {
 
     let cancelled = false
     terrainControlRef.current = null
+    terrainSourceIdRef.current = null
 
     ;(async () => {
       const { lib, kind } = await loadMapLibrary(desiredMapKind === "mapbox")
@@ -238,7 +240,7 @@ export default function Map({config}: {config?: MapData}) {
     const map = mapRef.current
     if (!map) return
 
-    const shouldEnableTerrain = normalizedConfig.mapbox3dEnabled && !usesExternalStyle
+    const shouldEnableTerrain = normalizedConfig.mapbox3dEnabled
     if (!shouldEnableTerrain) {
       if (terrainControlRef.current) {
         map.removeControl(terrainControlRef.current)
@@ -271,7 +273,7 @@ export default function Map({config}: {config?: MapData}) {
     return () => {
       map.off("styledata", addTerrainControlIfAvailable)
     }
-  }, [normalizedConfig.mapbox3dEnabled, usesExternalStyle, mapReady])
+  }, [normalizedConfig.mapbox3dEnabled, mapReady])
   // Add Terrain Layer Handler
   React.useEffect(() => {
     // Don't do anything if Map doesn't exist yet
