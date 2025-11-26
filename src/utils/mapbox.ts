@@ -5,11 +5,11 @@ import { getMapLibreStyle } from "./protomaps"
 const MAPBOX_PROTOCOL = "mapbox://"
 const MAPBOX_API_BASE = "https://api.mapbox.com"
 
-const enum MapboxPath {
-  Styles = "styles/",
-  Sprites = "sprites/",
-  Fonts = "fonts/",
-}
+const MapboxPath = {
+  Styles: "styles/",
+  Sprites: "sprites/",
+  Fonts: "fonts/",
+} as const
 
 const hasAccessToken = (url: string) => /[?&]access_token=/.test(url)
 
