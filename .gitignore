@@ -23,3 +23,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+dist/
+bun.lock
+
+# Playwright generated artifacts
+/playwright-report/
+/test-results/

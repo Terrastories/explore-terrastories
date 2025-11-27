@@ -1,6 +1,6 @@
 import React from "react"
 import ReactSelect from "react-select"
-import type { SelectInstance, GroupBase, Props, StylesConfig } from "react-select"
+import type { SelectInstance, GroupBase, Props, StylesConfig, CSSObjectWithLabel } from "react-select"
 import type { FilterOption } from "types"
 
 type ExtendedProps = {
@@ -15,7 +15,7 @@ export default function Select<
 >(props: ExtendedProps & Props<Option, IsMulti, Group>) {
   const { useTinySelect } = props
 
-  const miniStyles:StylesConfig<Option, IsMulti, Group> = {
+  const miniStyles: StylesConfig<Option, IsMulti, Group> = {
     control: (base) => ({
       ...base,
       minHeight: "24px",
@@ -23,39 +23,39 @@ export default function Select<
       background: "inherit",
       border: "none",
       borderRadius: "4px",
-    }),
+    } as CSSObjectWithLabel),
     container: (base) => ({
       ...base,
       display: "inline-block",
-    }),
+    } as CSSObjectWithLabel),
     indicatorSeparator: () => ({
       display: "none",
-    }),
+    } as CSSObjectWithLabel),
     indicatorsContainer: (base) => ({
       ...base,
       maxHeight: "24px",
-    }),
+    } as CSSObjectWithLabel),
     dropdownIndicator: (base) => ({
       ...base,
       padding: "0",
-    }),
+    } as CSSObjectWithLabel),
     valueContainer: (base) => ({
       ...base,
       padding: "0", // unset padding
       paddingLeft: "4px", // set just left
-    }),
+    } as CSSObjectWithLabel),
     menu: (base) => ({
       ...base,
       width: "max-content",
-    }),
+    } as CSSObjectWithLabel),
     menuList: (base) => ({
       ...base,
       padding: "0",
-    }),
+    } as CSSObjectWithLabel),
     option: (base) => ({
       ...base,
       padding: "4px 8px",
-    })
+    } as CSSObjectWithLabel)
   }
 
   return(

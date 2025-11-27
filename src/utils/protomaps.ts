@@ -15,7 +15,13 @@ export function getMapLibreStyle(theme:string = "light", enable3D:boolean = fals
       attribution: "<a href='https://protomaps.com'>Protomaps</a> © <a href='https://openstreetmap.org'>OpenStreetMap</a>"
     } as SourceSpecification
   }
-  let styleLayers = layers("protomaps", theme)
+
+  // Use v3 API: layers(source, key)
+  // Valid themes: "light", "dark", "white", "grayscale", "black", "contrast"
+  const validThemes = ["light", "dark", "white", "grayscale", "black", "contrast"]
+  const normalizedTheme = validThemes.includes(theme) ? theme : "light"
+
+  let styleLayers = layers("protomaps", normalizedTheme)
 
   if (enable3D) {
     sources = {

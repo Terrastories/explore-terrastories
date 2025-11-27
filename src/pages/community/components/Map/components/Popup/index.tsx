@@ -24,15 +24,25 @@ type PopupProps = FeatureProps & {
   handleClose: () => void
 }
 
+const Wrapper = styled.div`
+  position: relative;
+  width: clamp(220px, 70vw, 260px);
+  max-width: 280px;
+  background: white;
+  color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+`
+
 const Heading = styled.div`
-width: 240px; // popup width
-
-padding-top: 0.6rem;
-background-color: #33aa8b;
-color: white;
-
+position: relative;
 display: flex;
 align-items: center;
+min-height: 64px;
+padding: 0.65rem 0.75rem 0.8rem 0.75rem;
+background-color: #33aa8b;
+color: white;
 
 --plyr-color-main: #d97629;
 --plyr-control-spacing: 0;
@@ -44,17 +54,28 @@ align-items: center;
 h1 {
   font-size: 20px;
   margin: 0;
-  padding: 0.5rem;
+  padding: 0.25rem 0.4rem 0.25rem 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-right: 64px; /* room for actions */
+}
+
+.actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .plyr {
   display: inline-block;
   min-width: 18px;
   vertical-align: middle;
-  padding-left: 2px;
+  width: 26px;
+  height: 26px;
 }
 
 svg.icon--pressed {
@@ -63,34 +84,51 @@ svg.icon--pressed {
 `
 
 const Content = styled.div`
-padding: 5px;
+padding: 8px;
+display: grid;
+gap: 6px;
 `
 
 const StyledImage = styled.img`
 max-height: 200px;
+width: 100%;
+display: block;
 object-fit: cover;
 cursor: pointer;
 `
 
 const CloseButton = styled.button`
-position: absolute;
-top: 0;
-right: 0;
 border: none;
 color: white;
-background: rgba(0,0,0,0.15);
+background: rgba(0,0,0,0.18);
 cursor: pointer;
 padding: 0;
-height: 20px;
-width: 20px;
+height: 26px;
+width: 26px;
+border-radius: 6px;
+display: grid;
+place-items: center;
+box-shadow: 0 1px 4px rgba(0,0,0,0.18);
 
 &:hover {
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.28);
 }
 
 svg {
   fill: #d7d7d7;
+  height: 16px;
+  width: 16px;
 }
+`
+
+const BadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  .badge {
+    margin: 0;
+  }
 `
 
 export default function Popup(props: PopupProps) {
@@ -110,28 +148,32 @@ export default function Popup(props: PopupProps) {
   const popupImage = thumbnail || photo
 
   return (
-    <>
+    <Wrapper>
       <Heading>
         <h1>
           {name}
         </h1>
-        {placenameAudio &&
-          <Media
-            blob={`${name}-audio`}
-            url={placenameAudio}
-            contentType='audio'
-            playIconUrl={speakerIcon}
-            audioControls={["play"]} />}
+        <div className="actions">
+          <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
+            <Icon icon="close" alt={t("close")} />
+          </CloseButton>
+          {placenameAudio &&
+            <Media
+              blob={`${name}-audio`}
+              url={placenameAudio}
+              contentType='audio'
+              playIconUrl={speakerIcon}
+              audioControls={["play"]} />}
+        </div>
       </Heading>
       {popupImage &&
         <StyledImage src={popupImage} alt={name} onClick={() => setShowModal(true)} />}
       <Content>
-        {region && <span className="badge">{region}</span>}
-        {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
+        <BadgeRow>
+          {region && <span className="badge">{region}</span>}
+          {typeOfPlace && <span className="badge">{typeOfPlace}</span>}
+        </BadgeRow>
       </Content>
-      <CloseButton onClick={props.handleClose} aria-labelledby={t("close")}>
-        <Icon icon="close" alt={t("close")} />
-      </CloseButton>
       {showModal && photo && name && createPortal(
         <Lightbox
           imageSource={photo}
@@ -140,6 +182,6 @@ export default function Popup(props: PopupProps) {
           onClose={() => setShowModal(false)} />,
         document.body
       )}
-    </>
+    </Wrapper>
   )
 }
