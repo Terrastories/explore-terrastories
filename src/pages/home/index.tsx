@@ -48,7 +48,7 @@ function Home() {
     <main className='homeMain'>
       <Header />
       <MainContent>
-        <React.Suspense fallback={<Loading />}>
+        <React.Suspense fallback={<Loading fullscreen />}>
           <Sidebar />
           <Await
             resolve={data.communities}

@@ -1,29 +1,60 @@
-import React, { useRef, useMemo, useCallback, useEffect, MutableRefObject } from "react"
+import React, { useRef, useCallback, useEffect, MutableRefObject } from "react"
 import ReactDOM from "react-dom/client"
-
-import type { Map } from "maplibre-gl"
-import { Popup as MLPopup } from "maplibre-gl"
 
 import Popup from "../components/Popup"
 import {MarkerMouseEvent} from "../components/Marker"
 
 import type { TypePlace } from "types"
 
-const usePopup = (mapRef: MutableRefObject<Map | null>) => {
+const usePopup = (mapRef: MutableRefObject<any>, mapLibRef: MutableRefObject<any>) => {
   const activePointRef = useRef<number | string | null>(null)
-  const popup = useMemo(
-    () => new MLPopup(
+  const popupRef = useRef<any>(null)
+  const popupRootRef = useRef<ReturnType<typeof ReactDOM.createRoot> | null>(null)
+  const [popupReady, setPopupReady] = React.useState(false)
+
+  // Create popup instance using the same library that created the map
+  // Dependencies must include mapLibRef.current to detect when async map initialization completes
+  React.useEffect(() => {
+    const mapLib = mapLibRef.current
+    if (!mapLib) {
+      return
+    }
+
+    const PopupCtor = (mapLib as any).Popup ?? mapLib.Popup
+
+    // Create the popup instance directly and store in ref
+    popupRef.current = new PopupCtor(
       {offset: [10, -30], closeButton: false, closeOnClick: false, className: "tsPopup"}
-    ),
-    []
-  )
+    )
+    setPopupReady(true)
+
+    return () => {
+      if (popupRootRef.current) {
+        popupRootRef.current.unmount()
+        popupRootRef.current = null
+      }
+      if (popupRef.current) {
+        popupRef.current.remove()
+        popupRef.current = null
+      }
+      setPopupReady(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapLibRef.current])
+
+  const popup = popupReady ? popupRef.current : null
 
   const closePopup = useCallback(() => {
-    popup.remove()
+    if (popupRootRef.current) {
+      popupRootRef.current.unmount()
+      popupRootRef.current = null
+    }
+    if (popup) popup.remove()
+    activePointRef.current = null
   }, [popup])
 
   const openPopup = useCallback((e: MarkerMouseEvent) => {
-    if (!mapRef.current) return
+    if (!mapRef.current || !popup) return
     const map = mapRef.current
     const feature = e.properties as TypePlace
 
@@ -40,7 +71,12 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
 
     const lngLat = e.markerTarget.getLngLat()
     const el = document.createElement("div")
+    // Ensure any previous popup content is torn down before creating a new root
+    if (popupRootRef.current) {
+      popupRootRef.current.unmount()
+    }
     const popupNode = ReactDOM.createRoot(el)
+    popupRootRef.current = popupNode
     el.setAttribute("tabindex", "0")
     // ensures there is no added margins
     el.style.display = "inline-grid"
@@ -53,8 +89,14 @@ const usePopup = (mapRef: MutableRefObject<Map | null>) => {
   }, [popup, mapRef, closePopup])
 
   useEffect(() => {
+    if (!popup) return
+
     function resetActiveRef() {
       activePointRef.current = null
+      if (popupRootRef.current) {
+        popupRootRef.current.unmount()
+        popupRootRef.current = null
+      }
     }
 
     popup.on("close", resetActiveRef)

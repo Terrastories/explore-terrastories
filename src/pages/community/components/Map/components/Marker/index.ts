@@ -1,14 +1,14 @@
 import React, { useMemo, useEffect } from "react"
 
 import {createPortal} from "react-dom"
-import maplibregl, {Map as MapLibreMap, Marker as MapLibreMarker, MapLibreEvent } from "maplibre-gl"
-
 import type { Alignment, PointLike, PositionAnchor } from "maplibre-gl"
 
-export interface MarkerMouseEvent extends MapLibreEvent<MouseEvent> {
+export interface MarkerMouseEvent {
+  type: string
+  target: any
   originalEvent: MouseEvent
   properties: object
-  markerTarget: MapLibreMarker
+  markerTarget: any
 }
 
 type MarkerProps = {
@@ -23,43 +23,72 @@ type MarkerProps = {
   rotationAlignment?: Alignment,
   pitchAlignment?: Alignment,
   occludedOpacity?: number,
-  popup?: maplibregl.Popup,
+  popup?: any,
 
   onClick?: (e: MarkerMouseEvent) => void,
   onMouseEnter?: (e: MarkerMouseEvent) => void,
 
-  map: MapLibreMap,
+  map: any,
+  mapLib: any,
   point: [number, number],
-  feature: object,
+  feature?: object,
   children?: React.ReactNode
 }
 
-const defaultProps: Partial<MarkerProps> = {
-  feature: {}
-}
+function Marker({
+  feature = {},
+  ...props
+}: MarkerProps) {
+  // Reconstruct props object for compatibility with existing code
+  const allProps = useMemo(() => ({ ...props, feature }), [props, feature])
+  const { map } = allProps
+  const thisRef = React.useRef({props: allProps})
+  thisRef.current.props = allProps
 
-function Marker(props: MarkerProps) {
-  const { map } = props
-  const thisRef = React.useRef({props})
-  thisRef.current.props = props
+  const marker: any = useMemo(() => {
+    const hasChildren = React.Children.count(allProps.children)
 
-  const marker: MapLibreMarker = useMemo(() => {
-    const hasChildren = React.Children.count(props.children)
+    const MarkerClass = allProps.mapLib?.Marker ?? allProps.mapLib?.default?.Marker ?? allProps.mapLib
 
-    const mk = new maplibregl.Marker(
+    // Only pass marker-specific options to avoid leaking map/mapLib/feature/children.
+    const {
+      element,
+      offset,
+      anchor,
+      color,
+      scale,
+      draggable,
+      clickTolerance,
+      rotation,
+      rotationAlignment,
+      pitchAlignment,
+      occludedOpacity,
+      popup,
+    } = allProps
+
+    const mk = new MarkerClass(
       {
-        element: (hasChildren ? document.createElement("div") : undefined),
-        anchor: "center",
-        ...props,
+        element: element ?? (hasChildren ? document.createElement("div") : undefined),
+        anchor: anchor ?? "center",
+        offset,
+        color,
+        scale,
+        draggable,
+        clickTolerance,
+        rotation,
+        rotationAlignment,
+        pitchAlignment,
+        occludedOpacity,
+        popup,
       }
-    ).setLngLat(props.point)
+    ).setLngLat(allProps.point)
 
     mk.getElement().addEventListener("click", (e: MouseEvent) => {
       thisRef.current.props.onClick?.({
         type: "click",
         target: map,
         originalEvent: e,
-        properties: props.feature,
+        properties: allProps.feature,
         markerTarget: mk
       })
     })
@@ -69,13 +98,13 @@ function Marker(props: MarkerProps) {
         type: "mouseenter",
         target: map,
         originalEvent: e,
-        properties: props.feature,
+        properties: allProps.feature,
         markerTarget: mk
       })
     })
 
     return mk
-  }, [map, props])
+  }, [map, allProps])
 
   useEffect(() => {
     marker.addTo(map)
@@ -83,17 +112,15 @@ function Marker(props: MarkerProps) {
     return () => { marker.remove() }
   }, [map, marker])
 
-  if (props.offset && (marker.getOffset() === props.offset)) {
-    marker.setOffset(props.offset)
+  if (allProps.offset && (marker.getOffset() !== allProps.offset)) {
+    marker.setOffset(allProps.offset)
   }
 
-  if (marker.getPopup() !== props.popup) {
-    marker.setPopup(props.popup)
+  if (marker.getPopup() !== allProps.popup) {
+    marker.setPopup(allProps.popup)
   }
 
-  return createPortal(props.children, marker.getElement())
+  return createPortal(allProps.children, marker.getElement())
 }
-
-Marker.defaultProps = defaultProps
 
 export default React.memo(Marker)

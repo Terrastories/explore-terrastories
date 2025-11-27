@@ -81,7 +81,7 @@ export default function Community() {
   const data = useLoaderData() as CommunityThing
 
   return (
-    <React.Suspense fallback={<Loading/>}>
+    <React.Suspense fallback={<Loading fullscreen />}>
       <Await
         resolve={data.community}
         errorElement={<NotFound />}>

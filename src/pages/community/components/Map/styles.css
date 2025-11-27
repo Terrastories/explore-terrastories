@@ -3,35 +3,55 @@
 }
 
 .tsPopup {
-  max-height: 300px;
+  max-height: 320px;
 }
 
-.tsPopup .maplibregl-popup-content {
+.tsPopup .maplibregl-popup-content,
+.tsPopup .mapboxgl-popup-content {
   padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .tsPopup img {
   width: 100%;
+  display: block;
 }
 
-.tsPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+.tsPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.tsPopup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
   border-bottom-color: #33aa8b;
 }
 
 .tsBrand {
   display: block;
+  padding: 8px 10px;
+  width: 200px;
 }
 
-.tsBrand.maplibregl-ctrl-group:not(:empty) {
+.maplibregl-ctrl-top-right .tsBrand,
+.mapboxgl-ctrl-top-right .tsBrand {
+  clear: both;
+  margin: 10px 10px 4px 0;
+}
+
+.tsBrand.maplibregl-ctrl-group:not(:empty),
+.tsBrand.mapboxgl-ctrl-group:not(:empty) {
   box-shadow: 0 0 0 2px #136a7e;
+  border-radius: 6px;
 }
 
 .tsBrand svg {
   width: 100%;
   object-fit: contain;
-  max-height: 30px;
+  max-height: 36px;
   vertical-align: middle;
-  padding: 5px;
+  display: block;
+}
+
+.ts-home-btn {
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .tsMarker {
