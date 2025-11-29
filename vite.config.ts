@@ -6,13 +6,14 @@ import svgr from "vite-plugin-svgr"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH || "/",
   server: {
     // Match CRA so we don't have to change other configuration
     port: 1080,
     // Proxy API requests to avoid CORS issues in development
     proxy: {
-      '/api': {
-        target: 'https://our.terrastories.app',
+      "/api": {
+        target: "https://our.terrastories.app",
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path

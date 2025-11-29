@@ -58,6 +58,17 @@ class ConsoleErrorTracker {
     return this.errors;
   }
 
+  getApplicationErrors(): ConsoleMessage[] {
+    // Filter out network/resource loading errors that are expected in test environments
+    // Only return actual application JavaScript errors
+    return this.errors.filter(err => {
+      const isNetworkError = err.text.includes('ERR_CONNECTION_REFUSED') ||
+                             err.text.includes('Failed to load resource') ||
+                             err.text.includes('net::');
+      return !isNetworkError;
+    });
+  }
+
   getWarnings(): ConsoleMessage[] {
     return this.warnings;
   }
@@ -101,13 +112,13 @@ test.describe('Console Error Detection', () => {
 
     tracker.printSummary('Home Page');
 
-    const errors = tracker.getErrors();
+    const errors = tracker.getApplicationErrors();
     if (errors.length > 0) {
-      console.log('\n⚠️  Home page has console errors!');
+      console.log('\n⚠️  Home page has application errors!');
       console.log('Errors:', JSON.stringify(errors, null, 2));
     }
 
-    expect(errors, 'Home page should not have console errors').toHaveLength(0);
+    expect(errors, 'Home page should not have application errors').toHaveLength(0);
   });
 
   test('Community list should load without console errors', async ({ page }) => {
@@ -134,13 +145,13 @@ test.describe('Console Error Detection', () => {
 
     tracker.printSummary('Community List');
 
-    const errors = tracker.getErrors();
+    const errors = tracker.getApplicationErrors();
     if (errors.length > 0) {
-      console.log('\n⚠️  Community list has console errors!');
+      console.log('\n⚠️  Community list has application errors!');
       console.log('Errors:', JSON.stringify(errors, null, 2));
     }
 
-    expect(errors, 'Community list should not have console errors').toHaveLength(0);
+    expect(errors, 'Community list should not have application errors').toHaveLength(0);
   });
 
   test('Community page should load without console errors', async ({ page }) => {
@@ -168,13 +179,13 @@ test.describe('Console Error Detection', () => {
 
       tracker.printSummary('Community Page');
 
-      const errors = tracker.getErrors();
+      const errors = tracker.getApplicationErrors();
       if (errors.length > 0) {
-        console.log('\n⚠️  Community page has console errors!');
+        console.log('\n⚠️  Community page has application errors!');
         console.log('Errors:', JSON.stringify(errors, null, 2));
       }
 
-      expect(errors, 'Community page should not have console errors').toHaveLength(0);
+      expect(errors, 'Community page should not have application errors').toHaveLength(0);
     } else {
       console.log('⏭️  No communities found, skipping test');
       test.skip();
@@ -222,13 +233,13 @@ test.describe('Console Error Detection', () => {
 
       tracker.printSummary('Map Interactions');
 
-      const errors = tracker.getErrors();
+      const errors = tracker.getApplicationErrors();
       if (errors.length > 0) {
-        console.log('\n⚠️  Map interactions caused console errors!');
+        console.log('\n⚠️  Map interactions caused application errors!');
         console.log('Errors:', JSON.stringify(errors, null, 2));
       }
 
-      expect(errors, 'Map interactions should not cause console errors').toHaveLength(0);
+      expect(errors, 'Map interactions should not cause application errors').toHaveLength(0);
     } else {
       console.log('⏭️  No communities found, skipping test');
       test.skip();

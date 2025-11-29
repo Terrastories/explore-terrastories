@@ -1,29 +1,120 @@
 # Explore Terrastories
 
-Explore Terrastories is a web application that allows public exploration of unrestricted stories on a Terrastories server, that communities have opted into sharing. Explore Terrastories queries the API of the main [Terrastories application](https://github.com/terrastories/terrastories).
+![CI](https://github.com/terrastories/explore-terrastories/workflows/CI/badge.svg)
+![Deploy](https://github.com/terrastories/explore-terrastories/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)
 
-Explore Terrastories is built with React and uses TypeScript for strong typing, Axios for API requests, and [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) with [Protomaps](https://github.com/protomaps) for map rendering.
+A web application for public exploration of community stories shared through [Terrastories](https://github.com/terrastories/terrastories).
 
-For more information on how to use Explore Terrastories, please visit the Terrastories Support Materials at **[https://docs.terrastories.app/](https://docs.terrastories.app/)**.
+## Overview
 
+Explore Terrastories allows communities to share their place-based stories publicly. It connects to a Terrastories server API to display unrestricted stories that communities have opted to share.
 
-## Connecting Explore to a Terrastories API
+**Built with:**
+- React + TypeScript
+- [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) with [Protomaps](https://github.com/protomaps) for mapping
+- Vite for build tooling
+- Axios for API requests
 
-To use this application, you will need to have a [Terrastories](https://github.com/terrastories/terrastories) server up and running, 
-and defined as the API source in the `VITE_API_BASE` variable in this application's `.env` file. You will also need to ensure 
-that your Explore Terrastories server has permission to make requests to the Terrastories API by adding your Explore Terrastories host 
-to the `CORS_ORIGINS` variable in the Terrastories server `.env.api` file.
+📚 **Documentation**: [docs.terrastories.app](https://docs.terrastories.app/)
 
-## How to Deploy
+## Prerequisites
 
-This project was bootstrapped with [Vite](https://github.com/vitejs/vite).
+- Node.js 20+
+- A running [Terrastories](https://github.com/terrastories/terrastories) server with API access
 
-To install your Node packages for the first time, run `npm install`.
+## Setup
 
-To start the application in development mode, run `npm run start`. Open [http://localhost:3000](http://localhost:3000) to view the app in the browser.
+### 1. Install Dependencies
 
-If you are setting up for a production environment,run `npm run build` to build the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.
+### 2. Configure API Connection
 
-Your app is ready to be deployed! Run `npm run serve`.
+Create a `.env` file with your Terrastories API endpoint:
+
+```env
+VITE_API_BASE=https://your-terrastories-server.com
+```
+
+### 3. Configure CORS
+
+Add your Explore Terrastories host to the `CORS_ORIGINS` variable in your Terrastories server's `.env.api` file:
+
+```env
+CORS_ORIGINS=http://localhost:1080,https://your-explore-domain.com
+```
+
+## Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:1080](http://localhost:1080) to view the app.
+
+## Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run E2E tests
+npm run test:e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
+
+# Type checking
+npm run lint
+```
+
+## Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The optimized build will be output to the `dist/` folder.
+
+### Preview Production Build
+
+```bash
+npm run serve
+```
+
+### GitHub Pages
+
+Deployment to GitHub Pages happens automatically on push to `main` via GitHub Actions.
+
+## Project Structure
+
+```
+src/
+├── components/     # React components
+├── utils/          # Utility functions
+├── translations/   # i18n translations
+└── setupTests.ts   # Test configuration
+```
+
+## Contributing
+
+Contributions are welcome! Please read our contributing guidelines and submit pull requests to the `main` branch.
+
+## License
+
+See [LICENSE](LICENSE) file for details.
+
+## Related Projects
+
+- [Terrastories](https://github.com/terrastories/terrastories) - Main application
+- [Terrastories Documentation](https://docs.terrastories.app/) - User guides and support
+
+---
+
+**Developed by [Awana Digital](https://awana.digital)**

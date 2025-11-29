@@ -46,7 +46,6 @@ describe("createMapboxTransformRequest", () => {
 describe("prepareMapboxStyle", () => {
   afterEach(() => {
     vi.restoreAllMocks()
-    vi.unstubAllGlobals()
   })
 
   it("rewrites internal references and appends tokens", async () => {
@@ -71,7 +70,7 @@ describe("prepareMapboxStyle", () => {
       statusText: "OK"
     })
 
-    vi.stubGlobal("fetch", fetchMock)
+    vi.spyOn(globalThis, "fetch").mockImplementation(fetchMock as any)
 
     const prepared = await prepareMapboxStyle("mapbox://styles/demo/style", "pk.test-token")
 
