@@ -5,13 +5,13 @@
 import "@testing-library/jest-dom"
 
 // Mock URL.createObjectURL which is used by mapbox-gl
-if (typeof window.URL.createObjectURL === "undefined") {
+if (typeof window !== "undefined" && typeof window.URL.createObjectURL === "undefined") {
   window.URL.createObjectURL = () => "mock-url"
 }
 
 // Mock Canvas getContext which is needed for mapbox-gl in jsdom
 // This prevents "Worker exited unexpectedly" when mapbox-gl tries to initialize
-if (typeof HTMLCanvasElement.prototype.getContext === "undefined") {
+if (typeof HTMLCanvasElement !== "undefined" && typeof HTMLCanvasElement.prototype.getContext === "undefined") {
   // @ts-expect-error - Mocking Canvas API for testing
   HTMLCanvasElement.prototype.getContext = () => {
     return {

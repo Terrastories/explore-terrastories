@@ -1,0 +1,5 @@
+[test]
+preload = ["./src/setupTests.ts"]
+# Note: Bun doesn't support exclude patterns in bunfig.toml
+# Use 'bun test src/' or 'npm run test:bun' to run only unit tests
+# E2E tests in e2e/ directory should be run with 'npm run test:e2e'
