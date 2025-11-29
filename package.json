@@ -43,12 +43,14 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "tsc --noEmit",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:bun": "bun test src/",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug"
+    "test:e2e:debug": "playwright test --debug",
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -73,8 +75,16 @@
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.2.0",
+    "lint-staged": "^16.2.7",
     "vite-plugin-checker": "^0.6.4",
     "vitest": "^4.0.13"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "bash -c 'npm run typecheck'"
+    ]
   }
 }
